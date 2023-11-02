@@ -78,7 +78,10 @@
     <ClCompile Include="Object\Object.cpp">
       <Filter>소스 파일\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Cube.cpp">
+    <ClCompile Include="Object\Cube.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
+    <ClCompile Include="Object\LightObject.cpp">
       <Filter>소스 파일\Object</Filter>
     </ClCompile>
   </ItemGroup>
@@ -116,7 +119,10 @@
     <ClInclude Include="Object\Object.h">
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
-    <ClInclude Include="Cube.h">
+    <ClInclude Include="Object\Cube.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\LightObject.h">
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
   </ItemGroup>

@@ -5,7 +5,7 @@
 #include "Model/ModelList.h"
 
 // test--------------------------------------------
-#include "Cube.h"
+#include "Object/Cube.h"
 // ------------------------------------------------
 
 Graphics::Graphics() { }

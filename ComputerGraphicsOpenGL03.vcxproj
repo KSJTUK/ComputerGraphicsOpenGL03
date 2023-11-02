@@ -19,7 +19,6 @@
     </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="Cube.cpp" />
     <ClCompile Include="Graphics\Camera.cpp" />
     <ClCompile Include="Graphics\Graphic.cpp" />
     <ClCompile Include="Graphics\GraphicBuffers.cpp" />
@@ -27,6 +26,8 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Model\ModelList.cpp" />
+    <ClCompile Include="Object\Cube.cpp" />
+    <ClCompile Include="Object\LightObject.cpp" />
     <ClCompile Include="Object\Object.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Util\callbacks.cpp" />
@@ -34,13 +35,14 @@
     <ClCompile Include="Util\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Cube.h" />
     <ClInclude Include="Graphics\Camera.h" />
     <ClInclude Include="Graphics\Graphic.h" />
     <ClInclude Include="Graphics\GraphicBuffers.h" />
     <ClInclude Include="Graphics\Shader.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="Model\ModelList.h" />
+    <ClInclude Include="Object\Cube.h" />
+    <ClInclude Include="Object\LightObject.h" />
     <ClInclude Include="Object\Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Util\callbacks.h" />
