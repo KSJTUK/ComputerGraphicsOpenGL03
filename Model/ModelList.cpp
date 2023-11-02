@@ -14,7 +14,7 @@ ModelList* ModelList::m_instance = nullptr;
 
 // static Method (single tone)
 // -------------------------------
-ModelList* ModelList::GetInst() {
+ModelList* ModelList::GetInstance() {
 	if (!m_instance) {
 		m_instance = new ModelList;
 	}
@@ -47,8 +47,10 @@ void ModelList::LoadModel(const std::string& objectFilePath) {
 		return;
 	}
 
+	std::string filePath{ m_defaultFilePath + objectFilePath };
+
 	std::shared_ptr<class Model> newModel{ };
-	newModel = std::make_shared<class Model>(objectFilePath);
+	newModel = std::make_shared<class Model>(filePath);
 	newModel->Init();
 
 	m_modelList.insert(std::make_pair(key, newModel));

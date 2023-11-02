@@ -9,12 +9,14 @@ private:
 	static ModelList* m_instance;
 
 public:
-	static ModelList* GetInst();
+	static ModelList* GetInstance();
 	static void Destroy();
 
 private:
 	// 모델 내부의 쉐이더 초기화에 필요한 프로그램 ID
 	unsigned int m_shaderProgramID{ };
+	
+	const std::string m_defaultFilePath{ ".\\ObjModel\\" };
 
 	// 모델들을 저장할 맵 객체 생성
 	std::unordered_map<std::string, std::shared_ptr<class Model>> m_modelList{ };

@@ -78,6 +78,9 @@
     <ClCompile Include="Object\Object.cpp">
       <Filter>소스 파일\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Cube.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -111,6 +114,9 @@
       <Filter>헤더 파일\Model</Filter>
     </ClInclude>
     <ClInclude Include="Object\Object.h">
+      <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Cube.h">
       <Filter>헤더 파일\Object</Filter>
     </ClInclude>
   </ItemGroup>

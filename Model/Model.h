@@ -33,6 +33,8 @@ private:
 
 	std::pair<glm::vec3, glm::vec3> m_boundingBox{ };
 
+	glm::vec3 m_objectColor{ 1.f };
+
 	glm::mat4 m_modelInitTransform{ 1.f };
 	glm::mat4 m_modelTransform{ 1.f };
 	glm::mat4 m_modelParentTransform{ 1.f };
@@ -54,6 +56,8 @@ public:
 
 	// setter
 	void SetDrawMode(int drawMode);
+
+	void SetObjectColor(const glm::vec3& objectColor);
 	void SetInitTransformMat(const glm::mat4& initTarnsformMat);
 	void SetTransformMat(const glm::mat4& transformMat);
 	void SetParentModelTransformMat(const glm::mat4& parentTransformMat);

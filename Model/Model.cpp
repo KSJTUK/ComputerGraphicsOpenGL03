@@ -70,7 +70,7 @@ void Model::ReadVertex(std::stringstream& contents, uint32& vertexCount) {
 	glm::vec3 tempVec{ };      // 정점 좌표 저장
 	contents >> delTag >> tempVec.x >> tempVec.y >> tempVec.z;
 	if (m_verticies.size() == vertexCount) {
-		m_verticies.push_back(Vertex{ tempVec, glm::linearRand(glm::vec3{ }, glm::vec3{ 1.f }), glm::vec2{} });
+		m_verticies.push_back(Vertex{ tempVec, glm::vec2{ }, glm::vec3{ } });
 	}
 	else {
 		m_verticies[vertexCount].position = tempVec;
@@ -83,7 +83,7 @@ void Model::ReadVertexTexture(std::stringstream& contents, uint32& textureCount)
 	glm::vec2 tempVec{ };
 	contents >> delTag >> tempVec.x >> tempVec.y;
 	if (m_verticies.size() == textureCount) {
-		m_verticies.push_back(Vertex{ glm::vec3{ }, glm::linearRand(glm::vec3{ }, glm::vec3{ 1.f }), tempVec, glm::vec3{ } });
+		m_verticies.push_back(Vertex{ glm::vec3{ }, tempVec, glm::vec3{ } });
 	}
 	else {
 		m_verticies[textureCount].texture = tempVec;
@@ -96,7 +96,7 @@ void Model::ReadVertexNormal(std::stringstream& contents, uint32& normalCount) {
 	glm::vec3 tempVec{ };      // 정점 노멀 저장
 	contents >> delTag >> tempVec.x >> tempVec.y >> tempVec.z;
 	if (m_verticies.size() == normalCount) {
-		m_verticies.push_back(Vertex{ glm::vec3{ }, glm::linearRand(glm::vec3{ }, glm::vec3{ 1.f }), glm::vec2{ }, tempVec });
+		m_verticies.push_back(Vertex{ glm::vec3{ }, glm::vec2{ }, tempVec });
 	}
 	else {
 		m_verticies[normalCount].normal = tempVec;
@@ -163,6 +163,10 @@ void Model::SetDrawMode(int drawMode) {
 	m_graphicsBuffer->SetDrawMode(drawMode);
 }
 
+void Model::SetObjectColor(const glm::vec3& objectColor) {
+	m_objectColor = objectColor;
+}
+
 void Model::SetInitTransformMat(const glm::mat4& initTarnsformMat) {
 	m_modelInitTransform = initTarnsformMat;
 }
@@ -187,8 +191,9 @@ void Model::Update() {
 }
 
 void Model::Render() {
-	m_graphicsBuffer->SetInitTransformMat(m_modelInitTransform);
-	m_graphicsBuffer->SetTransformMat(m_modelTransform);
-	m_graphicsBuffer->SetParentTransformMat(m_modelParentTransform);
+	m_graphicsBuffer->SetUniformVec3("objectColor", m_objectColor);
+	m_graphicsBuffer->SetUniformMat4("modelInitTransform", m_modelInitTransform);
+	m_graphicsBuffer->SetUniformMat4("modelTransform", m_modelTransform);
+	m_graphicsBuffer->SetUniformMat4("modelsParentTransform", m_modelParentTransform);
 	m_graphicsBuffer->Render();
 }

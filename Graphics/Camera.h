@@ -7,8 +7,8 @@ public:
 
 private:
 	// 카메라의 내부 파라미터
-	glm::vec3 m_EYE{ 0.f, 0.f, 10.f };
-	glm::vec3 m_AT{ 0.f, 0.f, -1.f };
+	glm::vec3 m_EYE{ 5.f, 5.f, 5.f };
+	glm::vec3 m_AT{ -1.f, -1.f, -1.f };
 	glm::vec3 m_UP{ 0.f, 1.f, 0.f };
 
 	// 뷰변환 행렬

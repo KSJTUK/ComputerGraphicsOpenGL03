@@ -7,6 +7,8 @@ public:
 	~GraphicBuffers();
 
 private:
+	unsigned int m_shaderProgramID{ };
+
 	// Vertex Buffer Object ID
 	unsigned int m_vertexBuffer{ };
 
@@ -27,19 +29,17 @@ private:
 	unsigned int m_modelTransformLocation{ };
 	unsigned int m_modelParentTransformLocation{ };
 	unsigned int m_modelInitTransformLocation{ };
+	unsigned int m_objectColorLocation{ };
 
 public:
-	void Init(unsigned int shaderProgramID);
+	void Init(unsigned int shaderProgramID);;
 
-	void SetInitTransformMat(const glm::mat4& initTrans);
-	void SetTransformMat(glm::mat4& trans);
-	void SetParentTransformMat(const glm::mat4& parentTrans);
-
-	void SetVerticies(const Vertex* verticies, unsigned int dataSize);
 	void SetVerticies(const std::vector<Vertex>& verticies);
 
-	void SetIndexBuffer(unsigned int* indexBuffer, size_t bufferSize);
 	void SetIndexBuffer(const std::vector<unsigned int>& indicies);
+
+	void SetUniformMat4(const std::string& varName, const glm::mat4& matrix);
+	void SetUniformVec3(const std::string& varName, const glm::vec3& vector);
 
 	void SetDrawMode(unsigned int mode);
 	void Render();

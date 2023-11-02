@@ -24,7 +24,6 @@
 
 struct Vertex {
 	glm::vec3 position{ };
-	glm::vec3 color{ };
 	glm::vec2 texture{ };
 	glm::vec3 normal{ };
 };
@@ -57,3 +56,4 @@ namespace constants {
 };
 
 #define SHADER Shader::GetInstance()
+#define MODELLIST ModelList::GetInstance()

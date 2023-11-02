@@ -2,10 +2,20 @@
 #include "Graphics/Graphic.h"
 #include "Graphics/Shader.h"
 #include "Graphics/Camera.h"
+#include "Model/ModelList.h"
+
+// test--------------------------------------------
+#include "Cube.h"
+// ------------------------------------------------
 
 Graphics::Graphics() { }
 
-Graphics::~Graphics() { }
+Graphics::~Graphics() {
+	// test--------------------------------------------
+	if (m_cube) delete m_cube;
+	// ------------------------------------------------
+
+}
 
 bool Graphics::IsInited() const {
 	return m_isInited;
@@ -25,7 +35,6 @@ void Graphics::SetPerspectiveMat() {
 	float halfFovy = m_fovy / 2.f;
 
 	SHADER->SetPerspectiveMat(glm::perspective(glm::radians(halfFovy), aspect, m_near, m_far));
-	SHADER->UnUseProgram();
 }
 
 void Graphics::Input(unsigned char key, bool down) {
@@ -54,14 +63,21 @@ void Graphics::Init() {
 	m_camera->Init();
 
 	// 모델리스트를 생성하고 모델 불러오기
-	//ModelList::GetInst()->Init(SHADER->GetShaderProgramID());
+	MODELLIST->Init(SHADER->GetShaderProgramID());
+	MODELLIST->LoadModel("cube.obj");
+
+	// test--------------------------------------------
+	m_cube = new Cube{ };
+	// ------------------------------------------------
 
 	// 투영 변환 행렬 계산 및 전송
-	SetPerspectiveMat();
 	// 쉐이더 프로그램 사용 종료
-	SHADER->UnUseProgram();
 
 	m_isInited = true;
+
+	SetPerspectiveMat();
+
+	SHADER->UnUseProgram();
 }
 
 void Graphics::Update(float deltaTime) {
@@ -70,10 +86,21 @@ void Graphics::Update(float deltaTime) {
 }
 
 void Graphics::Render() {
+
 	glClearColor(0.5f, 0.5f, 0.5f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+	SHADER->UseProgram();
+
+	m_camera->Render();
+	SHADER->SetViewMat(m_camera->GetViewMat());
+
+	m_cube->Render();
+
 	glViewport(0, 0, m_windowInfo->width, m_windowInfo->height);
+
+	SHADER->UnUseProgram();
+
 
 	glutSwapBuffers();
 }

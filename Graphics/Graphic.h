@@ -21,6 +21,10 @@ private:
 
 	float m_deltaTime{ };
 
+	// test--------------------------------------------
+	class Cube* m_cube{ };
+	// ------------------------------------------------
+
 public:
 	// getter
 	bool IsInited() const;

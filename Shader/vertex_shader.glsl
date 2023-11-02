@@ -3,7 +3,8 @@
 //--- in_Color: attribute index 1
 
 layout (location = 0) in vec3 in_Position; //--- 위치 변수: attribute position 0
-layout (location = 1) in vec3 in_Color; //--- 컬러 변수: attribute position 1
+layout (location = 1) in vec3 in_Texture; //--- 텍스처 변수: attribute position 1
+layout (location = 2) in vec3 in_Normal; //--- 정점 노멀 변수: attribute position 2
 
 uniform mat4 perspectiveMat;
 uniform mat4 viewMat;
@@ -11,11 +12,9 @@ uniform mat4 modelsParentTransform;
 uniform mat4 modelInitTransform;
 uniform mat4 modelTransform;
 
-out vec3 out_Color; //--- 프래그먼트 세이더에게 전달
 
 void main(void)
 {
 	mat4 transform = modelsParentTransform * modelTransform * modelInitTransform;
 	gl_Position = perspectiveMat * viewMat * transform * vec4(in_Position, 1.0f);
-	out_Color = in_Color;
 }

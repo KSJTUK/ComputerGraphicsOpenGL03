@@ -100,7 +100,7 @@ void Shader::CompileShaders() {
 	glGetShaderiv(m_fragmentShader, GL_COMPILE_STATUS, &result);
 	if (!result) {
 		glGetShaderInfoLog(m_fragmentShader, sizeof(errLog), NULL, errLog);
-		throw std::string{ "fragment shader 컴파일 에러: " + std::string{ errLog } };
+		std::cout << std::string{ errLog } << std::endl;
 	}
 }
 
