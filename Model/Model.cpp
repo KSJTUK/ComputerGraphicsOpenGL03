@@ -163,8 +163,16 @@ void Model::SetDrawMode(int drawMode) {
 	m_graphicsBuffer->SetDrawMode(drawMode);
 }
 
+void Model::SetInitTransformMat(const glm::mat4& initTarnsformMat) {
+	m_modelInitTransform = initTarnsformMat;
+}
+
 void Model::SetTransformMat(const glm::mat4& transformMat) {
 	m_modelTransform = transformMat;
+}
+
+void Model::SetParentModelTransformMat(const glm::mat4& parentTransformMat) {
+	m_modelParentTransform = parentTransformMat;
 }
 
 void Model::Init() {
@@ -179,7 +187,8 @@ void Model::Update() {
 }
 
 void Model::Render() {
+	m_graphicsBuffer->SetInitTransformMat(m_modelInitTransform);
 	m_graphicsBuffer->SetTransformMat(m_modelTransform);
+	m_graphicsBuffer->SetParentTransformMat(m_modelParentTransform);
 	m_graphicsBuffer->Render();
-	//m_graphicsBuffer->SetTransformMat(glm::mat4{ 1.f });
 }

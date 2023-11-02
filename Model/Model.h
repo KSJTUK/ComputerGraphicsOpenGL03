@@ -33,7 +33,9 @@ private:
 
 	std::pair<glm::vec3, glm::vec3> m_boundingBox{ };
 
+	glm::mat4 m_modelInitTransform{ 1.f };
 	glm::mat4 m_modelTransform{ 1.f };
+	glm::mat4 m_modelParentTransform{ 1.f };
 
 private:
 	void CalcMinMaxVertexElem();
@@ -52,7 +54,9 @@ public:
 
 	// setter
 	void SetDrawMode(int drawMode);
+	void SetInitTransformMat(const glm::mat4& initTarnsformMat);
 	void SetTransformMat(const glm::mat4& transformMat);
+	void SetParentModelTransformMat(const glm::mat4& parentTransformMat);
 
 	std::pair<glm::vec3, glm::vec3> GetBoundingBox() const { return m_boundingBox; }
 

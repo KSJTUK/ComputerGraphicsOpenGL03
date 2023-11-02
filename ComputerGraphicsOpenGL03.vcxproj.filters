@@ -25,9 +25,6 @@
     <Filter Include="헤더 파일\Graphics">
       <UniqueIdentifier>{02ab420b-7069-4f4a-aeef-ff716d4d977b}</UniqueIdentifier>
     </Filter>
-    <Filter Include="헤더 파일\Util">
-      <UniqueIdentifier>{03d96898-5485-4d45-a1d6-253a2fd440ad}</UniqueIdentifier>
-    </Filter>
     <Filter Include="헤더 파일\Object">
       <UniqueIdentifier>{637c9f73-0580-483c-8a1e-f691559583a6}</UniqueIdentifier>
     </Filter>
@@ -39,6 +36,9 @@
     </Filter>
     <Filter Include="소스 파일\Model">
       <UniqueIdentifier>{95ff48c8-e6e8-42bc-b65b-ebd8ebae62a3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="헤더 파일\Util">
+      <UniqueIdentifier>{03d96898-5485-4d45-a1d6-253a2fd440ad}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -75,6 +75,9 @@
     <ClCompile Include="Model\ModelList.cpp">
       <Filter>소스 파일\Model</Filter>
     </ClCompile>
+    <ClCompile Include="Object\Object.cpp">
+      <Filter>소스 파일\Object</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -106,6 +109,9 @@
     </ClInclude>
     <ClInclude Include="Model\Model.h">
       <Filter>헤더 파일\Model</Filter>
+    </ClInclude>
+    <ClInclude Include="Object\Object.h">
+      <Filter>헤더 파일\Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

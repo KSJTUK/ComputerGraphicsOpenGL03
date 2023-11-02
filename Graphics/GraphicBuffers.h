@@ -25,13 +25,15 @@ private:
 
 	// 모델 변환 행렬 변수의 위치 저장
 	unsigned int m_modelTransformLocation{ };
+	unsigned int m_modelParentTransformLocation{ };
+	unsigned int m_modelInitTransformLocation{ };
 
 public:
 	void Init(unsigned int shaderProgramID);
 
+	void SetInitTransformMat(const glm::mat4& initTrans);
 	void SetTransformMat(glm::mat4& trans);
-
-	void SetTransformMat(glm::mat4&& trans);
+	void SetParentTransformMat(const glm::mat4& parentTrans);
 
 	void SetVerticies(const Vertex* verticies, unsigned int dataSize);
 	void SetVerticies(const std::vector<Vertex>& verticies);

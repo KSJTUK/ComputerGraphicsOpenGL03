@@ -23,19 +23,25 @@ void GraphicBuffers::Init(unsigned int shaderProgramID) {
 	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_elementBuffer); //--- GL_ELEMENT_ARRAY_BUFFER 버퍼 유형으로 바인딩
 
 	// 셰이더언어 파일에 있는 모델 변환 행렬 변수의 로케이션을 저장
+	m_modelParentTransformLocation = glGetUniformLocation(shaderProgramID, "modelsParentTransform");
 	m_modelTransformLocation = glGetUniformLocation(shaderProgramID, "modelTransform");
-	if (m_modelTransformLocation == -1) {
+	m_modelInitTransformLocation = glGetUniformLocation(shaderProgramID, "modelInitTransform");
+
+	if (m_modelInitTransformLocation == - 1 or m_modelTransformLocation == -1 or m_modelParentTransformLocation == -1) {
 		assert(0);
 	}
 }
 
+void GraphicBuffers::SetInitTransformMat(const glm::mat4& initTrans) {
+	glUniformMatrix4fv(m_modelInitTransformLocation, 1, GL_FALSE, glm::value_ptr(initTrans));
+}
 
 void GraphicBuffers::SetTransformMat(glm::mat4& trans) {
 	glUniformMatrix4fv(m_modelTransformLocation, 1, GL_FALSE, glm::value_ptr(trans));
 }
 
-void GraphicBuffers::SetTransformMat(glm::mat4&& trans) {
-	glUniformMatrix4fv(m_modelTransformLocation, 1, GL_FALSE, glm::value_ptr(trans));
+void GraphicBuffers::SetParentTransformMat(const glm::mat4& parentTrans) {
+	glUniformMatrix4fv(m_modelParentTransformLocation, 1, GL_FALSE, glm::value_ptr(parentTrans));
 }
 
 void GraphicBuffers::SetVerticies(const Vertex* const verticies, unsigned int dataSize) {

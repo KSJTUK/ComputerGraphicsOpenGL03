@@ -26,6 +26,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Model\ModelList.cpp" />
+    <ClCompile Include="Object\Object.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Util\callbacks.cpp" />
     <ClCompile Include="Util\Engine.cpp" />
@@ -38,6 +39,7 @@
     <ClInclude Include="Graphics\Shader.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="Model\ModelList.h" />
+    <ClInclude Include="Object\Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Util\callbacks.h" />
     <ClInclude Include="Util\Engine.h" />
