@@ -35,7 +35,7 @@ void GraphicBuffers::SetVerticies(const std::vector<Vertex>& verticies) {
 	glEnableVertexAttribArray(0);
 
 	// location 1번에 Vertex객체의 texture정보를 넘겨줌
-	glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texture));
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texture));
 	glEnableVertexAttribArray(1);
 
 	// location 2번에 Vertex객체의 normal정보를 넘겨줌
@@ -67,6 +67,6 @@ void GraphicBuffers::SetDrawMode(unsigned int mode) {
 void GraphicBuffers::Render() {
 	// shaderProgram 에서 UseProgram을 활성화 했다는 가정하에 수행
 	glBindVertexArray(m_vertexArray);
-	glDrawElements(m_drawMode, (GLsizei)m_indexDataSize, GL_UNSIGNED_INT, 0);
+	glDrawArrays(m_drawMode, 0, m_vertexDataSize);
 	glBindVertexArray(0); // Array 바인드 해제
 }

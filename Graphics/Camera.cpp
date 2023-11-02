@@ -1,4 +1,5 @@
 #include "pch.h"
+#include "Shader.h"
 #include "Graphics/Camera.h"
 
 const glm::mat4& Camera::GetViewMat() const {
@@ -132,5 +133,6 @@ void Camera::Update(float deltaTime) {
 }
 
 void Camera::Render() {
+	SHADER->SetUniformVec3("viewPosition", m_EYE);
 	m_view = glm::lookAt(m_EYE, m_EYE + m_AT, m_UP);
 }

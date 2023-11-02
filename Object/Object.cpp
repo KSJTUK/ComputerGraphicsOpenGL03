@@ -18,6 +18,8 @@ void Object::Render() {
 
 	m_transform = translateMat * rotateMat * scaleMat;
 
+	SHADER->SetUniformVec3("lightColor", m_lightColor);
+	SHADER->SetUniformVec3("objectColor", m_objectColor);
 	m_model->SetInitTransformMat(m_initTransform);
 	m_model->SetTransformMat(m_transform);
 	m_model->SetParentModelTransformMat(m_parentTransform);

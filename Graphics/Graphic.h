@@ -23,6 +23,7 @@ private:
 
 	// test--------------------------------------------
 	class Cube* m_cube{ };
+	class LightObject* m_lightObj{ };
 	// ------------------------------------------------
 
 public:

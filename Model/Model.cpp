@@ -10,26 +10,26 @@ Model::Model(const std::string& objectFilePath) {
 Model::~Model() { }
 
 void Model::CalcMinMaxVertexElem() {
-	auto minAndMaxX = std::minmax_element(m_verticies.begin(), m_verticies.end(),
-		[](const Vertex& v1, const Vertex& v2) {
-			return v1.position.x < v2.position.x;
+	auto minAndMaxX = std::minmax_element(m_noDuplicatedVertex.begin(), m_noDuplicatedVertex.end(),
+		[](const glm::vec3& v1, const glm::vec3& v2) {
+			return v1.x < v2.x;
 		}
 	);
 
-	auto minAndMaxY = std::minmax_element(m_verticies.begin(), m_verticies.end(),
-		[](const Vertex& v1, const Vertex& v2) {
-			return v1.position.y < v2.position.y;
+	auto minAndMaxY = std::minmax_element(m_noDuplicatedVertex.begin(), m_noDuplicatedVertex.end(),
+		[](const glm::vec3& v1, const glm::vec3& v2) {
+			return v1.y < v2.y;
 		}
 	);
 
-	auto minAndMaxZ = std::minmax_element(m_verticies.begin(), m_verticies.end(),
-		[](const Vertex& v1, const Vertex& v2) {
-			return v1.position.z < v2.position.z;
+	auto minAndMaxZ = std::minmax_element(m_noDuplicatedVertex.begin(), m_noDuplicatedVertex.end(),
+		[](const glm::vec3& v1, const glm::vec3& v2) {
+			return v1.z < v2.z;
 		}
 	);
 
-	m_maxCoord = glm::vec3{ minAndMaxX.second->position.x, minAndMaxY.second->position.y, minAndMaxZ.second->position.z };
-	m_minCoord = glm::vec3{ minAndMaxX.first->position.x, minAndMaxY.first->position.y, minAndMaxZ.first->position.z };
+	m_maxCoord = glm::vec3{ minAndMaxX.second->x, minAndMaxY.second->y, minAndMaxZ.second->z };
+	m_minCoord = glm::vec3{ minAndMaxX.first->x, minAndMaxY.first->y, minAndMaxZ.first->z };
 }
 
 void Model::MakeBoundingBox() {
@@ -65,43 +65,25 @@ void Model::ReadFace(std::stringstream& contents, std::vector<unsigned int>* ind
 	}
 }
 
-void Model::ReadVertex(std::stringstream& contents, uint32& vertexCount) {
+void Model::ReadVertex(std::stringstream& contents, std::vector<glm::vec3>& positions) {
 	std::string delTag{ };
 	glm::vec3 tempVec{ };      // 정점 좌표 저장
 	contents >> delTag >> tempVec.x >> tempVec.y >> tempVec.z;
-	if (m_verticies.size() == vertexCount) {
-		m_verticies.push_back(Vertex{ tempVec, glm::vec2{ }, glm::vec3{ } });
-	}
-	else {
-		m_verticies[vertexCount].position = tempVec;
-	}
-	++vertexCount;
+	positions.push_back(tempVec);
 }
 
-void Model::ReadVertexTexture(std::stringstream& contents, uint32& textureCount) {
+void Model::ReadVertexTexture(std::stringstream& contents, std::vector<glm::vec2>& textureCoords) {
 	std::string delTag{ };
-	glm::vec2 tempVec{ };
+	glm::vec2 tempVec{ };      // 정점 좌표 저장
 	contents >> delTag >> tempVec.x >> tempVec.y;
-	if (m_verticies.size() == textureCount) {
-		m_verticies.push_back(Vertex{ glm::vec3{ }, tempVec, glm::vec3{ } });
-	}
-	else {
-		m_verticies[textureCount].texture = tempVec;
-	}
-	++textureCount;
+	textureCoords.push_back(tempVec);
 }
 
-void Model::ReadVertexNormal(std::stringstream& contents, uint32& normalCount) {
+void Model::ReadVertexNormal(std::stringstream& contents, std::vector<glm::vec3>& normals) {
 	std::string delTag{ };
-	glm::vec3 tempVec{ };      // 정점 노멀 저장
+	glm::vec3 tempVec{ };      // 정점 좌표 저장
 	contents >> delTag >> tempVec.x >> tempVec.y >> tempVec.z;
-	if (m_verticies.size() == normalCount) {
-		m_verticies.push_back(Vertex{ glm::vec3{ }, glm::vec2{ }, tempVec });
-	}
-	else {
-		m_verticies[normalCount].normal = tempVec;
-	}
-	++normalCount;
+	normals.push_back(tempVec);
 }
 
 void Model::ReadObject(const char* filePath) {
@@ -109,9 +91,9 @@ void Model::ReadObject(const char* filePath) {
 
 	std::vector<unsigned int> indiciesVec[3]{ }; // cnt: 0 == vertex, 1 == texture, 2 == nomal
 
-	uint32 vertexCount{ };
-	uint32 textureCount{ };
-	uint32 normalCount{ };
+	std::vector<glm::vec3> vertexPositions{ };
+	std::vector<glm::vec2> vertexTextureCoord{ };
+	std::vector<glm::vec3> vertexNormals{ };
 
 	if (!objFile.is_open()) {
 		assert(0);
@@ -125,13 +107,13 @@ void Model::ReadObject(const char* filePath) {
 
 		if (line[0] == 'v') {              // 맨 앞 문자가 v이면 정점에 대한 정보이다
 			if (line[1] == 'n') {          // vn == 정점 노멀
-				ReadVertexNormal(sstream, normalCount);
+				ReadVertex(sstream, vertexNormals);
 			}
 			else if (line[1] == 't') {		// vt == 텍스쳐 좌표
-				ReadVertexTexture(sstream, textureCount);
+				ReadVertexTexture(sstream, vertexTextureCoord);
 			}
 			else if (line[1] == ' ') {     // v == 정점 좌표
-				ReadVertex(sstream, vertexCount);
+				ReadVertexNormal(sstream, vertexPositions);
 			}
 		}
 		else if (line[0] == 'f') {         // 맨 앞 문자가 f이면 face(면)에 대한 정보이다
@@ -139,17 +121,21 @@ void Model::ReadObject(const char* filePath) {
 		}
 	}
 
-	if (m_verticies.empty()) {
-		assert(0);
+	// 정점 노멀과 텍스쳐의 갯수가 각각 다 다르기 때문에 더이상 DrawElements를 사용하기는 어려움
+	// 따라서 정점들을 복제함
+	m_verticies.resize(indiciesVec[0].size());
+	auto endLoop{ m_verticies.size() };
+
+	for (auto i = 0; i < endLoop; ++i) {
+		m_verticies[i].position = vertexPositions[indiciesVec[0][i]];
+		m_verticies[i].texture = vertexTextureCoord[indiciesVec[1][i]];
+		m_verticies[i].normal = vertexNormals[indiciesVec[2][i]];
 	}
 
-	if (m_verticies.size() > vertexCount) {
-		m_verticies.erase(m_verticies.begin() + vertexCount - 1, m_verticies.end());
-	}
+	std::cout << m_verticies.size() << std::endl;
 
-	m_vertexIndicies = indiciesVec[0];
-	m_vertexNormalIndicies = indiciesVec[1];
-	m_textureIndicies = indiciesVec[2];
+	// 단 정점 최소 최댓값의 계산을 빠르게 하기위해 중복되지 않은 정점 배열을 계산에 사용
+	m_noDuplicatedVertex = vertexPositions;
 
 	CalcMinMaxVertexElem();
 	MakeBoundingBox();
@@ -161,10 +147,6 @@ glm::mat4 Model::GetModelTransformMat() const {
 
 void Model::SetDrawMode(int drawMode) {
 	m_graphicsBuffer->SetDrawMode(drawMode);
-}
-
-void Model::SetObjectColor(const glm::vec3& objectColor) {
-	m_objectColor = objectColor;
 }
 
 void Model::SetInitTransformMat(const glm::mat4& initTarnsformMat) {
@@ -184,16 +166,14 @@ void Model::Init() {
 	m_graphicsBuffer->Init(SHADER->GetShaderProgramID());
 
 	m_graphicsBuffer->SetVerticies(m_verticies);
-	m_graphicsBuffer->SetIndexBuffer(m_vertexIndicies);
 }
 
 void Model::Update() {
 }
 
 void Model::Render() {
-	m_graphicsBuffer->SetUniformVec3("objectColor", m_objectColor);
-	m_graphicsBuffer->SetUniformMat4("modelInitTransform", m_modelInitTransform);
-	m_graphicsBuffer->SetUniformMat4("modelTransform", m_modelTransform);
-	m_graphicsBuffer->SetUniformMat4("modelsParentTransform", m_modelParentTransform);
+	SHADER->SetUniformMat4("modelInitTransform", m_modelInitTransform);
+	SHADER->SetUniformMat4("modelTransform", m_modelTransform);
+	SHADER->SetUniformMat4("modelsParentTransform", m_modelParentTransform);
 	m_graphicsBuffer->Render();
 }

@@ -6,6 +6,7 @@
 
 // test--------------------------------------------
 #include "Object/Cube.h"
+#include "Object/LightObject.h"
 // ------------------------------------------------
 
 Graphics::Graphics() { }
@@ -65,9 +66,12 @@ void Graphics::Init() {
 	// 모델리스트를 생성하고 모델 불러오기
 	MODELLIST->Init(SHADER->GetShaderProgramID());
 	MODELLIST->LoadModel("cube.obj");
+	MODELLIST->LoadModel("sphere.obj");
 
 	// test--------------------------------------------
 	m_cube = new Cube{ };
+	m_cube->SEtScale(glm::vec3{ 0.1f });
+	m_lightObj = new LightObject{ };
 	// ------------------------------------------------
 
 	// 투영 변환 행렬 계산 및 전송
@@ -87,7 +91,7 @@ void Graphics::Update(float deltaTime) {
 
 void Graphics::Render() {
 
-	glClearColor(0.5f, 0.5f, 0.5f, 1.f);
+	glClearColor(0.f, 0.f, 0.f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	SHADER->UseProgram();
@@ -96,6 +100,7 @@ void Graphics::Render() {
 	SHADER->SetViewMat(m_camera->GetViewMat());
 
 	m_cube->Render();
+	m_lightObj->Render();
 
 	glViewport(0, 0, m_windowInfo->width, m_windowInfo->height);
 

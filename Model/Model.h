@@ -17,23 +17,13 @@ private:
 
 	// 정점 노멀들을 저장할 vector
 	std::vector<glm::vec3> m_vertexNormals{ };
-
-	// 정점에 대한 인덱스를 저장할 vector
-	std::vector<unsigned int> m_vertexIndicies{ };
-
-	// 정점 노멀에 대한 인덱스를 저장할 vector
-	std::vector<unsigned int> m_vertexNormalIndicies{ };
-
-	// 텍스처 좌표 인덱스를 저장할 vector
-	std::vector<unsigned int> m_textureIndicies{ };
+	std::vector<glm::vec3> m_noDuplicatedVertex{ };
 
 	// 정점좌표들 중 최대 최소인 x, y, z 값을 저장할 변수들
 	glm::vec3 m_maxCoord{ };
 	glm::vec3 m_minCoord{ };
 
 	std::pair<glm::vec3, glm::vec3> m_boundingBox{ };
-
-	glm::vec3 m_objectColor{ 1.f };
 
 	glm::mat4 m_modelInitTransform{ 1.f };
 	glm::mat4 m_modelTransform{ 1.f };
@@ -46,8 +36,11 @@ private:
 private:
 	void ReadFace(std::stringstream& contents, std::vector<unsigned int>* indiciesVec);
 	void ReadVertex(std::stringstream& contents, uint32& vertexCount);
+	void ReadVertex(std::stringstream& contents, std::vector<glm::vec3>& positions);
 	void ReadVertexTexture(std::stringstream& contents, uint32& txtureCount);
+	void ReadVertexTexture(std::stringstream& contents, std::vector<glm::vec2>& textureCoords);
 	void ReadVertexNormal(std::stringstream& contents, uint32& normalCount);
+	void ReadVertexNormal(std::stringstream& contents, std::vector<glm::vec3>& normals);
 
 	void ReadObject(const char* filePath);
 
@@ -57,7 +50,6 @@ public:
 	// setter
 	void SetDrawMode(int drawMode);
 
-	void SetObjectColor(const glm::vec3& objectColor);
 	void SetInitTransformMat(const glm::mat4& initTarnsformMat);
 	void SetTransformMat(const glm::mat4& transformMat);
 	void SetParentModelTransformMat(const glm::mat4& parentTransformMat);

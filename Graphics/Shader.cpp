@@ -94,7 +94,7 @@ void Shader::CompileShaders() {
 	glGetShaderiv(m_vertexShader, GL_COMPILE_STATUS, &result);
 	if (!result) {
 		glGetShaderInfoLog(m_vertexShader, sizeof(errLog), NULL, errLog);
-		throw std::string{ "vertex shader 컴파일 에러: " + std::string{ errLog } };
+		std::cout << errLog << std::endl;
 	}
 
 	glGetShaderiv(m_fragmentShader, GL_COMPILE_STATUS, &result);
@@ -149,4 +149,28 @@ void Shader::SetPerspectiveMat(const glm::mat4& perspectiveMat) {
 		assert(0);
 	}
 	glUniformMatrix4fv(perspectiveMatLocation, 1, GL_FALSE, glm::value_ptr(perspectiveMat));
+}
+
+void Shader::SetUniformMat4(const std::string& valName, const glm::mat4& matrix) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniformMatrix4fv(valLocation, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void Shader::SetUniformMat3(const std::string& valName, const glm::mat3& matrix) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniformMatrix3fv(valLocation, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void Shader::SetUniformVec4(const std::string& valName, const glm::vec4& vector) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniform4fv(valLocation, 1, glm::value_ptr(vector));
+}
+
+void Shader::SetUniformVec3(const std::string& valName, const glm::vec3& vector) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniform3fv(valLocation, 1, glm::value_ptr(vector));
 }
