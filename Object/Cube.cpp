@@ -7,7 +7,6 @@
 Cube::Cube() {
 	m_modelTag = "cube";
 	m_model = MODELLIST->GetModel(m_modelTag);
-	m_lightColor = glm::vec3{ 1.f, 1.f, 1.f  };
 	m_objectColor = glm::vec3{ 1.f, 0.f, 0.f };
 }
 

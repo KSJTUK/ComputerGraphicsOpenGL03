@@ -17,7 +17,6 @@ protected:
 	glm::vec3 m_rotateAngle{ };
 	glm::vec3 m_scaleFactor{ 1.f };
 
-	glm::vec3 m_lightColor{ 1.f };
 	glm::vec3 m_objectColor{ };
 
 	glm::vec3 m_direction{ 0.f, 0.f, 1.f };
@@ -36,6 +35,7 @@ public:
 public:
 	bool IsDeleted() const { return m_isDeleted; }
 	glm::mat4 GetTransformMat() const { return m_transform; }
+	glm::vec3 GetPosition() const { return m_position; }
 
 public:
 	virtual void Update(float deltaTime) = 0;

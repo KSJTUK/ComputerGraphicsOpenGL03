@@ -70,7 +70,7 @@ void Graphics::Init() {
 
 	// test--------------------------------------------
 	m_cube = new Cube{ };
-	m_cube->SEtScale(glm::vec3{ 0.1f });
+	m_cube->SEtScale(glm::vec3{ 1.f });
 	m_lightObj = new LightObject{ };
 	// ------------------------------------------------
 
@@ -96,11 +96,13 @@ void Graphics::Render() {
 
 	SHADER->UseProgram();
 
+	SHADER->SetUniformVec3("lightColor", m_lightObj->GetLightColor());
+	SHADER->SetUniformVec3("lightPosition", m_lightObj->GetPosition());
+
 	m_camera->Render();
 	SHADER->SetViewMat(m_camera->GetViewMat());
 
 	m_cube->Render();
-	m_lightObj->Render();
 
 	glViewport(0, 0, m_windowInfo->width, m_windowInfo->height);
 

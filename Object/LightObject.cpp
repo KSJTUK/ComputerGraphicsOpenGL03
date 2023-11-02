@@ -11,9 +11,9 @@ LightObject::LightObject() {
 
 	m_objectColor = glm::vec3{ 1.f };
 	m_lightColor = glm::vec3{ 1.f };
-	SHADER->SetUniformVec3("lightColor", m_lightColor);
+	m_scaleFactor = glm::vec3{ };
 
-	m_position = { 3.f, 2.f, 0.f };
+	m_position = { 1.2f, 2.f, 1.f };
 }
 
 LightObject::~LightObject() { }
@@ -21,6 +21,5 @@ LightObject::~LightObject() { }
 void LightObject::Update(float deltaTime) { }
 
 void LightObject::Render() {
-	SHADER->SetUniformVec3("lightObjectPosition", glm::vec3{ 0.f, 3.f, 0.f });
 	Object::Render();
 }

@@ -13,9 +13,6 @@ uniform mat4 modelInitTransform;
 uniform mat4 modelTransform;
 
 // lighting
-uniform vec3 lightObjectPosition;
-
-out vec3 lightPosition;
 out vec3 vNormal;
 out vec3 fragPosition;
 
@@ -23,9 +20,8 @@ void main(void)
 {
 	mat4 transform = modelsParentTransform * modelTransform * modelInitTransform;
 
-	vNormal = mat3(transpose(inverse(transform))) * in_Normal;
 	fragPosition = vec3(transform * vec4(in_Position, 1.0f));
-	lightPosition = vec3(viewMat * vec4(lightObjectPosition, 1.0f)) * in_Normal;
+	vNormal = mat3(transpose(inverse(transform))) * in_Normal;
 
 	gl_Position = perspectiveMat * viewMat * vec4(fragPosition, 1.0f);
 
