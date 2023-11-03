@@ -11,6 +11,9 @@ struct LightOption {
 class LightObject : public Object {
 public:
 	LightObject();
+	LightObject(const std::string& modelTag);
+	LightObject(const std::string& modelTag, const glm::vec3& lightColor);
+	LightObject(const std::string& modelTag, const glm::vec3& lightCOlor, const glm::vec3& objectPosition);
 	~LightObject();
 
 private:

@@ -19,6 +19,24 @@ LightObject::LightObject() {
 	m_position = { 0.f, 2.f, 0.f };
 }
 
+LightObject::LightObject(const std::string& modelTag) {
+	m_modelTag = modelTag;
+	m_model = MODELLIST->GetModel(m_modelTag);
+
+
+	m_lightColor = glm::vec3{ 1.f };
+	m_objectColor = glm::vec3{ 1.f };
+}
+
+LightObject::LightObject(const std::string& modelTag, const glm::vec3& lightColor) {
+	m_modelTag = modelTag;
+	m_model = MODELLIST->GetModel(m_modelTag);
+
+
+	m_lightColor = lightColor;
+	m_objectColor = lightColor;
+}
+
 LightObject::~LightObject() { }
 
 void LightObject::SetLightOption() {
@@ -33,11 +51,28 @@ void LightObject::SetLightOption() {
 
 void LightObject::Update(float deltaTime) {
 	static float angle = 0.f;
-	// 원운동 
-	m_position.x = 3 * std::cosf(glm::radians(angle));
-	m_position.z = 3 * std::sinf(glm::radians(angle));
+	static float lightChangedAngle = 0.f;
 
-	angle += 0.01f;
+	static float lightDir{ 1.f };
+
+	// 원운동 
+	m_position.x = 10.f * std::cosf(glm::radians(angle));
+	m_position.z = 10.f * std::sinf(glm::radians(angle));
+
+	m_lightColor = glm::vec3{ std::cosf(glm::radians(lightChangedAngle)) };
+
+	lightChangedAngle += 10.f * lightDir * deltaTime;
+
+	if (lightChangedAngle >= 90.f) {
+		lightChangedAngle = 90.f;
+		lightDir = -1.f;
+	}
+	else if (lightChangedAngle <= -90.f) {
+		lightChangedAngle = -90.f;
+		lightDir = 1.f;
+	}
+
+	angle += 10.f * deltaTime;
 
 	if (angle > 360.f) {
 		angle = 0.f;
