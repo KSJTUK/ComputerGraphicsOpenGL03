@@ -141,29 +141,13 @@ void Model::ReadObject(const char* filePath) {
 	MakeBoundingBox();
 }
 
-glm::mat4 Model::GetModelTransformMat() const {
-	return m_modelTransform;
-}
-
 void Model::SetDrawMode(int drawMode) {
 	m_graphicsBuffer->SetDrawMode(drawMode);
 }
 
-void Model::SetInitTransformMat(const glm::mat4& initTarnsformMat) {
-	m_modelInitTransform = initTarnsformMat;
-}
-
-void Model::SetTransformMat(const glm::mat4& transformMat) {
-	m_modelTransform = transformMat;
-}
-
-void Model::SetParentModelTransformMat(const glm::mat4& parentTransformMat) {
-	m_modelParentTransform = parentTransformMat;
-}
-
 void Model::Init() {
 	m_graphicsBuffer = std::make_unique<class GraphicBuffers>();
-	m_graphicsBuffer->Init(SHADER->GetShaderProgramID());
+	m_graphicsBuffer->Init();
 
 	m_graphicsBuffer->SetVerticies(m_verticies);
 }
@@ -172,8 +156,5 @@ void Model::Update() {
 }
 
 void Model::Render() {
-	SHADER->SetUniformMat4("modelInitTransform", m_modelInitTransform);
-	SHADER->SetUniformMat4("modelTransform", m_modelTransform);
-	SHADER->SetUniformMat4("modelsParentTransform", m_modelParentTransform);
 	m_graphicsBuffer->Render();
 }

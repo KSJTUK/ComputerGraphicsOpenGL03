@@ -3,8 +3,8 @@
 struct Meterial {
 	glm::vec3 ambient{ 1.f };
 	glm::vec3 diffuse{ 1.f };
-	glm::vec3 specular{ 0.5f };
-	float shininess{ 32.f };
+	glm::vec3 specular{ 0.05f }; // 하이라이트 정도를 조절
+	float shininess{ 32.f };     // 하이라이트의 범위(카메라가 감지하는 하이라이트의 범위)조절
 };
 
 class Object {

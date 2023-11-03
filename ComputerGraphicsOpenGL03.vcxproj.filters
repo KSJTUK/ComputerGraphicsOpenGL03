@@ -133,5 +133,11 @@
     <None Include="Shader\vertex_shader.glsl">
       <Filter>리소스 파일</Filter>
     </None>
+    <None Include="light_object_fshader.glsl">
+      <Filter>리소스 파일</Filter>
+    </None>
+    <None Include="Shader\light_object_vshader.glsl">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
 </Project>

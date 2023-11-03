@@ -34,8 +34,7 @@ std::string MakeStringToKey(const std::string& str) {
 	return key;
 }
 
-void ModelList::Init(unsigned int shaderProgramID) {
-	m_shaderProgramID = shaderProgramID;
+void ModelList::Init() {
 	m_currentDrawMode = GL_TRIANGLES;
 }
 

@@ -56,4 +56,5 @@ namespace constants {
 };
 
 #define SHADER Shader::GetInstance()
+#define LIGHTOBJECTSHADER LightObjectShader::GetInstance()
 #define MODELLIST ModelList::GetInstance()

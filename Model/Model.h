@@ -25,34 +25,21 @@ private:
 
 	std::pair<glm::vec3, glm::vec3> m_boundingBox{ };
 
-	glm::mat4 m_modelInitTransform{ 1.f };
-	glm::mat4 m_modelTransform{ 1.f };
-	glm::mat4 m_modelParentTransform{ 1.f };
-
 private:
 	void CalcMinMaxVertexElem();
 	void MakeBoundingBox();
 
 private:
 	void ReadFace(std::stringstream& contents, std::vector<unsigned int>* indiciesVec);
-	void ReadVertex(std::stringstream& contents, uint32& vertexCount);
 	void ReadVertex(std::stringstream& contents, std::vector<glm::vec3>& positions);
-	void ReadVertexTexture(std::stringstream& contents, uint32& txtureCount);
 	void ReadVertexTexture(std::stringstream& contents, std::vector<glm::vec2>& textureCoords);
-	void ReadVertexNormal(std::stringstream& contents, uint32& normalCount);
 	void ReadVertexNormal(std::stringstream& contents, std::vector<glm::vec3>& normals);
 
 	void ReadObject(const char* filePath);
 
 public:
-	glm::mat4 GetModelTransformMat() const;
-
 	// setter
 	void SetDrawMode(int drawMode);
-
-	void SetInitTransformMat(const glm::mat4& initTarnsformMat);
-	void SetTransformMat(const glm::mat4& transformMat);
-	void SetParentModelTransformMat(const glm::mat4& parentTransformMat);
 
 	std::pair<glm::vec3, glm::vec3> GetBoundingBox() const { return m_boundingBox; }
 

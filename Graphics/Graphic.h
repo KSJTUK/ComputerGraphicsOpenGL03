@@ -19,6 +19,8 @@ private:
 	float m_near{ 0.1f };           // 시야 절두체의 가까운 평면과의 거리
 	float m_far{ 1000.f };           // 시야 절두체의 먼 평면과의 거리
 
+	glm::mat4 m_perspectiveMatrix{ 1.f };
+
 	float m_deltaTime{ };
 
 	// test--------------------------------------------
@@ -32,7 +34,7 @@ public:
 
 	// setter
 	void SetWindowInfo(std::shared_ptr<struct WindowInfo>& winInfo);
-	void SetPerspectiveMat();
+	void CalcPerspectiveMat();
 
 public:
 	// 외부 키입력을 카메라에게 전해주는 함수

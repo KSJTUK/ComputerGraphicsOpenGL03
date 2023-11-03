@@ -30,9 +30,9 @@ void Object::Render() {
 
 	SetMeterials();
 
-	m_model->SetInitTransformMat(m_initTransform);
-	m_model->SetTransformMat(m_transform);
-	m_model->SetParentModelTransformMat(m_parentTransform);
+	SHADER->SetUniformMat4("modelInitTransform", m_initTransform);
+	SHADER->SetUniformMat4("modelTransform", m_transform);
+	SHADER->SetUniformMat4("modelsParentTransform", m_parentTransform);
 
 	m_model->Render();
 }

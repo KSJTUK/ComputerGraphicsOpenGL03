@@ -13,9 +13,6 @@ public:
 	static void Destroy();
 
 private:
-	// 모델 내부의 쉐이더 초기화에 필요한 프로그램 ID
-	unsigned int m_shaderProgramID{ };
-	
 	const std::string m_defaultFilePath{ ".\\ObjModel\\" };
 
 	// 모델들을 저장할 맵 객체 생성
@@ -30,7 +27,7 @@ public:
 	void SetDrawModes(int drawMode);
 
 public:
-	void Init(unsigned int m_shaderProgramID);
+	void Init();
 	void LoadModel(const std::string& objectFilePath);
 	void LoadModelFromFile(const std::string& modelsFilePath);
 };
