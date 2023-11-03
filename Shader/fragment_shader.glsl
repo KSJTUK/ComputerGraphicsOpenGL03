@@ -2,13 +2,16 @@
 
 out vec4 FragColor;
 
-uniform vec3 lightPosition;
-uniform vec3 objectColor;
-uniform vec3 lightColor;
-uniform vec3 viewPosition;
-
 in vec3 vNormal;
 in vec3 fragPosition;
+
+// 광원의 빛에 대한 계수들을 구조체로 묶음
+struct Light {
+	vec3 position;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
 
 // 오브젝트의 meterial속성을 구조체로 묶음
 struct Meterials {
@@ -18,33 +21,32 @@ struct Meterials {
 	float shininess;
 };
 
-// uniform Meterials meterials;
+uniform vec3 viewPosition;
+uniform Meterials meterials;
+uniform Light light;
 
 void main(void)
 {
 	// calc lighting
 
-	// clac ambient
-	float ambientStrength = 0.1f;
-	vec3 ambient = ambientStrength * lightColor;
+	// 앰비언트 항
+	// 앰비언트 빛의 RGB색상 과 물체의 앰비언트 계수간의 원소간 곱셈으로 정의
+	// s * m (s == RGB, m == object's ambient)
+	vec3 ambient = light.ambient * meterials.ambient;
 
-	// calc normal and light object direction
+	// 퐁모델의 디퓨즈 항
 	vec3 vNorm = normalize(vNormal);
-	vec3 lightDirection = normalize(lightPosition - fragPosition);
+	vec3 lightDirection = normalize(light.position - fragPosition);
 
-	// calc diffuse
 	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
-	vec3 diffuse = diffuseN * lightColor;
+	vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
 
-	// calc specular
-	float specularStrength = 0.5f;
+	// 퐁모델의 스페큘러 항
 	vec3 viewDirection = normalize(viewPosition - fragPosition);
-	vec3 reflectDirection = reflect(-lightDirection, vNorm);
+	vec3 reflectDirection = reflect(lightDirection, vNorm);
+	float spec = pow(max(dot(reflectDirection, viewDirection), 0.0), meterials.shininess);
+	vec3 specular = spec * (light.specular * meterials.specular);
 
-	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), 32);
-	vec3 specular = specularStrength * spec * lightColor;
-
-	vec3 resultColor  = (ambient + diffuse + specular) * objectColor;
-
+	vec3 resultColor  = ambient + diffuse + specular;
 	FragColor = vec4 (resultColor, 1.0);
 }

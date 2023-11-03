@@ -7,6 +7,13 @@ Object::Object() { }
 
 Object::~Object() { }
 
+void Object::SetMeterials() {
+	SHADER->SetUniformVec3("meterials.ambient", m_meterial.ambient);
+	SHADER->SetUniformVec3("meterials.diffuse", m_meterial.diffuse);
+	SHADER->SetUniformVec3("meterials.specular", m_meterial.specular);
+	SHADER->SetUniformFloat("meterials.shininess", m_meterial.shininess);
+}
+
 void Object::Render() {
 	glm::mat4 unit{ 1.f };
 
@@ -18,7 +25,11 @@ void Object::Render() {
 
 	m_transform = translateMat * rotateMat * scaleMat;
 
-	SHADER->SetUniformVec3("objectColor", m_objectColor);
+	m_meterial.ambient = m_objectColor;
+	m_meterial.diffuse = m_objectColor;
+
+	SetMeterials();
+
 	m_model->SetInitTransformMat(m_initTransform);
 	m_model->SetTransformMat(m_transform);
 	m_model->SetParentModelTransformMat(m_parentTransform);

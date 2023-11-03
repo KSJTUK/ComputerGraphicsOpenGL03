@@ -44,8 +44,11 @@ public:
 	// 유니폼 변수들 세팅 함수
 	void SetUniformMat4(const std::string& valName, const glm::mat4& matrix);
 	void SetUniformMat3(const std::string& valName, const glm::mat3& matrix);
+	void SetUniformMat2(const std::string& valName, const glm::mat2& matrix);
 	void SetUniformVec4(const std::string& valName, const glm::vec4& vector);
 	void SetUniformVec3(const std::string& valName, const glm::vec3& vector);
+	void SetUniformVec2(const std::string& valName, const glm::vec2& vector);
+	void SetUniformFloat(const std::string& valueName, const float& fValue);
 
 public:
 	// Getter 함수들

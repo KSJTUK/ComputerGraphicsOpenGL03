@@ -1,5 +1,12 @@
 #pragma once
 
+struct Meterial {
+	glm::vec3 ambient{ 1.f };
+	glm::vec3 diffuse{ 1.f };
+	glm::vec3 specular{ 0.5f };
+	float shininess{ 32.f };
+};
+
 class Object {
 public:
 	Object();
@@ -17,11 +24,16 @@ protected:
 	glm::vec3 m_rotateAngle{ };
 	glm::vec3 m_scaleFactor{ 1.f };
 
-	glm::vec3 m_objectColor{ };
+	glm::vec3 m_objectColor{ 1.f };
 
 	glm::vec3 m_direction{ 0.f, 0.f, 1.f };
 
+	Meterial m_meterial{ };
+
 	bool m_isDeleted{ false };
+
+protected:
+	void SetMeterials();
 
 public:
 	void SetInitMat(const glm::mat4& init) { m_initTransform = init; }

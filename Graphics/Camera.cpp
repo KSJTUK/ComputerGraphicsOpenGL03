@@ -130,9 +130,10 @@ void Camera::Update(float deltaTime) {
 	m_cameraAxisZ = glm::normalize(-m_AT);
 	m_cameraAxisX = glm::normalize(glm::cross(m_UP, m_cameraAxisZ));
 	m_cameraAxisY = glm::normalize(glm::cross(m_cameraAxisZ, m_cameraAxisX));
+
+	SHADER->SetUniformVec3("viewPosition", m_EYE);
 }
 
 void Camera::Render() {
-	SHADER->SetUniformVec3("viewPosition", m_EYE);
 	m_view = glm::lookAt(m_EYE, m_EYE + m_AT, m_UP);
 }

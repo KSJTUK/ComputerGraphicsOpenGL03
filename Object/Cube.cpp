@@ -5,9 +5,10 @@
 #include "Model/ModelList.h"
 
 Cube::Cube() {
-	m_modelTag = "cube";
+	m_modelTag = "sphere";
 	m_model = MODELLIST->GetModel(m_modelTag);
-	m_objectColor = glm::vec3{ 1.f, 0.f, 0.f };
+	m_objectColor = glm::vec3{ 1.f, 0.3f, 0.31f };
+	m_scaleFactor = glm::vec3{ 0.3f, 0.3f, 0.3f };
 }
 
 Cube::~Cube() { }

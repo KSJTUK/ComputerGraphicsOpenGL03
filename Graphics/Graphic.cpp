@@ -70,7 +70,6 @@ void Graphics::Init() {
 
 	// test--------------------------------------------
 	m_cube = new Cube{ };
-	m_cube->SEtScale(glm::vec3{ 1.f });
 	m_lightObj = new LightObject{ };
 	// ------------------------------------------------
 
@@ -87,6 +86,9 @@ void Graphics::Init() {
 void Graphics::Update(float deltaTime) {
 	m_deltaTime = deltaTime;
 	m_camera->Update(m_deltaTime);
+	// test--------------------------------------------
+	m_lightObj->Update(m_deltaTime);
+	// ------------------------------------------------
 }
 
 void Graphics::Render() {
@@ -96,8 +98,7 @@ void Graphics::Render() {
 
 	SHADER->UseProgram();
 
-	SHADER->SetUniformVec3("lightColor", m_lightObj->GetLightColor());
-	SHADER->SetUniformVec3("lightPosition", m_lightObj->GetPosition());
+	m_lightObj->SetLightOption();
 
 	m_camera->Render();
 	SHADER->SetViewMat(m_camera->GetViewMat());
