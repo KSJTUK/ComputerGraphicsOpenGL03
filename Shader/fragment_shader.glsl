@@ -25,7 +25,7 @@ uniform vec3 viewPosition;
 uniform Meterials meterials;
 uniform Light light;
 
-void main(void)
+vec3 calcLighting(Light light, vec3 normal, vec3 viewPos, vec3 fragPos)
 {
 	// calc lighting
 
@@ -35,18 +35,23 @@ void main(void)
 	vec3 ambient = light.ambient * meterials.ambient;
 
 	// Æþ¸ðµ¨ÀÇ µðÇ»Áî Ç×
-	vec3 vNorm = normalize(vNormal);
-	vec3 lightDirection = normalize(light.position - fragPosition);
+	vec3 vNorm = normalize(normal);
+	vec3 lightDirection = normalize(light.position - fragPos);
 
 	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
 	vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
 
 	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
-	vec3 viewDirection = normalize(viewPosition - fragPosition);
+	vec3 viewDirection = normalize(viewPos - fragPos);
 	vec3 reflectDirection = reflect(lightDirection, vNorm);
 	float spec = pow(max(dot(reflectDirection, viewDirection), 0.0), meterials.shininess);
 	vec3 specular = spec * (light.specular * meterials.specular);
 
-	vec3 resultColor  = ambient + diffuse + specular;
+	return (ambient + diffuse + specular);
+}
+
+void main(void)
+{
+	vec3 resultColor = calcLighting(light, vNormal, viewPosition, fragPosition);
 	FragColor = vec4 (resultColor, 1.0);
 }
