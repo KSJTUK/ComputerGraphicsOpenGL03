@@ -3,9 +3,9 @@
 
 struct LightOption {
 	glm::vec3 position{ };
-	glm::vec3 ambient{ 0.2f };
-	glm::vec3 diffuse{ 0.5f };
-	glm::vec3 specular{ 1.f };
+	glm::vec3 ambient{ 0.5f }; // 주변광 정도
+	glm::vec3 diffuse{ 0.5f }; // 난반사 정도
+	glm::vec3 specular{ 1.f }; // 정반사 정도
 };
 
 class LightObject : public Object {

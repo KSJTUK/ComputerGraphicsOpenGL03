@@ -43,7 +43,7 @@ vec3 calcLighting(Light light, vec3 normal, vec3 viewPos, vec3 fragPos)
 
 	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
 	vec3 viewDirection = normalize(viewPos - fragPos);
-	vec3 reflectDirection = reflect(lightDirection, vNorm);
+	vec3 reflectDirection = reflect(-lightDirection, vNorm);
 	float spec = pow(max(dot(reflectDirection, viewDirection), 0.0), meterials.shininess);
 	vec3 specular = spec * (light.specular * meterials.specular);
 

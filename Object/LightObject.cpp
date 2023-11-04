@@ -5,36 +5,16 @@
 #include "Graphics/Shader.h"
 
 LightObject::LightObject() {
-	m_modelTag = "sphere";
-	m_model = MODELLIST->GetModel("sphere");
-
-
-	m_lightColor = glm::vec3{ 1.f };
-	m_objectColor = glm::vec3{ 1.f };
-	m_scaleFactor = glm::vec3{ 0.3f };
-	m_meterial.ambient = glm::vec3{ 1.f };
-	m_meterial.diffuse = glm::vec3{ 1.f };
-	m_meterial.specular = glm::vec3{ 1.f };
-
-	m_position = { 0.f, 2.f, 0.f };
-}
-
-LightObject::LightObject(const std::string& modelTag) {
-	m_modelTag = modelTag;
-	m_model = MODELLIST->GetModel(m_modelTag);
-
-
 	m_lightColor = glm::vec3{ 1.f };
 	m_objectColor = glm::vec3{ 1.f };
 }
 
-LightObject::LightObject(const std::string& modelTag, const glm::vec3& lightColor) {
-	m_modelTag = modelTag;
-	m_model = MODELLIST->GetModel(m_modelTag);
+LightObject::LightObject(const std::string& modelTag) : Object{ modelTag } {
+	m_lightColor = glm::vec3{ 1.f };
+	m_objectColor = glm::vec3{ 1.f };
+}
 
-
-	m_lightColor = lightColor;
-	m_objectColor = lightColor;
+LightObject::LightObject(const std::string& modelTag, const glm::vec3& lightColor) : Object{ modelTag, lightColor }, m_lightColor{ lightColor } {
 }
 
 LightObject::~LightObject() { }
@@ -50,33 +30,36 @@ void LightObject::SetLightOption() {
 }
 
 void LightObject::Update(float deltaTime) {
-	static float angle = 0.f;
+	// 밝기 조절
 	static float lightChangedAngle = 0.f;
-
 	static float lightDir{ 1.f };
 
-	// 원운동 
-	m_position.x = 10.f * std::cosf(glm::radians(angle));
-	m_position.z = 10.f * std::sinf(glm::radians(angle));
+	float maxColorRGB{ std::max({ m_lightColor.x, m_lightColor.y, m_lightColor.z }) };
+	float minColorRGB{ std::min({ m_lightColor.x, m_lightColor.y, m_lightColor.z }) };
 
-	m_lightColor = glm::vec3{ std::cosf(glm::radians(lightChangedAngle)) };
+	m_lightColor += glm::vec3{ std::sinf(glm::radians(lightChangedAngle)) };
 
-	lightChangedAngle += 10.f * lightDir * deltaTime;
+	lightChangedAngle += 0.1f * lightDir * deltaTime;
 
-	if (lightChangedAngle >= 90.f) {
-		lightChangedAngle = 90.f;
+	if (maxColorRGB >= 1.f) {
+		m_lightColor -= glm::vec3{ maxColorRGB - 1.f };
 		lightDir = -1.f;
 	}
-	else if (lightChangedAngle <= -90.f) {
-		lightChangedAngle = -90.f;
+	else if (maxColorRGB <= 0.f) {
+		m_lightColor += glm::vec3{ -maxColorRGB };
 		lightDir = 1.f;
 	}
 
-	angle += 10.f * deltaTime;
+	//// 원운동 
+	//static float angle = 0.f;
 
-	if (angle > 360.f) {
-		angle = 0.f;
-	}
+	//m_position.x = 10.f * std::cosf(glm::radians(angle));
+	//m_position.z = 10.f * std::sinf(glm::radians(angle));
+	//angle += 10.f * deltaTime;
+
+	//if (angle > 360.f) {
+	//	angle = 0.f;
+	//}
 
 	m_lightOption.position = m_position;
 }

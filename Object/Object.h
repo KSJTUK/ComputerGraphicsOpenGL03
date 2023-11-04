@@ -10,6 +10,8 @@ struct Meterial {
 class Object {
 public:
 	Object();
+	Object(const std::string& modelTag);
+	Object(const std::string& modelTag, const glm::vec3& objectColor);
 	virtual ~Object();
 
 protected:

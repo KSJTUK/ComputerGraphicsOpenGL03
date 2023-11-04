@@ -70,7 +70,7 @@ void Graphics::Init() {
 
 	// test--------------------------------------------
 	m_cube = new Cube{ };
-	m_cube->SEtScale(glm::vec3{ 0.3f, 0.3f, 0.3f });
+	m_cube->SEtScale(glm::vec3{ 0.6f, 0.6f, 0.6f });
 	// ------------------------------------------------
 
 	// 투영 변환 행렬 계산 및 전송
@@ -81,7 +81,8 @@ void Graphics::Init() {
 	SHADER->UnUseProgram();
 
 	LIGHTOBJECTSHADER->UseProgram();
-	m_lightObj = new LightObject{ };
+	m_lightObj = new LightObject{ "sphere", glm::vec3{ 1.f, 0.5f, 0.f } };
+	m_lightObj->SEtScale(glm::vec3{ 1.f, 1.f, 1.f });
 	LIGHTOBJECTSHADER->UnUseProgram();
 }
 
@@ -89,6 +90,7 @@ void Graphics::Update(float deltaTime) {
 	m_deltaTime = deltaTime;
 	m_camera->Update(m_deltaTime);
 	// test--------------------------------------------
+	m_cube->Update(m_deltaTime);
 	m_lightObj->Update(m_deltaTime);
 	// ------------------------------------------------
 }

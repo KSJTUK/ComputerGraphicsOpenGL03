@@ -2,8 +2,17 @@
 #include "Object/Object.h"
 #include "Graphics/Shader.h"
 #include "Model/Model.h"
+#include "Model/ModelList.h"
 
 Object::Object() { }
+
+Object::Object(const std::string& modelTag) : m_modelTag{ modelTag } {
+	m_model = MODELLIST->GetModel(modelTag);
+}
+
+Object::Object(const std::string& modelTag, const glm::vec3& objectColor) : m_modelTag{ modelTag }, m_objectColor{ objectColor } {
+	m_model = MODELLIST->GetModel(modelTag);
+}
 
 Object::~Object() { }
 
