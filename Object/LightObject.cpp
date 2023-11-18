@@ -25,6 +25,8 @@ void LightObject::SetLightOption() {
 	m_lightOption.specular = m_lightColor;
 
 	SHADER->SetUniformVec3("light.position", m_lightOption.position);
+
+	// Direction Lighting
 	// SHADER->SetUniformVec3("light.direction", glm::vec3{ 0.f, -2.f, -1.f });
 	SHADER->SetUniformVec3("light.ambient", ambientColor);
 	SHADER->SetUniformVec3("light.diffuse", diffuseColor);

@@ -36,6 +36,17 @@ struct PointLight {
 	float quadratic;	// 거리값과 곱해지며 2차원 적으로 세기 감쇠 quadratic * distance * distance
 };
 
+// Spot Light 카메라를 기준으로 비추는 조명
+struct FalshLight {
+	vec3 position;
+	vec3 direction;
+	float cutOff; // cutOff -> value of result cos(theta) oper
+
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+
 // 오브젝트의 meterial속성을 구조체로 묶음
 struct Meterials {
 	vec3 ambient;
@@ -126,7 +137,7 @@ vec3 calcPointLighting(PointLight light, vec3 normal, vec3 viewPos, vec3 fragPos
 void main(void)
 {
 //	 vec3 resultColor = calcLighting(light, vNormal, viewPosition, fragPosition);
-	// vec3 resultColor = calcDirectionLighting(light, vNormal, viewPosition, fragPosition);
+//	 vec3 resultColor = calcDirectionLighting(light, vNormal, viewPosition, fragPosition);
 	vec3 resultColor = calcPointLighting(light, vNormal, viewPosition, fragPosition);
 	FragColor = vec4 (resultColor, 1.0);
 }
