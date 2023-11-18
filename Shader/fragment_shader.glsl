@@ -94,6 +94,11 @@ vec3 calcDirectionLighting(DirectionLight light, vec3 normal, vec3 viewPos, vec3
 	return (ambient + diffuse + specular);
 }
 
+vec3 calcPointLighting(PointLight light, vec3 normal, vec3 viewPos, vec3 fragPos)
+{
+	return 0.0f;
+}
+
 void main(void)
 {
 	// vec3 resultColor = calcLighting(light, vNormal, viewPosition, fragPosition);
