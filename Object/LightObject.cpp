@@ -24,32 +24,33 @@ void LightObject::SetLightOption() {
 	glm::vec3 ambientColor{ diffuseColor * m_lightOption.ambient };
 	m_lightOption.specular = m_lightColor;
 
-	SHADER->SetUniformVec3("light.position", m_lightOption.position);
+	//SHADER->SetUniformVec3("light.position", m_lightOption.position);
+	SHADER->SetUniformVec3("light.direction", glm::vec3{ 0.f, -2.f, -1.f });
 	SHADER->SetUniformVec3("light.ambient", ambientColor);
 	SHADER->SetUniformVec3("light.diffuse", diffuseColor);
 	SHADER->SetUniformVec3("light.specular", m_lightOption.specular);
 }
 
 void LightObject::Update(float deltaTime) {
-	// 밝기 조절
-	static float lightChangedAngle = 0.f;
-	static float lightDir{ 1.f };
+	//// 밝기 조절
+	//static float lightChangedAngle = 0.f;
+	//static float lightDir{ 1.f };
 
-	float maxColorRGB{ std::max({ m_lightColor.x, m_lightColor.y, m_lightColor.z }) };
-	float minColorRGB{ std::min({ m_lightColor.x, m_lightColor.y, m_lightColor.z }) };
+	//float maxColorRGB{ std::max({ m_lightColor.x, m_lightColor.y, m_lightColor.z }) };
+	//float minColorRGB{ std::min({ m_lightColor.x, m_lightColor.y, m_lightColor.z }) };
 
-	m_lightColor += glm::vec3{ std::sinf(glm::radians(lightChangedAngle)) };
+	//m_lightColor += glm::vec3{ std::sinf(glm::radians(lightChangedAngle)) };
 
-	lightChangedAngle += 0.1f * lightDir * deltaTime;
+	//lightChangedAngle += 0.1f * lightDir * deltaTime;
 
-	if (maxColorRGB >= 1.f) {
-		m_lightColor -= glm::vec3{ maxColorRGB - 1.f };
-		lightDir = -1.f;
-	}
-	else if (maxColorRGB <= 0.f) {
-		m_lightColor += glm::vec3{ -maxColorRGB };
-		lightDir = 1.f;
-	}
+	//if (maxColorRGB >= 1.f) {
+	//	m_lightColor -= glm::vec3{ maxColorRGB - 1.f };
+	//	lightDir = -1.f;
+	//}
+	//else if (maxColorRGB <= 0.f) {
+	//	m_lightColor += glm::vec3{ -maxColorRGB };
+	//	lightDir = 1.f;
+	//}
 
 	// 원운동 
 	static float angle = 0.f;

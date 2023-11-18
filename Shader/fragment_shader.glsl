@@ -1,5 +1,7 @@
 #version 330 core
 
+const float epsilon = 0.000001f;
+
 out vec4 FragColor;
 
 in vec3 vNormal;
@@ -8,6 +10,21 @@ in vec3 fragPosition;
 // ±¤¿øÀÇ ºû¿¡ ´ëÇÑ °è¼öµéÀ» ±¸Á¶Ã¼·Î ¹­À½
 struct Light {
 	vec3 position;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+
+struct DirectionLight {
+	vec3 direction;
+	vec3 ambient;
+	vec3 diffuse;
+	vec3 specular;
+};
+
+struct PointLight {
+	vec3 point;
+
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
@@ -23,7 +40,8 @@ struct Meterials {
 
 uniform vec3 viewPosition;
 uniform Meterials meterials;
-uniform Light light;
+// uniform Light light;
+uniform DirectionLight light;
 
 vec3 calcLighting(Light light, vec3 normal, vec3 viewPos, vec3 fragPos)
 {
@@ -44,7 +62,27 @@ vec3 calcLighting(Light light, vec3 normal, vec3 viewPos, vec3 fragPos)
 	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
 	vec3 viewDirection = normalize(viewPos - fragPos);
 	vec3 reflectDirection = reflect(-lightDirection, vNorm);
-	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), meterials.shininess);
+	float spec = diffuseN <= epsilon ? 0.0f : pow(max(dot(viewDirection, reflectDirection), 0.0), meterials.shininess);
+	vec3 specular = spec * (light.specular * meterials.specular);
+
+	return (ambient + diffuse + specular);
+}
+
+vec3 calcDirectionLighting(DirectionLight light, vec3 normal, vec3 viewPos, vec3 fragPos)
+{
+	vec3 ambient = light.ambient * meterials.ambient;
+
+	// Æþ¸ðµ¨ÀÇ µðÇ»Áî Ç×
+	vec3 vNorm = normalize(normal);
+	vec3 lightDirection = normalize(-light.direction);
+
+	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
+	vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
+
+	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
+	vec3 viewDirection = normalize(viewPos - fragPos);
+	vec3 reflectDirection = reflect(-lightDirection, vNorm);
+	float spec = diffuseN <= epsilon ? 0.0f : pow(max(dot(viewDirection, reflectDirection), 0.0), meterials.shininess);
 	vec3 specular = spec * (light.specular * meterials.specular);
 
 	return (ambient + diffuse + specular);
@@ -52,6 +90,7 @@ vec3 calcLighting(Light light, vec3 normal, vec3 viewPos, vec3 fragPos)
 
 void main(void)
 {
-	vec3 resultColor = calcLighting(light, vNormal, viewPosition, fragPosition);
+	// vec3 resultColor = calcLighting(light, vNormal, viewPosition, fragPosition);
+	vec3 resultColor = calcDirectionLighting(light, vNormal, viewPosition, fragPosition);
 	FragColor = vec4 (resultColor, 1.0);
 }
