@@ -1,4 +1,4 @@
-ï»¿#version 330 core
+#version 330 core
 
 const float epsilon = 0.000001f;
 
@@ -7,7 +7,7 @@ out vec4 FragColor;
 in vec3 vNormal;
 in vec3 fragPosition;
 
-// ê´‘ì›ì˜ ë¹›ì— ëŒ€í•œ ê³„ìˆ˜ë“¤ì„ êµ¬ì¡°ì²´ë¡œ ë¬¶ìŒ
+// ±¤¿øÀÇ ºû¿¡ ´ëÇÑ °è¼öµéÀ» ±¸Á¶Ã¼·Î ¹­À½
 struct Light {
 	vec3 position;
 	vec3 ambient;
@@ -29,14 +29,14 @@ struct PointLight {
 	vec3 diffuse;
 	vec3 specular;
 	
-	// ê±°ë¦¬ì— ë”°ë¥¸ ê°ì‡ ê°’ Attenuation ê³„ì‚°ì„ ìœ„í•œ 3ê°€ì§€ ë³€ìˆ˜ ì„¤ì •
-	// ë¶„ì == 1.0, ë¶„ëª¨ == constant + linear * distance + linear * distance * distance
-	float constant;		// ìƒìˆ˜í•­, ê±°ì˜ ëª¨ë“  ê²½ìš°ì—ì„œ 1.0ìœ ì§€, ìµœì¢… ê²°ê³¼ì˜ ë¶„ëª¨ ê°’ì„ 1ë³´ë‹¤ ì‘ê²Œ ë§Œë“¤ì§€ ì•Šê¸° ìœ„í•œ ì¥ì¹˜
-	float linear;		// ê±°ë¦¬ê°’ê³¼ ê³±í•´ì§€ë©° 1ì°¨ì› ì ì¸ ë°©ë²•ìœ¼ë¡œ ì„¸ê¸° ê°ì‡ , linear * distance
-	float quadratic;	// ê±°ë¦¬ê°’ê³¼ ê³±í•´ì§€ë©° 2ì°¨ì› ì ìœ¼ë¡œ ì„¸ê¸° ê°ì‡  quadratic * distance * distance
+	// °Å¸®¿¡ µû¸¥ °¨¼è°ª Attenuation °è»êÀ» À§ÇÑ 3°¡Áö º¯¼ö ¼³Á¤
+	// ºĞÀÚ == 1.0, ºĞ¸ğ == constant + linear * distance + linear * distance * distance
+	float constant;		// »ó¼öÇ×, °ÅÀÇ ¸ğµç °æ¿ì¿¡¼­ 1.0À¯Áö, ÃÖÁ¾ °á°úÀÇ ºĞ¸ğ °ªÀ» 1º¸´Ù ÀÛ°Ô ¸¸µéÁö ¾Ê±â À§ÇÑ ÀåÄ¡
+	float linear;		// °Å¸®°ª°ú °öÇØÁö¸ç 1Â÷¿ø ÀûÀÎ ¹æ¹ıÀ¸·Î ¼¼±â °¨¼è, linear * distance
+	float quadratic;	// °Å¸®°ª°ú °öÇØÁö¸ç 2Â÷¿ø ÀûÀ¸·Î ¼¼±â °¨¼è quadratic * distance * distance
 };
 
-// ì˜¤ë¸Œì íŠ¸ì˜ meterialì†ì„±ì„ êµ¬ì¡°ì²´ë¡œ ë¬¶ìŒ
+// ¿ÀºêÁ§Æ®ÀÇ meterial¼Ó¼ºÀ» ±¸Á¶Ã¼·Î ¹­À½
 struct Meterials {
 	vec3 ambient;
 	vec3 diffuse;
@@ -47,25 +47,26 @@ struct Meterials {
 uniform vec3 viewPosition;
 uniform Meterials meterials;
 // uniform Light light;
-uniform DirectionLight light;
+// uniform DirectionLight light;
+ uniform PointLight light;
 
 vec3 calcLighting(Light light, vec3 normal, vec3 viewPos, vec3 fragPos)
 {
 	// calc lighting
 
-	// ì•°ë¹„ì–¸íŠ¸ í•­
-	// ì•°ë¹„ì–¸íŠ¸ ë¹›ì˜ RGBìƒ‰ìƒ ê³¼ ë¬¼ì²´ì˜ ì•°ë¹„ì–¸íŠ¸ ê³„ìˆ˜ê°„ì˜ ì›ì†Œê°„ ê³±ì…ˆìœ¼ë¡œ ì •ì˜
+	// ¾Úºñ¾ğÆ® Ç×
+	// ¾Úºñ¾ğÆ® ºûÀÇ RGB»ö»ó °ú ¹°Ã¼ÀÇ ¾Úºñ¾ğÆ® °è¼ö°£ÀÇ ¿ø¼Ò°£ °ö¼ÀÀ¸·Î Á¤ÀÇ
 	// s * m (s == RGB, m == object's ambient)
 	vec3 ambient = light.ambient * meterials.ambient;
 
-	// íëª¨ë¸ì˜ ë””í“¨ì¦ˆ í•­
+	// Æş¸ğµ¨ÀÇ µğÇ»Áî Ç×
 	vec3 vNorm = normalize(normal);
 	vec3 lightDirection = normalize(light.position - fragPos);
 
 	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
 	vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
 
-	// íëª¨ë¸ì˜ ìŠ¤í˜í˜ëŸ¬ í•­
+	// Æş¸ğµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
 	vec3 viewDirection = normalize(viewPos - fragPos);
 	vec3 reflectDirection = reflect(-lightDirection, vNorm);
 	float spec = diffuseN <= epsilon ? 0.0f : pow(max(dot(viewDirection, reflectDirection), 0.0), meterials.shininess);
@@ -78,14 +79,14 @@ vec3 calcDirectionLighting(DirectionLight light, vec3 normal, vec3 viewPos, vec3
 {
 	vec3 ambient = light.ambient * meterials.ambient;
 
-	// íëª¨ë¸ì˜ ë””í“¨ì¦ˆ í•­
+	// Æş¸ğµ¨ÀÇ µğÇ»Áî Ç×
 	vec3 vNorm = normalize(normal);
 	vec3 lightDirection = normalize(-light.direction);
 
 	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
 	vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
 
-	// íëª¨ë¸ì˜ ìŠ¤í˜í˜ëŸ¬ í•­
+	// Æş¸ğµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
 	vec3 viewDirection = normalize(viewPos - fragPos);
 	vec3 reflectDirection = reflect(-lightDirection, vNorm);
 	float spec = diffuseN <= epsilon ? 0.0f : pow(max(dot(viewDirection, reflectDirection), 0.0), meterials.shininess);
@@ -96,12 +97,36 @@ vec3 calcDirectionLighting(DirectionLight light, vec3 normal, vec3 viewPos, vec3
 
 vec3 calcPointLighting(PointLight light, vec3 normal, vec3 viewPos, vec3 fragPos)
 {
-	return 0.0f;
+	vec3 ambient = light.ambient * meterials.ambient;
+
+	// Æş¸ğµ¨ÀÇ µğÇ»Áî Ç×
+	vec3 vNorm = normalize(normal);
+	vec3 lightDirection = normalize(light.position - fragPos);
+
+	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
+	vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
+
+	// Æş¸ğµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
+	vec3 viewDirection = normalize(viewPos - fragPos);
+	vec3 reflectDirection = reflect(-lightDirection, vNorm);
+	float spec = diffuseN <= epsilon ? 0.0f : pow(max(dot(viewDirection, reflectDirection), 0.0), meterials.shininess);
+	vec3 specular = spec * (light.specular * meterials.specular);
+
+	float dist = length(light.position - fragPos);
+	float attenuationUnder = light.constant + light.linear * dist + light.quadratic * dist * dist;
+	float attenuation = 1.0 / attenuationUnder;
+
+	ambient *= attenuation;
+	diffuse *= attenuation;
+	specular *= attenuation;
+
+	return (ambient + diffuse + specular);
 }
 
 void main(void)
 {
-	// vec3 resultColor = calcLighting(light, vNormal, viewPosition, fragPosition);
-	vec3 resultColor = calcDirectionLighting(light, vNormal, viewPosition, fragPosition);
+//	 vec3 resultColor = calcLighting(light, vNormal, viewPosition, fragPosition);
+	// vec3 resultColor = calcDirectionLighting(light, vNormal, viewPosition, fragPosition);
+	vec3 resultColor = calcPointLighting(light, vNormal, viewPosition, fragPosition);
 	FragColor = vec4 (resultColor, 1.0);
 }

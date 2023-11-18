@@ -24,11 +24,16 @@ void LightObject::SetLightOption() {
 	glm::vec3 ambientColor{ diffuseColor * m_lightOption.ambient };
 	m_lightOption.specular = m_lightColor;
 
-	//SHADER->SetUniformVec3("light.position", m_lightOption.position);
-	SHADER->SetUniformVec3("light.direction", glm::vec3{ 0.f, -2.f, -1.f });
+	SHADER->SetUniformVec3("light.position", m_lightOption.position);
+	// SHADER->SetUniformVec3("light.direction", glm::vec3{ 0.f, -2.f, -1.f });
 	SHADER->SetUniformVec3("light.ambient", ambientColor);
 	SHADER->SetUniformVec3("light.diffuse", diffuseColor);
 	SHADER->SetUniformVec3("light.specular", m_lightOption.specular);
+
+	// point lightting
+	SHADER->SetUniformFloat("light.constant", 1.0f);
+	SHADER->SetUniformFloat("light.linear", 0.027f);
+	SHADER->SetUniformFloat("light.quadratic", 0.0028f);
 }
 
 void LightObject::Update(float deltaTime) {
@@ -54,7 +59,7 @@ void LightObject::Update(float deltaTime) {
 
 	// ¿ø¿îµ¿ 
 	static float angle = 0.f;
-	static float radius = 10.f;
+	static float radius = 20.f;
 
 	m_position.x = radius * std::cosf(glm::radians(angle));
 	m_position.z = radius * std::sinf(glm::radians(angle));
