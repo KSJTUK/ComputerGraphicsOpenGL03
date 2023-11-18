@@ -95,7 +95,7 @@ void Engine::Init(int32* argc, char** argv) {
 	m_timer = std::make_unique<Timer>();
 	m_timer->Init();
 
-	m_grapics = std::make_unique<Graphics>();
+	m_grapics = std::make_unique<GameWorld>();
 	m_grapics->SetWindowInfo(m_windowInfo);
 	m_grapics->Init();
 }

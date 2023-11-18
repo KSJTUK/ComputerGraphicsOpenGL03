@@ -23,6 +23,10 @@ void Object::SetMeterials() {
 	SHADER->SetUniformFloat("meterials.shininess", m_meterial.shininess);
 }
 
+void Object::SetObjectColor(const glm::vec3& color) {
+	m_objectColor = color;
+}
+
 void Object::Render() {
 	glm::mat4 unit{ 1.f };
 

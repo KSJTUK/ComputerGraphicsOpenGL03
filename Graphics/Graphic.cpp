@@ -9,25 +9,25 @@
 #include "Object/LightObject.h"
 // ------------------------------------------------
 
-Graphics::Graphics() { }
+GameWorld::GameWorld() { }
 
-Graphics::~Graphics() {
+GameWorld::~GameWorld() {
 	// test--------------------------------------------
 	if (m_cube) delete m_cube;
 	// ------------------------------------------------
 
 }
 
-bool Graphics::IsInited() const {
+bool GameWorld::IsInited() const {
 	return m_isInited;
 }
 
-void Graphics::SetWindowInfo(std::shared_ptr<struct WindowInfo>& winInfo) {
+void GameWorld::SetWindowInfo(std::shared_ptr<struct WindowInfo>& winInfo) {
 	m_windowInfo = winInfo;
 	CalcPerspectiveMat();
 }
 
-void Graphics::CalcPerspectiveMat() {
+void GameWorld::CalcPerspectiveMat() {
 	if (!m_isInited) {
 		return;
 	}
@@ -38,26 +38,28 @@ void Graphics::CalcPerspectiveMat() {
 	m_perspectiveMatrix = glm::perspective(glm::radians(halfFovy), aspect, m_near, m_far);
 }
 
-void Graphics::Input(unsigned char key, bool down) {
+void GameWorld::Input(unsigned char key, bool down) {
 	m_camera->Input(key, down);
 }
 
-void Graphics::SpecialInput(int key, bool down) {
+void GameWorld::SpecialInput(int key, bool down) {
 }
 
-void Graphics::MouseMotionInput(int x, int y, int prevX, int prevY) {
+void GameWorld::MouseMotionInput(int x, int y, int prevX, int prevY) {
 	m_camera->MouseMotionInput(x, y, prevX, prevY);
 }
 
-void Graphics::MousePassiveMotionInput(int x, int y, int prevX, int prevY) {
+void GameWorld::MousePassiveMotionInput(int x, int y, int prevX, int prevY) {
 }
 
-void Graphics::Init() {
+void GameWorld::Init() {
 	// 쉐이더 프로그램 생성
 	SHADER->CreateShaderProgram();
 	LIGHTOBJECTSHADER->CreateShaderProgram();
 	// 쉐이더 프로그램이 각종 정점 정보, 행렬들을 등록, 전송할 수 있도록 프로그램 사용 설정
 	SHADER->UseProgram();
+
+	glEnable(GL_CULL_FACE);
 
 	// 카메라 생성
 	m_camera = std::make_unique<Camera>();
@@ -70,8 +72,14 @@ void Graphics::Init() {
 
 	// test--------------------------------------------
 	m_cube = new Cube{ };
-	m_cube->SEtScale(glm::vec3{ 0.6f, 0.6f, 0.6f });
 	// ------------------------------------------------
+
+	for (int i = 0; i < 3; ++i) {
+		m_cubes.push_back(new Cube{ });
+		m_cubes.back()->SetPosition(glm::vec3{ 0.f, 0.f, 20.f + 10.f * i });
+		m_cubes.back()->SEtScale(glm::vec3{0.6f, 0.6f, 0.6f});
+		m_cubes.back()->SetObjectColor(glm::linearRand(glm::vec3{ 0.f }, glm::vec3{ 1.f }));
+	}
 
 	// 투영 변환 행렬 계산 및 전송
 	CalcPerspectiveMat();
@@ -81,21 +89,24 @@ void Graphics::Init() {
 	SHADER->UnUseProgram();
 
 	LIGHTOBJECTSHADER->UseProgram();
-	m_lightObj = new LightObject{ "sphere", glm::vec3{ 1.f, 0.5f, 0.f } };
+	m_lightObj = new LightObject{ "sphere", glm::vec3{ 1.f, 1.f, 1.f } };
 	m_lightObj->SEtScale(glm::vec3{ 1.f, 1.f, 1.f });
 	LIGHTOBJECTSHADER->UnUseProgram();
 }
 
-void Graphics::Update(float deltaTime) {
+void GameWorld::Update(float deltaTime) {
 	m_deltaTime = deltaTime;
 	m_camera->Update(m_deltaTime);
 	// test--------------------------------------------
 	m_cube->Update(m_deltaTime);
 	m_lightObj->Update(m_deltaTime);
 	// ------------------------------------------------
+	for (auto& cube : m_cubes) {
+		cube->Update(m_deltaTime);
+	}
 }
 
-void Graphics::Render() {
+void GameWorld::Render() {
 
 	glClearColor(0.f, 0.f, 0.f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -110,6 +121,9 @@ void Graphics::Render() {
 	m_lightObj->SetLightOption();
 
 	m_cube->Render();
+	for (auto& cube : m_cubes) {
+		cube->Render();
+	}
 
 	SHADER->UnUseProgram();
 

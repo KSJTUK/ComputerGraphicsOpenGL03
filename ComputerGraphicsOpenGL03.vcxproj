@@ -30,6 +30,7 @@
     <ClCompile Include="Object\LightObject.cpp" />
     <ClCompile Include="Object\Object.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="Physics.cpp" />
     <ClCompile Include="Util\callbacks.cpp" />
     <ClCompile Include="Util\Engine.cpp" />
     <ClCompile Include="Util\Timer.cpp" />
@@ -45,6 +46,7 @@
     <ClInclude Include="Object\LightObject.h" />
     <ClInclude Include="Object\Object.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="Physics.h" />
     <ClInclude Include="Util\callbacks.h" />
     <ClInclude Include="Util\Engine.h" />
     <ClInclude Include="Util\Timer.h" />

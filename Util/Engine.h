@@ -14,7 +14,7 @@ private:
 	std::shared_ptr<WindowInfo> m_windowInfo{ };
 
 	std::unique_ptr<class Timer> m_timer{ nullptr };
-	std::unique_ptr<class Graphics> m_grapics{ nullptr };
+	std::unique_ptr<class GameWorld> m_grapics{ nullptr };
 
 	int32 m_mousePrevPos[2]{ };
 

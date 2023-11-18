@@ -22,8 +22,8 @@ void idleFunc()
 }
 
 
-void keyboardFunc(unsigned char key, int x, int y)
-{
+void keyboardFunc(unsigned char key, int x, int y) {
+	engine->Input(key, true);
 }
 
 void keyboardUpFunc(unsigned char key, int x, int y)

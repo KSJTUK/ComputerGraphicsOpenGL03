@@ -84,6 +84,9 @@
     <ClCompile Include="Object\LightObject.cpp">
       <Filter>소스 파일\Object</Filter>
     </ClCompile>
+    <ClCompile Include="Physics.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -124,6 +127,9 @@
     </ClInclude>
     <ClInclude Include="Object\LightObject.h">
       <Filter>헤더 파일\Object</Filter>
+    </ClInclude>
+    <ClInclude Include="Physics.h">
+      <Filter>헤더 파일</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

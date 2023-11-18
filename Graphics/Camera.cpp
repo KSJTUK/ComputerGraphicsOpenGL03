@@ -50,27 +50,26 @@ void Camera::Input(unsigned char key, bool down) {
 		else {
 			ViewPointUnFix();
 		}
+
+	case 'd':
+		Move(m_cameraAxisX);
+		break;
+
+	case 'a':
+		Move(-m_cameraAxisX);
+		break;
+
+	case 'w':
+		Move(-m_cameraAxisZ);
+		break;
+
+	case 's':
+		Move(m_cameraAxisZ);
+		break;
 	}
 }
 
 void Camera::SpecialInput(int key, bool down) {
-	switch (key) {
-	case GLUT_KEY_RIGHT:
-		Move(m_cameraAxisX);
-		break;
-
-	case GLUT_KEY_LEFT:
-		Move(-m_cameraAxisX);
-		break;
-
-	case GLUT_KEY_UP:
-		Move(-m_cameraAxisZ);
-		break;
-
-	case GLUT_KEY_DOWN:
-		Move(m_cameraAxisZ);
-		break;
-	}
 }
 
 void Camera::MouseMotionInput(int x, int y, int prevX, int prevY) {
@@ -131,7 +130,7 @@ void Camera::Update(float deltaTime) {
 	m_cameraAxisX = glm::normalize(glm::cross(m_UP, m_cameraAxisZ));
 	m_cameraAxisY = glm::normalize(glm::cross(m_cameraAxisZ, m_cameraAxisX));
 
-	SHADER->SetUniformVec3("viewPosition", m_EYE);
+	SHADER->SetUniformVec3("viewPosition", -m_EYE);
 }
 
 void Camera::Render() {

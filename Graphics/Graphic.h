@@ -1,9 +1,9 @@
 #pragma once
 
-class Graphics {
+class GameWorld {
 public:
-	Graphics();
-	~Graphics();
+	GameWorld();
+	~GameWorld();
 
 private:
 	bool m_isInited{ false };
@@ -25,6 +25,7 @@ private:
 
 	// test--------------------------------------------
 	class Cube* m_cube{ };
+	std::vector<class Cube*> m_cubes{ };
 	class LightObject* m_lightObj{ };
 	// ------------------------------------------------
 

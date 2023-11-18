@@ -28,5 +28,4 @@ public:
 public:
 	void Update(float deltaTime);
 	void Render() override;
-
 };
