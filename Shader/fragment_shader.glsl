@@ -1,4 +1,4 @@
-#version 330 core
+ï»¿#version 330 core
 
 const float epsilon = 0.000001f;
 
@@ -7,7 +7,7 @@ out vec4 FragColor;
 in vec3 vNormal;
 in vec3 fragPosition;
 
-// ±¤¿øÀÇ ºû¿¡ ´ëÇÑ °è¼öµéÀ» ±¸Á¶Ã¼·Î ¹­À½
+// ê´‘ì›ì˜ ë¹›ì— ëŒ€í•œ ê³„ìˆ˜ë“¤ì„ êµ¬ì¡°ì²´ë¡œ ë¬¶ìŒ
 struct Light {
 	vec3 position;
 	vec3 ambient;
@@ -23,14 +23,20 @@ struct DirectionLight {
 };
 
 struct PointLight {
-	vec3 point;
+	vec3 position;
 
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+	
+	// ê±°ë¦¬ì— ë”°ë¥¸ ê°ì‡ ê°’ Attenuation ê³„ì‚°ì„ ìœ„í•œ 3ê°€ì§€ ë³€ìˆ˜ ì„¤ì •
+	// ë¶„ì == 1.0, ë¶„ëª¨ == constant + linear * distance + linear * distance * distance
+	float constant;		// ìƒìˆ˜í•­, ê±°ì˜ ëª¨ë“  ê²½ìš°ì—ì„œ 1.0ìœ ì§€, ìµœì¢… ê²°ê³¼ì˜ ë¶„ëª¨ ê°’ì„ 1ë³´ë‹¤ ì‘ê²Œ ë§Œë“¤ì§€ ì•Šê¸° ìœ„í•œ ì¥ì¹˜
+	float linear;		// ê±°ë¦¬ê°’ê³¼ ê³±í•´ì§€ë©° 1ì°¨ì› ì ì¸ ë°©ë²•ìœ¼ë¡œ ì„¸ê¸° ê°ì‡ , linear * distance
+	float quadratic;	// ê±°ë¦¬ê°’ê³¼ ê³±í•´ì§€ë©° 2ì°¨ì› ì ìœ¼ë¡œ ì„¸ê¸° ê°ì‡  quadratic * distance * distance
 };
 
-// ¿ÀºêÁ§Æ®ÀÇ meterial¼Ó¼ºÀ» ±¸Á¶Ã¼·Î ¹­À½
+// ì˜¤ë¸Œì íŠ¸ì˜ meterialì†ì„±ì„ êµ¬ì¡°ì²´ë¡œ ë¬¶ìŒ
 struct Meterials {
 	vec3 ambient;
 	vec3 diffuse;
@@ -47,19 +53,19 @@ vec3 calcLighting(Light light, vec3 normal, vec3 viewPos, vec3 fragPos)
 {
 	// calc lighting
 
-	// ¾Úºñ¾ğÆ® Ç×
-	// ¾Úºñ¾ğÆ® ºûÀÇ RGB»ö»ó °ú ¹°Ã¼ÀÇ ¾Úºñ¾ğÆ® °è¼ö°£ÀÇ ¿ø¼Ò°£ °ö¼ÀÀ¸·Î Á¤ÀÇ
+	// ì•°ë¹„ì–¸íŠ¸ í•­
+	// ì•°ë¹„ì–¸íŠ¸ ë¹›ì˜ RGBìƒ‰ìƒ ê³¼ ë¬¼ì²´ì˜ ì•°ë¹„ì–¸íŠ¸ ê³„ìˆ˜ê°„ì˜ ì›ì†Œê°„ ê³±ì…ˆìœ¼ë¡œ ì •ì˜
 	// s * m (s == RGB, m == object's ambient)
 	vec3 ambient = light.ambient * meterials.ambient;
 
-	// Æş¸ğµ¨ÀÇ µğÇ»Áî Ç×
+	// íëª¨ë¸ì˜ ë””í“¨ì¦ˆ í•­
 	vec3 vNorm = normalize(normal);
 	vec3 lightDirection = normalize(light.position - fragPos);
 
 	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
 	vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
 
-	// Æş¸ğµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
+	// íëª¨ë¸ì˜ ìŠ¤í˜í˜ëŸ¬ í•­
 	vec3 viewDirection = normalize(viewPos - fragPos);
 	vec3 reflectDirection = reflect(-lightDirection, vNorm);
 	float spec = diffuseN <= epsilon ? 0.0f : pow(max(dot(viewDirection, reflectDirection), 0.0), meterials.shininess);
@@ -72,14 +78,14 @@ vec3 calcDirectionLighting(DirectionLight light, vec3 normal, vec3 viewPos, vec3
 {
 	vec3 ambient = light.ambient * meterials.ambient;
 
-	// Æş¸ğµ¨ÀÇ µğÇ»Áî Ç×
+	// íëª¨ë¸ì˜ ë””í“¨ì¦ˆ í•­
 	vec3 vNorm = normalize(normal);
 	vec3 lightDirection = normalize(-light.direction);
 
 	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
 	vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
 
-	// Æş¸ğµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
+	// íëª¨ë¸ì˜ ìŠ¤í˜í˜ëŸ¬ í•­
 	vec3 viewDirection = normalize(viewPos - fragPos);
 	vec3 reflectDirection = reflect(-lightDirection, vNorm);
 	float spec = diffuseN <= epsilon ? 0.0f : pow(max(dot(viewDirection, reflectDirection), 0.0), meterials.shininess);
