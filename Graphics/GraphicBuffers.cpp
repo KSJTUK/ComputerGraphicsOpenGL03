@@ -1,7 +1,7 @@
 #include "pch.h"
 #include "Graphics/GraphicBuffers.h"
 
-GraphicBuffers::GraphicBuffers() : m_drawMode{ GL_TRIANGLES } { }
+GraphicBuffers::GraphicBuffers() : m_drawMode{ GL_PATCHES } { }
 
 GraphicBuffers::~GraphicBuffers() {
 	glDeleteVertexArrays(1, &m_vertexArray);
@@ -39,6 +39,7 @@ void GraphicBuffers::SetVerticies(const std::vector<Vertex>& verticies) {
 	// location 2번에 Vertex객체의 normal정보를 넘겨줌
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 	glEnableVertexAttribArray(2);
+	glPatchParameteri(GL_PATCH_VERTICES, 3);
 }
 
 void GraphicBuffers::SetDrawMode(unsigned int mode) {
@@ -48,6 +49,6 @@ void GraphicBuffers::SetDrawMode(unsigned int mode) {
 void GraphicBuffers::Render() {
 	// shaderProgram 에서 UseProgram을 활성화 했다는 가정하에 수행
 	glBindVertexArray(m_vertexArray);
-	glDrawArrays(m_drawMode, 0, m_vertexDataSize);
+	glDrawArrays(m_drawMode, 0, 3);
 	glBindVertexArray(0); // Array 바인드 해제
 }

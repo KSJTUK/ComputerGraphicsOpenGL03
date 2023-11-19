@@ -1,4 +1,4 @@
-#version 330 core
+#version 460 core
 //--- in_Position: attribute index 0
 //--- in_Color: attribute index 1
 

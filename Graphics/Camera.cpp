@@ -141,7 +141,8 @@ void Camera::Update(float deltaTime) {
 	// for flash lighting values
 	SHADER->SetUniformVec3("light.position", m_EYE);
 	SHADER->SetUniformVec3("light.direction", m_AT);
-	SHADER->SetUniformFloat("light.cutOff", std::cosf(glm::radians(12.5f)));
+	SHADER->SetUniformFloat("light.cutOff", std::cosf(glm::radians(7.5f)));
+	SHADER->SetUniformFloat("light.outerCutOff", std::cosf(glm::radians(17.5f)));
 	SHADER->UnUseProgram();
 }
 
