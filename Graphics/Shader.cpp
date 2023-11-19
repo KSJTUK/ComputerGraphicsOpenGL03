@@ -6,14 +6,8 @@ Shader* Shader::m_instance = nullptr;
 Shader::Shader() { }
 
 Shader::~Shader() {
-	if (m_vertexShaderFileContents) {
-		delete[] m_vertexShaderFileContents;
-	}
-
-	if (m_fragmentShaderFileContents) {
-		delete[] m_fragmentShaderFileContents;
-	}
-
+	glDeleteShader(m_tesselEvaluationShader);
+	glDeleteShader(m_tesselControlShader);
 	glDeleteShader(m_vertexShader);
 	glDeleteShader(m_fragmentShader);
 	glDeleteProgram(m_shaderProgram);
@@ -32,7 +26,7 @@ void Shader::Destroy() {
 	}
 }
 
-void Shader::RoadVertexShaderFile(const char* filePath) {
+void Shader::LoadVertexShaderFile(const char* filePath) {
 	std::fstream vertexFile{ filePath, std::ios::in };
 
 	if (!vertexFile.is_open()) {
@@ -40,51 +34,93 @@ void Shader::RoadVertexShaderFile(const char* filePath) {
 	}
 
 
-	std::string contents{ };
+	m_vertexShaderFileContents = { "" };
 	std::string line{ " " };
 	while (!vertexFile.eof()) {
 		std::getline(vertexFile, line);
-		contents.append(line + "\n");
+		m_vertexShaderFileContents.append(line + "\n");
 	}
-
-	std::string::size_type size = contents.size();
-	m_vertexShaderFileContents = new char[size + 1] {};
-	memcpy(m_vertexShaderFileContents, contents.c_str(), size + 1);
 
 	vertexFile.close();
 }
 
-void Shader::RoadFragmentShaderFile(const char* filePath) {
+void Shader::LoadFragmentShaderFile(const char* filePath) {
 	std::fstream fragmentFile{ filePath, std::ios::in };
 
 	if (!fragmentFile.is_open()) {
 		throw "fragment shader file open error";
 	}
 
-	std::string contents{ };
+	m_fragmentShaderFileContents = { "" };
 	std::string line{ " " };
 	while (!fragmentFile.eof()) {
 		std::getline(fragmentFile, line);
-		contents.append(line + "\n");
+		m_fragmentShaderFileContents.append(line + "\n");
 	}
 
-	std::string::size_type size = contents.size();
-	m_fragmentShaderFileContents = new char[size + 1] {};
-	memcpy(m_fragmentShaderFileContents, contents.c_str(), size + 1);
 
 	fragmentFile.close();
+}
+
+void Shader::LoadTesselationControlShaderFile(const char* filePath) {
+	std::fstream tesselationControlFile{ filePath, std::ios::in };
+
+	if (!tesselationControlFile.is_open()) {
+		throw "tesselation control shader file open error";
+	}
+
+	m_tesselationControlFileContents = { "" };
+	std::string line{ " " };
+	while (!tesselationControlFile.eof()) {
+		std::getline(tesselationControlFile, line);
+		m_tesselationControlFileContents.append(line + "\n");
+	}
+
+
+	tesselationControlFile.close();
+}
+
+void Shader::LoadTesselationEvaluationShaderFile(const char* filePath) {
+	std::fstream tesselationEvaluationFile{ filePath, std::ios::in };
+
+	if (!tesselationEvaluationFile.is_open()) {
+		throw "tesselation evaluate shader file open error";
+	}
+
+	m_tesselationEvaluationFileContents = { "" };
+	std::string line{ " " };
+	while (!tesselationEvaluationFile.eof()) {
+		std::getline(tesselationEvaluationFile, line);
+		m_tesselationEvaluationFileContents.append(line + "\n");
+	}
+
+
+	tesselationEvaluationFile.close();
 }
 
 void Shader::CompileShaders() {
 	m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	m_tesselControlShader = glCreateShader(GL_TESS_CONTROL_SHADER);
+	m_tesselEvaluationShader = glCreateShader(GL_TESS_EVALUATION_SHADER);
 
 	// 쉐이더 소스코드 불러오기
-	glShaderSource(m_vertexShader, 1, &m_vertexShaderFileContents, NULL);
-	glShaderSource(m_fragmentShader, 1, &m_fragmentShaderFileContents, NULL);
+	const char* contentsPath = m_vertexShaderFileContents.c_str();
+	glShaderSource(m_vertexShader, 1, &contentsPath, NULL);
+
+	contentsPath = m_fragmentShaderFileContents.c_str();
+	glShaderSource(m_fragmentShader, 1, &contentsPath, NULL);
+
+	contentsPath = m_tesselationControlFileContents.c_str();
+	glShaderSource(m_tesselControlShader, 1, &contentsPath, NULL);
+
+	contentsPath = m_tesselationEvaluationFileContents.c_str();
+	glShaderSource(m_tesselEvaluationShader, 1, &contentsPath, NULL);
 
 	// 쉐이더 컴파일
 	glCompileShader(m_vertexShader);
+	glCompileShader(m_tesselControlShader);
+	glCompileShader(m_tesselEvaluationShader);
 	glCompileShader(m_fragmentShader);
 
 	// 쉐이더 컴파일 여부 확인
@@ -102,10 +138,24 @@ void Shader::CompileShaders() {
 		glGetShaderInfoLog(m_fragmentShader, sizeof(errLog), NULL, errLog);
 		std::cout << std::string{ errLog } << std::endl;
 	}
+
+	glGetShaderiv(m_tesselControlShader, GL_COMPILE_STATUS, &result);
+	if (!result) {
+		glGetShaderInfoLog(m_tesselControlShader, sizeof(errLog), NULL, errLog);
+		std::cout << std::string{ errLog } << std::endl;
+	}
+	
+	glGetShaderiv(m_tesselEvaluationShader, GL_COMPILE_STATUS, &result);
+	if (!result) {
+		glGetShaderInfoLog(m_tesselEvaluationShader, sizeof(errLog), NULL, errLog);
+		std::cout << std::string{ errLog } << std::endl;
+	}
 }
 
 void Shader::AttachAndLinkShaders() {
 	glAttachShader(m_shaderProgram, m_vertexShader);
+	glAttachShader(m_shaderProgram, m_tesselControlShader);
+	glAttachShader(m_shaderProgram, m_tesselEvaluationShader);
 	glAttachShader(m_shaderProgram, m_fragmentShader);
 
 	// 쉐이더 링크
@@ -113,16 +163,21 @@ void Shader::AttachAndLinkShaders() {
 
 	// 쉐이더들이 제대로 링크 되었는지 확인
 	int result{ };
+	char errLog[BUFSIZ]{ };
 	glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &result);
 	if (!result) {
+		glGetProgramInfoLog(m_shaderProgram, sizeof(errLog), NULL, errLog);
+		std::cerr << std::string{ errLog } << std::endl;
 		throw "Shaders are not Linked";
 	}
 }
 
 void Shader::CreateShaderProgram() {
 	m_shaderProgram = glCreateProgram();
-	RoadVertexShaderFile(".\\Shader\\vertex_shader.glsl");
-	RoadFragmentShaderFile(".\\Shader\\fragment_shader.glsl");
+	LoadVertexShaderFile(".\\Shader\\vertex_shader.glsl");
+	LoadFragmentShaderFile(".\\Shader\\fragment_shader.glsl");
+	LoadTesselationControlShaderFile(".\\Shader\\tessel_control_shader.glsl");
+	LoadTesselationEvaluationShaderFile(".\\Shader\\tessel_evaluation_shader.glsl");
 	CompileShaders();
 	AttachAndLinkShaders();
 }

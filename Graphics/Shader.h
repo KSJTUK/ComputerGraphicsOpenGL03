@@ -16,15 +16,21 @@ private:
 	unsigned int m_shaderProgram{ };
 	unsigned int m_fragmentShader{ };
 	unsigned int m_vertexShader{ };
+	unsigned int m_tesselControlShader{ };
+	unsigned int m_tesselEvaluationShader{ };
 
 	// 쉐이더 파일의 내용을 저장할 변수
-	char* m_vertexShaderFileContents{ };
-	char* m_fragmentShaderFileContents{ };
+	std::string m_vertexShaderFileContents{ };
+	std::string m_fragmentShaderFileContents{ };
+	std::string m_tesselationControlFileContents{ };
+	std::string m_tesselationEvaluationFileContents{ };
 
 public:
 	// 쉐이더 파일 내용을 불러오는 함수
-	void RoadVertexShaderFile(const char* filePath);
-	void RoadFragmentShaderFile(const char* filePaht);
+	void LoadVertexShaderFile(const char* filePath);
+	void LoadFragmentShaderFile(const char* filePaht);
+	void LoadTesselationControlShaderFile(const char* filePath);
+	void LoadTesselationEvaluationShaderFile(const char* filePath);
 
 	// 쉐이더 작성 함수들
 	void CompileShaders();

@@ -89,6 +89,8 @@ void GameWorld::Init() {
 	// 쉐이더 프로그램 사용 종료
 	SHADER->UnUseProgram();
 
+	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+
 	LIGHTOBJECTSHADER->UseProgram();
 	m_lightObj = new LightObject{ "sphere", glm::vec3{ 1.f, 1.f, 1.f } };
 	m_lightObj->SEtScale(glm::vec3{ 1.f, 1.f, 1.f });
