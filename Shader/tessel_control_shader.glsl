@@ -13,15 +13,18 @@ out vec3 normals[];
 in vec2 texCoords[];
 out vec2 textureCoords[];
 
+uniform vec3 viewPosForDynamicTessel;
+uniform float distanceEnavleTessel;
+
 void main()
 {
 	// 삼각형 패치에서 외부 정점에 대해 수행항 테셀레이션 레벨을 설정 (최대 5)
-	gl_TessLevelOuter[0] = 2;
-	gl_TessLevelOuter[1] = 2;
-	gl_TessLevelOuter[2] = 2;
+	gl_TessLevelOuter[0] = 6;
+	gl_TessLevelOuter[1] = 6;
+	gl_TessLevelOuter[2] = 6;
 
 	// 삼각형 패치 내부 정점에 대해 수행할 테셀레이션 레벨을 설정 (마찬가지로 최대 5)
-	gl_TessLevelInner[0] = 2;
+	gl_TessLevelInner[0] = 3;
 
 	gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
 	textureCoords[gl_InvocationID] = texCoords[gl_InvocationID];
