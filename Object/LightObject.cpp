@@ -24,7 +24,8 @@ void LightObject::SetLightOption() {
 	glm::vec3 ambientColor{ diffuseColor * m_lightOption.ambient };
 	m_lightOption.specular = m_lightColor;
 
-	SHADER->SetUniformVec3("light.position", m_lightOption.position);
+	// phong, point lighting
+	//SHADER->SetUniformVec3("light.position", m_lightOption.position);
 
 	// Direction Lighting
 	// SHADER->SetUniformVec3("light.direction", glm::vec3{ 0.f, -2.f, -1.f });
@@ -32,7 +33,7 @@ void LightObject::SetLightOption() {
 	SHADER->SetUniformVec3("light.diffuse", diffuseColor);
 	SHADER->SetUniformVec3("light.specular", m_lightOption.specular);
 
-	// point lightting
+	// point, flash lightting
 	SHADER->SetUniformFloat("light.constant", 1.0f);
 	SHADER->SetUniformFloat("light.linear", 0.027f);
 	SHADER->SetUniformFloat("light.quadratic", 0.0028f);

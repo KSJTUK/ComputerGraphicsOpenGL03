@@ -190,7 +190,7 @@ void Shader::SetUniformVec2(const std::string& valName, const glm::vec2& vector)
 void Shader::SetUniformFloat(const std::string& valName, const float& fValue) {
 	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
 	assert(!(valLocation == -1));
-	glUniform1f(valLocation, fValue);
+	glUniform1fv(valLocation, 1, &fValue);
 }
 
 // Light Object Shader

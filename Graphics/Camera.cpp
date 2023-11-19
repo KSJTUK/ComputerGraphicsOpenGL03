@@ -122,6 +122,11 @@ void Camera::Init() {
 
 }
 
+std::ostream& operator<<(std::ostream& os, glm::vec3& vec) {
+	os << vec.x << ", " << vec.y << ", " << vec.z << " ";
+	return os;
+}
+
 void Camera::Update(float deltaTime) {
 	m_deltaTime = deltaTime;
 
@@ -129,8 +134,15 @@ void Camera::Update(float deltaTime) {
 	m_cameraAxisZ = glm::normalize(-m_AT);
 	m_cameraAxisX = glm::normalize(glm::cross(m_UP, m_cameraAxisZ));
 	m_cameraAxisY = glm::normalize(glm::cross(m_cameraAxisZ, m_cameraAxisX));
+	SHADER->UseProgram();
 
-	SHADER->SetUniformVec3("viewPosition", -m_EYE);
+	// for all lighting
+	SHADER->SetUniformVec3("viewPosition", m_EYE);
+	// for flash lighting values
+	SHADER->SetUniformVec3("light.position", m_EYE);
+	SHADER->SetUniformVec3("light.direction", m_AT);
+	SHADER->SetUniformFloat("light.cutOff", std::cosf(glm::radians(12.5f)));
+	SHADER->UnUseProgram();
 }
 
 void Camera::Render() {

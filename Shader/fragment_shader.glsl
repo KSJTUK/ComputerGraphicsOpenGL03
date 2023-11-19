@@ -37,7 +37,7 @@ struct PointLight {
 };
 
 // Spot Light 카메라를 기준으로 비추는 조명
-struct FalshLight {
+struct FlashLight {
 	vec3 position;
 	vec3 direction;
 	float cutOff; // cutOff -> value of result cos(theta) oper
@@ -45,6 +45,10 @@ struct FalshLight {
 	vec3 ambient;
 	vec3 diffuse;
 	vec3 specular;
+
+	float constant;
+	float linear;
+	float quadratic;
 };
 
 // 오브젝트의 meterial속성을 구조체로 묶음
@@ -59,7 +63,8 @@ uniform vec3 viewPosition;
 uniform Meterials meterials;
 // uniform Light light;
 // uniform DirectionLight light;
- uniform PointLight light;
+// uniform PointLight light;
+uniform FlashLight light;
 
 vec3 calcLighting(Light light, vec3 normal, vec3 viewPos, vec3 fragPos)
 {
@@ -100,7 +105,7 @@ vec3 calcDirectionLighting(DirectionLight light, vec3 normal, vec3 viewPos, vec3
 	// 퐁모델의 스페큘러 항
 	vec3 viewDirection = normalize(viewPos - fragPos);
 	vec3 reflectDirection = reflect(-lightDirection, vNorm);
-	float spec = diffuseN <= epsilon ? 0.0f : pow(max(dot(viewDirection, reflectDirection), 0.0), meterials.shininess);
+	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0), meterials.shininess);
 	vec3 specular = spec * (light.specular * meterials.specular);
 
 	return (ambient + diffuse + specular);
@@ -134,10 +139,49 @@ vec3 calcPointLighting(PointLight light, vec3 normal, vec3 viewPos, vec3 fragPos
 	return (ambient + diffuse + specular);
 }
 
+vec3 calcFlashLighting(FlashLight light, vec3 normal, vec3 viewPos,  vec3 fragPos)
+{
+	vec3 lightDirection = normalize(light.position - fragPos);
+	float theta = dot(lightDirection, normalize(-light.direction));
+
+	vec3 resultColor = vec3(0.0f);
+	vec3 ambient = light.ambient * meterials.ambient;
+	
+	if (theta > light.cutOff) {
+		// 퐁모델의 디퓨즈 항
+		vec3 vNorm = normalize(normal);
+
+		float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
+		vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
+
+		// 퐁모델의 스페큘러 항
+		vec3 viewDirection = normalize(viewPos - fragPos);
+		vec3 reflectDirection = reflect(-lightDirection, vNorm);
+		float spec = diffuseN <= epsilon ? 0.0f : pow(max(dot(viewDirection, reflectDirection), 0.0f), meterials.shininess);
+		vec3 specular = spec * (light.specular * meterials.specular);
+
+		float dist = length(light.position - fragPos);
+		float attenuationUnder = light.constant + light.linear * dist + light.quadratic * (dist * dist);
+		float attenuation = 1.0 / attenuationUnder;
+
+		// ambient *= attenuation; // remove ambient * attenuation
+		diffuse *= attenuation;
+		specular *= attenuation; 
+
+		resultColor = ambient + diffuse + specular;
+	} else {
+		resultColor = ambient;
+	}
+	return resultColor;
+}
+
+
 void main(void)
 {
 //	 vec3 resultColor = calcLighting(light, vNormal, viewPosition, fragPosition);
 //	 vec3 resultColor = calcDirectionLighting(light, vNormal, viewPosition, fragPosition);
-	vec3 resultColor = calcPointLighting(light, vNormal, viewPosition, fragPosition);
+//	vec3 resultColor = calcPointLighting(light, vNormal, viewPosition, fragPosition);
+	vec3 resultColor = calcFlashLighting(light, vNormal, viewPosition, fragPosition);
+
 	FragColor = vec4 (resultColor, 1.0);
 }
