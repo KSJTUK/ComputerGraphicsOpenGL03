@@ -87,6 +87,12 @@
     <ClCompile Include="Physics.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Util\stb_image.cpp">
+      <Filter>소스 파일\Util</Filter>
+    </ClCompile>
+    <ClCompile Include="TextureComponent.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -131,6 +137,12 @@
     <ClInclude Include="Physics.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Util\stb_image.h">
+      <Filter>헤더 파일\Util</Filter>
+    </ClInclude>
+    <ClInclude Include="TextureComponent.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\fragment_shader.glsl">
@@ -151,6 +163,8 @@
     <None Include="Shader\tessel_control_shader.glsl">
       <Filter>리소스 파일</Filter>
     </None>
-    <None Include="geometry_shader.glsl" />
+    <None Include="geometry_shader.glsl">
+      <Filter>리소스 파일</Filter>
+    </None>
   </ItemGroup>
 </Project>

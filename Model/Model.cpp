@@ -2,9 +2,16 @@
 #include "Model/Model.h"
 #include "Graphics/GraphicBuffers.h"
 #include "Graphics/Shader.h"
+#include "TextureComponent.h"
 
 Model::Model(const std::string& objectFilePath) {
 	ReadObject(objectFilePath.c_str());
+	m_texture = nullptr;
+}
+
+Model::Model(const std::string& objectFilePath, const std::string& textureFilePath) {
+	ReadObject(objectFilePath.c_str());
+	m_texture = std::make_unique<TextureComponent>(textureFilePath);
 }
 
 Model::~Model() { }

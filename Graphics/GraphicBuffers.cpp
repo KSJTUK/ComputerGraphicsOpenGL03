@@ -43,6 +43,10 @@ void GraphicBuffers::SetVerticies(const std::vector<Vertex>& verticies) {
 	glPatchParameteri(GL_PATCH_VERTICES, 3);
 }
 
+void GraphicBuffers::BindingTexture(const uint32& textureID) {
+	glBindTexture(GL_TEXTURE_2D, textureID);
+}
+
 void GraphicBuffers::SetDrawMode(unsigned int mode) {
 	m_drawMode = mode;
 }

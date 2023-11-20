@@ -3,6 +3,7 @@
 class Model {
 public:
 	Model(const std::string& objectFilePath);
+	Model(const std::string& objectFilePath, const std::string& textureFilePath);
 	~Model();
 
 	Model(const Model& other) = delete;
@@ -11,6 +12,7 @@ public:
 private:
 	// VAO, VBO, EBO를 가지는 객체
 	std::unique_ptr<class GraphicBuffers> m_graphicsBuffer{ };
+	std::unique_ptr<class TextureComponent> m_texture{ };
 
 	// 정점 속성들을 저장할 vector
 	std::vector<Vertex> m_verticies{ };

@@ -31,8 +31,10 @@
     <ClCompile Include="Object\Object.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="Util\callbacks.cpp" />
     <ClCompile Include="Util\Engine.cpp" />
+    <ClCompile Include="Util\stb_image.cpp" />
     <ClCompile Include="Util\Timer.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -47,8 +49,10 @@
     <ClInclude Include="Object\Object.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="Util\callbacks.h" />
     <ClInclude Include="Util\Engine.h" />
+    <ClInclude Include="Util\stb_image.h" />
     <ClInclude Include="Util\Timer.h" />
   </ItemGroup>
   <ItemGroup>

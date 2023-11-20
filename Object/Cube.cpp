@@ -4,7 +4,7 @@
 #include "Model/Model.h"
 #include "Model/ModelList.h"
 
-Cube::Cube() : Object{ "sphere" } {
+Cube::Cube() : Object{ "earth" } {
 	m_objectColor = glm::vec3{ 1.f, 0.3f, 0.31f };
 	m_scaleFactor = glm::vec3{ 0.3f, 0.3f, 0.3f };
 }

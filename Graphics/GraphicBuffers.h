@@ -33,6 +33,7 @@ public:
 	void Init();
 
 	void SetVerticies(const std::vector<Vertex>& verticies);
+	void BindingTexture(const uint32& textureID);
 
 	void SetDrawMode(unsigned int mode);
 	void Render();
