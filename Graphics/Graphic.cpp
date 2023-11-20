@@ -76,9 +76,9 @@ void GameWorld::Init() {
 
 	for (int i = 0; i < 6; ++i) {
 		m_cubes.push_back(new Cube{ });
-		m_cubes.back()->SetPosition(glm::vec3{ -10.f + 10.f * i, 0.f, 20.f - 40.f * (i / 3)});
+		m_cubes.back()->SetPosition(glm::vec3{ -10.f + 10.f * (i % 3), 0.f, 20.f - 40.f * (i / 3)});
 		//m_cubes.back()->SetPosition(glm::vec3{ 0.f, 0.f, 20.f + 10.f * i });// 일렬로 세우기
-		m_cubes.back()->SEtScale(glm::vec3{0.6f, 0.6f, 0.6f});
+		m_cubes.back()->SEtScale(glm::vec3{ 2.f });
 		m_cubes.back()->SetObjectColor(glm::linearRand(glm::vec3{ 0.f }, glm::vec3{ 1.f }));
 	}
 
@@ -92,8 +92,8 @@ void GameWorld::Init() {
 	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 
 	LIGHTOBJECTSHADER->UseProgram();
-	m_lightObj = new LightObject{ "sphere", glm::vec3{ 1.f, 1.f, 1.f } };
-	m_lightObj->SEtScale(glm::vec3{ 1.f, 1.f, 1.f });
+	m_lightObj = new LightObject{ "sphere", glm::vec3{ 1.f, 1.f, 0.31f } };
+	m_lightObj->SEtScale(glm::vec3{ 0.6f });
 	LIGHTOBJECTSHADER->UnUseProgram();
 }
 

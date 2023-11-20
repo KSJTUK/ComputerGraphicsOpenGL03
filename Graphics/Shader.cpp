@@ -248,6 +248,12 @@ void Shader::SetUniformFloat(const std::string& valName, const float& fValue) {
 	glUniform1fv(valLocation, 1, &fValue);
 }
 
+void Shader::SetUniformInt(const std::string& valName, const int& iValue) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniform1iv(valLocation, 1, &iValue);
+}
+
 // Light Object Shader
 // -------------------------------------------------------------------------------
 LightObjectShader* LightObjectShader::m_instance = nullptr;

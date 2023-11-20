@@ -52,6 +52,7 @@
     <ClInclude Include="Util\Timer.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="geometry_shader.glsl" />
     <None Include="Shader\fragment_shader.glsl" />
     <None Include="Shader\light_object_fshader.glsl" />
     <None Include="Shader\light_object_vshader.glsl" />

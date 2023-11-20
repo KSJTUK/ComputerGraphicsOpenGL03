@@ -122,11 +122,6 @@ void Camera::Init() {
 
 }
 
-std::ostream& operator<<(std::ostream& os, glm::vec3& vec) {
-	os << vec.x << ", " << vec.y << ", " << vec.z << " ";
-	return os;
-}
-
 void Camera::Update(float deltaTime) {
 	m_deltaTime = deltaTime;
 
@@ -138,11 +133,14 @@ void Camera::Update(float deltaTime) {
 
 	// for all lighting
 	SHADER->SetUniformVec3("viewPosition", m_EYE);
-	// for flash lighting values
-	SHADER->SetUniformVec3("light.position", m_EYE);
-	SHADER->SetUniformVec3("light.direction", m_AT);
-	SHADER->SetUniformFloat("light.cutOff", std::cosf(glm::radians(7.5f)));
-	SHADER->SetUniformFloat("light.outerCutOff", std::cosf(glm::radians(17.5f)));
+	//// for flash lighting values
+	//SHADER->SetUniformVec3("light.position", m_EYE);
+	//SHADER->SetUniformVec3("light.direction", m_AT);
+	//SHADER->SetUniformFloat("light.cutOff", std::cosf(glm::radians(7.5f)));
+	//SHADER->SetUniformFloat("light.outerCutOff", std::cosf(glm::radians(17.5f)));
+
+	//SHADER->SetUniformVec3("viewPositionForDynamicTessel", m_EYE);
+
 	SHADER->UnUseProgram();
 }
 

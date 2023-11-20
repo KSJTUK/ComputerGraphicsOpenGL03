@@ -47,5 +47,7 @@ void Object::Render() {
 	SHADER->SetUniformMat4("modelTransform", m_transform);
 	SHADER->SetUniformMat4("modelsParentTransform", m_parentTransform);
 
+	m_model->SetDrawMode(GL_PATCHES);
+
 	m_model->Render();
 }
