@@ -13,7 +13,8 @@ public:
 	static void Destroy();
 
 private:
-	const std::string m_defaultFilePath{ ".\\ObjModel\\" };
+	const std::string m_defaultObjectFilePath{ ".\\ObjModel\\" };
+	const std::string m_defaultTextureFilePath{ ".\\textures\\" };
 
 	// ¸ðµ¨µéÀ» ÀúÀåÇÒ ¸Ê °´Ã¼ »ý¼º
 	std::unordered_map<std::string, std::shared_ptr<class Model>> m_modelList{ };
@@ -29,5 +30,6 @@ public:
 public:
 	void Init();
 	void LoadModel(const std::string& objectFilePath);
+	void LoadModel(const std::string& objectFilePaht, const std::string& textureFilePath);
 	void LoadModelFromFile(const std::string& modelsFilePath);
 };

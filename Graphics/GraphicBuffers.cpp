@@ -44,12 +44,22 @@ void GraphicBuffers::SetVerticies(const std::vector<Vertex>& verticies) {
 }
 
 void GraphicBuffers::BindingTexture(const uint32& textureID) {
+	glActiveTexture(GL_TEXTURE0);
 	glBindTexture(GL_TEXTURE_2D, textureID);
 }
 
 void GraphicBuffers::SetDrawMode(unsigned int mode) {
 	m_drawMode = mode;
 }
+
+//void GraphicBuffers::Render(const uint32& textureID) {
+//	glActiveTexture(GL_TEXTURE0);
+//	glBindTexture(GL_TEXTURE_2D, textureID);
+//	glBindVertexArray(m_vertexArray);
+//	glDrawArrays(m_drawMode, 0, m_vertexDataSize);
+//	glBindVertexArray(0); // Array 바인드 해제
+//	glBindTexture(GL_TEXTURE_2D, 0);
+//}
 
 void GraphicBuffers::Render() {
 	// shaderProgram 에서 UseProgram을 활성화 했다는 가정하에 수행

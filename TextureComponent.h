@@ -15,6 +15,8 @@ private:
 	std::string m_filePath{ };
 
 public:
+	static void SetTextureDefaultOption();
+
 	void CreateTexture();
 	uint32 GetTextureID() const;
 };

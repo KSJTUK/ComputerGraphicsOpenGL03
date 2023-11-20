@@ -152,6 +152,10 @@ void Model::SetDrawMode(int drawMode) {
 	m_graphicsBuffer->SetDrawMode(drawMode);
 }
 
+bool Model::ExistTexture() const {
+	return bool{ m_texture };
+}
+
 void Model::Init() {
 	m_graphicsBuffer = std::make_unique<class GraphicBuffers>();
 	m_graphicsBuffer->Init();
@@ -163,5 +167,12 @@ void Model::Update() {
 }
 
 void Model::Render() {
+	if (m_texture) {
+		m_graphicsBuffer->BindingTexture(m_texture->GetTextureID());
+	}
+	else {
+		m_graphicsBuffer->BindingTexture(0);
+	}
+
 	m_graphicsBuffer->Render();
 }

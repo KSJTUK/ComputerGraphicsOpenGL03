@@ -17,8 +17,8 @@ Object::Object(const std::string& modelTag, const glm::vec3& objectColor) : m_mo
 Object::~Object() { }
 
 void Object::SetMeterials() {
-	SHADER->SetUniformVec3("meterials.ambient", m_meterial.ambient);
-	SHADER->SetUniformVec3("meterials.diffuse", m_meterial.diffuse);
+	//SHADER->SetUniformVec3("meterials.ambient", m_meterial.ambient);
+	SHADER->SetUniformInt("meterials.diffuse", 0);
 	SHADER->SetUniformVec3("meterials.specular", m_meterial.specular);
 	SHADER->SetUniformFloat("meterials.shininess", m_meterial.shininess);
 }

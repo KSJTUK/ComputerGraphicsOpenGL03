@@ -42,6 +42,7 @@ private:
 public:
 	// setter
 	void SetDrawMode(int drawMode);
+	bool ExistTexture() const;
 
 	std::pair<glm::vec3, glm::vec3> GetBoundingBox() const { return m_boundingBox; }
 

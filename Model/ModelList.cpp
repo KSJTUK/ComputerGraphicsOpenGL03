@@ -46,10 +46,28 @@ void ModelList::LoadModel(const std::string& objectFilePath) {
 		return;
 	}
 
-	std::string filePath{ m_defaultFilePath + objectFilePath };
+	std::string filePath{ m_defaultObjectFilePath + objectFilePath };
 
 	std::shared_ptr<class Model> newModel{ };
 	newModel = std::make_shared<class Model>(filePath);
+	newModel->Init();
+
+	m_modelList.insert(std::make_pair(key, newModel));
+}
+
+void ModelList::LoadModel(const std::string& objectFilePath, const std::string& textureFilePath) {
+	std::string key = MakeStringToKey(objectFilePath);
+
+	auto iter = m_modelList.find(key);
+	if (iter != m_modelList.end()) {
+		return;
+	}
+
+	std::string objFilePath{ m_defaultObjectFilePath + objectFilePath };
+	std::string texFilePath{ m_defaultTextureFilePath + textureFilePath };
+
+	std::shared_ptr<class Model> newModel{ };
+	newModel = std::make_shared<class Model>(objFilePath, texFilePath);
 	newModel->Init();
 
 	m_modelList.insert(std::make_pair(key, newModel));

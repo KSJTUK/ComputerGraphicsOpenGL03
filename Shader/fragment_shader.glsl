@@ -4,6 +4,7 @@ const float lessThanZero = 0.000001f;
 
 out vec4 FragColor;
 
+in vec2 texCoord;
 in vec3 vNormal;
 in vec3 fragPosition;
 
@@ -54,8 +55,7 @@ struct FlashLight {
 
 // ¿ÀºêÁ§Æ®ÀÇ meterial¼Ó¼ºÀ» ±¸Á¶Ã¼·Î ¹­À½
 struct Meterials {
-	vec3 ambient;
-	vec3 diffuse;
+	sampler2D diffuse;
 	vec3 specular;
 	float shininess;
 };
@@ -74,14 +74,14 @@ vec3 calcLighting(Light light, vec3 normal, vec3 viewPos, vec3 fragPos)
 	// ¾Úºñ¾ðÆ® Ç×
 	// ¾Úºñ¾ðÆ® ºûÀÇ RGB»ö»ó °ú ¹°Ã¼ÀÇ ¾Úºñ¾ðÆ® °è¼ö°£ÀÇ ¿ø¼Ò°£ °ö¼ÀÀ¸·Î Á¤ÀÇ
 	// s * m (s == RGB, m == object's ambient)
-	vec3 ambient = light.ambient * meterials.ambient;
+	vec3 ambient = light.ambient * vec3(texture(meterials.diffuse, texCoord));
 
 	// Æþ¸ðµ¨ÀÇ µðÇ»Áî Ç×
 	vec3 vNorm = normalize(normal);
 	vec3 lightDirection = normalize(light.position - fragPos);
 
 	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
-	vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
+	vec3 diffuse = light.diffuse * (diffuseN * vec3(texture(meterials.diffuse, texCoord)));
 
 	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
 	vec3 viewDirection = normalize(viewPos - fragPos);
@@ -94,14 +94,14 @@ vec3 calcLighting(Light light, vec3 normal, vec3 viewPos, vec3 fragPos)
 
 vec3 calcDirectionLighting(DirectionLight light, vec3 normal, vec3 viewPos, vec3 fragPos)
 {
-	vec3 ambient = light.ambient * meterials.ambient;
+	vec3 ambient = light.ambient * vec3(texture(meterials.diffuse, texCoord));
 
 	// Æþ¸ðµ¨ÀÇ µðÇ»Áî Ç×
 	vec3 vNorm = normalize(normal);
 	vec3 lightDirection = normalize(-light.direction);
 
 	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
-	vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
+	vec3 diffuse = light.diffuse * (diffuseN * vec3(texture(meterials.diffuse, texCoord)));
 
 	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
 	vec3 viewDirection = normalize(viewPos - fragPos);
@@ -114,14 +114,14 @@ vec3 calcDirectionLighting(DirectionLight light, vec3 normal, vec3 viewPos, vec3
 
 vec3 calcPointLighting(PointLight light, vec3 normal, vec3 viewPos, vec3 fragPos)
 {
-	vec3 ambient = light.ambient * meterials.ambient;
+	vec3 ambient = light.ambient * vec3(texture(meterials.diffuse, texCoord));
 
 	// Æþ¸ðµ¨ÀÇ µðÇ»Áî Ç×
 	vec3 vNorm = normalize(normal);
 	vec3 lightDirection = normalize(light.position - fragPos);
 
 	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
-	vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
+	vec3 diffuse = light.diffuse * (diffuseN * vec3(texture(meterials.diffuse, texCoord)));
 
 	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
 	vec3 viewDirection = normalize(viewPos - fragPos);
@@ -148,13 +148,13 @@ vec3 calcFlashLighting(FlashLight light, vec3 normal, vec3 viewPos,  vec3 fragPo
 	float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0f, 1.0f);
 
 	vec3 resultColor = vec3(0.0f);
-	vec3 ambient = light.ambient * meterials.ambient;
+	vec3 ambient = light.ambient * vec3(texture(meterials.diffuse, texCoord));
 
 	// Æþ¸ðµ¨ÀÇ µðÇ»Áî Ç×
 	vec3 vNorm = normalize(normal);
 
 	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
-	vec3 diffuse = light.diffuse * (diffuseN * meterials.diffuse);
+	vec3 diffuse = light.diffuse * (diffuseN * vec3(texture(meterials.diffuse, texCoord)));
 
 	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
 	vec3 viewDirection = normalize(viewPos - fragPos);

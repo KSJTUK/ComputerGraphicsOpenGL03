@@ -7,6 +7,7 @@
 // test--------------------------------------------
 #include "Object/Cube.h"
 #include "Object/LightObject.h"
+#include "TextureComponent.h"
 // ------------------------------------------------
 
 GameWorld::GameWorld() { }
@@ -69,7 +70,9 @@ void GameWorld::Init() {
 	MODELLIST->Init();
 	MODELLIST->LoadModel("cube.obj");
 	MODELLIST->LoadModel("sphere.obj");
-	MODELLIST->LoadModel("earth.obj");
+	MODELLIST->LoadModel("earth.obj", "Earth_diffuse_512p.png");
+
+	TextureComponent::SetTextureDefaultOption();
 
 	// test--------------------------------------------
 	m_cube = new Cube{ };
@@ -91,10 +94,10 @@ void GameWorld::Init() {
 	// 쉐이더 프로그램 사용 종료
 	SHADER->UnUseProgram();
 
-	glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 
 	LIGHTOBJECTSHADER->UseProgram();
-	m_lightObj = new LightObject{ "sphere", glm::vec3{ 1.f, 1.f, 0.31f } };
+	m_lightObj = new LightObject{ "sphere", glm::vec3{ 1.f, 1.f, 1.f } };
 	m_lightObj->SEtScale(glm::vec3{ 0.6f });
 	LIGHTOBJECTSHADER->UnUseProgram();
 }
