@@ -23,7 +23,6 @@ void main(void)
 
 	fragPosition = vec3(transform * vec4(in_Position, 1.0f));
 	norms = mat3(transpose(inverse(transform))) * in_Normal;
-//	norms = in_Normal;
 	texCoords = in_Texture;
 
 	gl_Position = perspectiveMat * viewMat * vec4(fragPosition, 1.0f);
