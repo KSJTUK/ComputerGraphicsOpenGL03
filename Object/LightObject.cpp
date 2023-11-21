@@ -41,8 +41,8 @@ void LightObject::SetLightOption() {
 	SHADER->SetUniformVec3("pointLight.specular", m_lightOption.specular);
 
 	SHADER->SetUniformFloat("pointLight.constant", 1.0f);
-	SHADER->SetUniformFloat("pointLight.linear", 0.027f);
-	SHADER->SetUniformFloat("pointLight.quadratic", 0.0028f);
+	SHADER->SetUniformFloat("pointLight.linear", 0.00014f);
+	SHADER->SetUniformFloat("pointLight.quadratic", 0.0000007f);
 
 	if (m_sportLightingOn) {
 		SHADER->SetUniformVec3("spotLight.ambient", ambientColor);

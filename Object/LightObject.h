@@ -21,7 +21,7 @@ private:
 	LightOption m_lightOption{ };
 
 	bool m_directionLightingOn{ false };
-	bool m_sportLightingOn{ true };
+	bool m_sportLightingOn{ false };
 
 public:
 	void SetLightOption();

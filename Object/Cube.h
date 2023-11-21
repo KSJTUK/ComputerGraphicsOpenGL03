@@ -10,7 +10,7 @@ public:
 	Cube(const glm::vec3& initPosition, const glm::vec3& initRotate, const glm::vec3& initScale);
 
 private:
-	float radius{ 10.f };
+	float radius{ 900.f };
 	float angleSpeed{ 10.f };
 
 public:

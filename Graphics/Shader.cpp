@@ -98,11 +98,30 @@ void Shader::LoadTesselationEvaluationShaderFile(const char* filePath) {
 	tesselationEvaluationFile.close();
 }
 
+void Shader::LoadGeometryShader(const char* filePath) {
+	std::fstream geometryFile{ filePath, std::ios::in };
+
+	if (!geometryFile.is_open()) {
+		throw "tesselation evaluate shader file open error";
+	}
+
+	m_geometryShaderFileContents = { "" };
+	std::string line{ " " };
+	while (!geometryFile.eof()) {
+		std::getline(geometryFile, line);
+		m_geometryShaderFileContents.append(line + "\n");
+	}
+
+
+	geometryFile.close();
+}
+
 void Shader::CompileShaders() {
 	m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	m_tesselControlShader = glCreateShader(GL_TESS_CONTROL_SHADER);
 	m_tesselEvaluationShader = glCreateShader(GL_TESS_EVALUATION_SHADER);
+	m_geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 
 	// 쉐이더 소스코드 불러오기
 	const char* contentsPath = m_vertexShaderFileContents.c_str();
@@ -117,39 +136,22 @@ void Shader::CompileShaders() {
 	contentsPath = m_tesselationEvaluationFileContents.c_str();
 	glShaderSource(m_tesselEvaluationShader, 1, &contentsPath, NULL);
 
+	contentsPath = m_geometryShaderFileContents.c_str();
+	glShaderSource(m_geometryShader, 1, &contentsPath, NULL);
+
 	// 쉐이더 컴파일
 	glCompileShader(m_vertexShader);
 	glCompileShader(m_tesselControlShader);
 	glCompileShader(m_tesselEvaluationShader);
 	glCompileShader(m_fragmentShader);
+	glCompileShader(m_geometryShader);
 
 	// 쉐이더 컴파일 여부 확인
-	int result{ };
-	char errLog[BUFSIZ]{ };
-
-	glGetShaderiv(m_vertexShader, GL_COMPILE_STATUS, &result);
-	if (!result) {
-		glGetShaderInfoLog(m_vertexShader, sizeof(errLog), NULL, errLog);
-		std::cout << errLog << std::endl;
-	}
-
-	glGetShaderiv(m_fragmentShader, GL_COMPILE_STATUS, &result);
-	if (!result) {
-		glGetShaderInfoLog(m_fragmentShader, sizeof(errLog), NULL, errLog);
-		std::cout << std::string{ errLog } << std::endl;
-	}
-
-	glGetShaderiv(m_tesselControlShader, GL_COMPILE_STATUS, &result);
-	if (!result) {
-		glGetShaderInfoLog(m_tesselControlShader, sizeof(errLog), NULL, errLog);
-		std::cout << std::string{ errLog } << std::endl;
-	}
-	
-	glGetShaderiv(m_tesselEvaluationShader, GL_COMPILE_STATUS, &result);
-	if (!result) {
-		glGetShaderInfoLog(m_tesselEvaluationShader, sizeof(errLog), NULL, errLog);
-		std::cout << std::string{ errLog } << std::endl;
-	}
+	CheckAndPrintShaderCompileError(m_vertexShader);
+	CheckAndPrintShaderCompileError(m_tesselControlShader);
+	CheckAndPrintShaderCompileError(m_tesselEvaluationShader);
+	CheckAndPrintShaderCompileError(m_fragmentShader);
+	CheckAndPrintShaderCompileError(m_geometryShader);
 }
 
 void Shader::AttachAndLinkShaders() {
@@ -157,6 +159,7 @@ void Shader::AttachAndLinkShaders() {
 	glAttachShader(m_shaderProgram, m_tesselControlShader);
 	glAttachShader(m_shaderProgram, m_tesselEvaluationShader);
 	glAttachShader(m_shaderProgram, m_fragmentShader);
+	glAttachShader(m_shaderProgram, m_geometryShader);
 
 	// 쉐이더 링크
 	glLinkProgram(m_shaderProgram);
@@ -178,6 +181,7 @@ void Shader::CreateShaderProgram() {
 	LoadFragmentShaderFile(".\\Shader\\fragment_shader.glsl");
 	LoadTesselationControlShaderFile(".\\Shader\\tessel_control_shader.glsl");
 	LoadTesselationEvaluationShaderFile(".\\Shader\\tessel_evaluation_shader.glsl");
+	LoadGeometryShader(".\\Shader\\geometry_shader.glsl");
 	CompileShaders();
 	AttachAndLinkShaders();
 }
@@ -204,6 +208,16 @@ void Shader::SetPerspectiveMat(const glm::mat4& perspectiveMat) {
 		assert(0);
 	}
 	glUniformMatrix4fv(perspectiveMatLocation, 1, GL_FALSE, glm::value_ptr(perspectiveMat));
+}
+
+void Shader::CheckAndPrintShaderCompileError(const uint32& shaderID) {
+	int result{ };
+	char errLog[BUFSIZ]{ };
+	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result);
+	if (!result) {
+		glGetShaderInfoLog(shaderID, sizeof(errLog), NULL, errLog);
+		std::cout << std::string{ errLog } << std::endl;
+	}
 }
 
 void Shader::SetUniformMat4(const std::string& valName, const glm::mat4& matrix) {

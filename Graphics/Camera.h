@@ -7,7 +7,7 @@ public:
 
 private:
 	// 카메라의 내부 파라미터
-	glm::vec3 m_EYE{ 0.f, 0.f, 3.f };
+	glm::vec3 m_EYE{ 0.f, 0.f, 1000.f };
 	glm::vec3 m_AT{ 0.f, 0.f, -1.f };
 	glm::vec3 m_UP{ 0.f, 1.f, 0.f };
 
@@ -34,7 +34,7 @@ private:
 	int m_rotateY{ 0 };
 	int m_orbitY{ 0 };
 
-	bool m_spotLightingOn{ true };
+	bool m_spotLightingOn{ false };
 
 public:
 	// getter

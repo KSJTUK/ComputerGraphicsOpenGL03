@@ -56,8 +56,8 @@
     <ClInclude Include="Util\Timer.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="geometry_shader.glsl" />
     <None Include="Shader\fragment_shader.glsl" />
+    <None Include="Shader\geometry_shader.glsl" />
     <None Include="Shader\light_object_fshader.glsl" />
     <None Include="Shader\light_object_vshader.glsl" />
     <None Include="Shader\tessel_control_shader.glsl" />
@@ -123,6 +123,7 @@
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -158,6 +159,7 @@
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>$(SolutionDir);%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <LanguageStandard>stdcpp17</LanguageStandard>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>

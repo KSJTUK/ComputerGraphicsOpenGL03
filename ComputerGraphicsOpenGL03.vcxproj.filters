@@ -163,7 +163,7 @@
     <None Include="Shader\tessel_control_shader.glsl">
       <Filter>리소스 파일</Filter>
     </None>
-    <None Include="geometry_shader.glsl">
+    <None Include="Shader\geometry_shader.glsl">
       <Filter>리소스 파일</Filter>
     </None>
   </ItemGroup>

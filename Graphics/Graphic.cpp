@@ -45,6 +45,18 @@ void GameWorld::Input(unsigned char key, bool down) {
 
 void GameWorld::SpecialInput(int key, bool down) {
 	if (down) {
+		if (key == GLUT_KEY_F1) {
+			SHADER->UseProgram();
+			SHADER->SetUniformInt("tesselLevel", m_objectTesselOff);
+			SHADER->UnUseProgram();
+		}
+
+		if (key == GLUT_KEY_F2) {
+			SHADER->UseProgram();
+			SHADER->SetUniformInt("tesselLevel", m_objectTesselLevel);
+			SHADER->UnUseProgram();
+		}
+
 		if (key == GLUT_KEY_F3) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
 		}
@@ -70,6 +82,7 @@ void GameWorld::Init() {
 	SHADER->UseProgram();
 
 	glEnable(GL_CULL_FACE);
+	SHADER->SetUniformInt("tesselLevel", m_objectTesselOff);
 
 	// 朝五虞 持失
 	m_camera = std::make_unique<Camera>();
@@ -85,7 +98,8 @@ void GameWorld::Init() {
 
 	// test--------------------------------------------
 	m_cube = new Cube{ };
-	m_cube->SEtScale(glm::vec3{ 0.05f });
+	m_cube->SEtScale(glm::vec3{ 0.5f });
+	m_cube->SetPosition(glm::vec3{ 900.f, 0.f, 0.f });
 	// ------------------------------------------------
 
 	//for (int i = 0; i < 6; ++i) {
@@ -109,7 +123,7 @@ void GameWorld::Init() {
 
 	LIGHTOBJECTSHADER->UseProgram();
 	m_lightObj = new LightObject{ "sphere", glm::vec3{ 1.f, 1.f, 1.f } };
-	m_lightObj->SEtScale(glm::vec3{ 0.6f });
+	m_lightObj->SEtScale(glm::vec3{ 100.f });
 	LIGHTOBJECTSHADER->UnUseProgram();
 }
 
