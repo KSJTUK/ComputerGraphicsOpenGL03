@@ -44,6 +44,15 @@ void GameWorld::Input(unsigned char key, bool down) {
 }
 
 void GameWorld::SpecialInput(int key, bool down) {
+	if (down) {
+		if (key == GLUT_KEY_F3) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
+		}
+
+		if (key == GLUT_KEY_F4) {
+			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+		}
+	}
 }
 
 void GameWorld::MouseMotionInput(int x, int y, int prevX, int prevY) {
@@ -79,15 +88,15 @@ void GameWorld::Init() {
 	m_cube->SEtScale(glm::vec3{ 0.05f });
 	// ------------------------------------------------
 
-	for (int i = 0; i < 6; ++i) {
-		m_cubes.push_back(new Cube{ });
-		m_cubes.back()->SetPosition(glm::vec3{ -10.f + 10.f * (i % 3), 0.f, 20.f - 40.f * (i / 3)});
-		//m_cubes.back()->SetPosition(glm::vec3{ 0.f, 0.f, 20.f + 10.f * i });// 일렬로 세우기
-		m_cubes.back()->SEtScale(glm::vec3{ 0.05f });
-		if (!m_cubes.back()->ExistTexture()) {
-			m_cubes.back()->SetObjectColor(glm::linearRand(glm::vec3{ 0.f }, glm::vec3{ 1.f }));
-		}
-	}
+	//for (int i = 0; i < 6; ++i) {
+	//	m_cubes.push_back(new Cube{ });
+	//	m_cubes.back()->SetPosition(glm::vec3{ -10.f + 10.f * (i % 3), 0.f, 20.f - 40.f * (i / 3)});
+	//	//m_cubes.back()->SetPosition(glm::vec3{ 0.f, 0.f, 20.f + 10.f * i });// 일렬로 세우기
+	//	m_cubes.back()->SEtScale(glm::vec3{ 0.05f });
+	//	if (!m_cubes.back()->ExistTexture()) {
+	//		m_cubes.back()->SetObjectColor(glm::linearRand(glm::vec3{ 0.f }, glm::vec3{ 1.f }));
+	//	}
+	//}
 
 	// 투영 변환 행렬 계산 및 전송
 	CalcPerspectiveMat();
@@ -111,9 +120,9 @@ void GameWorld::Update(float deltaTime) {
 	m_cube->Update(m_deltaTime);
 	m_lightObj->Update(m_deltaTime);
 	// ------------------------------------------------
-	for (auto& cube : m_cubes) {
+	/*for (auto& cube : m_cubes) {
 		cube->Update(m_deltaTime);
-	}
+	}*/
 }
 
 void GameWorld::Render() {
@@ -131,9 +140,9 @@ void GameWorld::Render() {
 	m_lightObj->SetLightOption();
 
 	m_cube->Render();
-	for (auto& cube : m_cubes) {
-		cube->Render();
-	}
+	//for (auto& cube : m_cubes) {
+	//	cube->Render();
+	//}
 
 	SHADER->UnUseProgram();
 

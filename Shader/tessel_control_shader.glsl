@@ -21,7 +21,7 @@ const int minTesselLevel = 2;
 const float maxTesselDist = 1.5f;
 const float minTesselDist = 0.1f;
 
-int tesselLevel = 1;
+int tesselLevel = 6;
 
 void main()
 {

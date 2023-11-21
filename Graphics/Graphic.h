@@ -27,6 +27,9 @@ private:
 	class Cube* m_cube{ };
 	std::vector<class Cube*> m_cubes{ };
 	class LightObject* m_lightObj{ };
+
+	const int m_objectTesselLevel{ 6 };
+	const int m_objectTesselOff{ 1 };
 	// ------------------------------------------------
 
 public:

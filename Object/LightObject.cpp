@@ -60,19 +60,19 @@ void LightObject::Update(float deltaTime) {
 	//	lightDir = 1.f;
 	//}
 
-	// 원운동 
-	static float angle = 0.f;
-	static float radius = 10.f;
+	//// 원운동 
+	//static float angle = 0.f;
+	//static float radius = 10.f;
 
-	m_position.x = radius * std::cosf(glm::radians(angle));
-	m_position.z = radius * std::sinf(glm::radians(angle));
-	angle += radius * deltaTime;
+	//m_position.x = radius * std::cosf(glm::radians(angle));
+	//m_position.z = radius * std::sinf(glm::radians(angle));
+	//angle += radius * deltaTime;
 
-	if (angle > 360.f) {
-		angle = 0.f;
-	}
+	//if (angle > 360.f) {
+	//	angle = 0.f;
+	//}
 
-	m_lightOption.position = m_position;
+	//m_lightOption.position = m_position;
 }
 
 void LightObject::Render() {
