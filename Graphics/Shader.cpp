@@ -112,7 +112,6 @@ void Shader::LoadGeometryShader(const char* filePath) {
 		m_geometryShaderFileContents.append(line + "\n");
 	}
 
-
 	geometryFile.close();
 }
 
@@ -136,22 +135,17 @@ void Shader::CompileShaders() {
 	contentsPath = m_tesselationEvaluationFileContents.c_str();
 	glShaderSource(m_tesselEvaluationShader, 1, &contentsPath, NULL);
 
-	contentsPath = m_geometryShaderFileContents.c_str();
-	glShaderSource(m_geometryShader, 1, &contentsPath, NULL);
-
 	// 쉐이더 컴파일
 	glCompileShader(m_vertexShader);
 	glCompileShader(m_tesselControlShader);
 	glCompileShader(m_tesselEvaluationShader);
 	glCompileShader(m_fragmentShader);
-	glCompileShader(m_geometryShader);
 
 	// 쉐이더 컴파일 여부 확인
 	CheckAndPrintShaderCompileError(m_vertexShader);
 	CheckAndPrintShaderCompileError(m_tesselControlShader);
 	CheckAndPrintShaderCompileError(m_tesselEvaluationShader);
 	CheckAndPrintShaderCompileError(m_fragmentShader);
-	CheckAndPrintShaderCompileError(m_geometryShader);
 }
 
 void Shader::AttachAndLinkShaders() {
@@ -159,7 +153,6 @@ void Shader::AttachAndLinkShaders() {
 	glAttachShader(m_shaderProgram, m_tesselControlShader);
 	glAttachShader(m_shaderProgram, m_tesselEvaluationShader);
 	glAttachShader(m_shaderProgram, m_fragmentShader);
-	glAttachShader(m_shaderProgram, m_geometryShader);
 
 	// 쉐이더 링크
 	glLinkProgram(m_shaderProgram);
@@ -181,7 +174,7 @@ void Shader::CreateShaderProgram() {
 	LoadFragmentShaderFile(".\\Shader\\fragment_shader.glsl");
 	LoadTesselationControlShaderFile(".\\Shader\\tessel_control_shader.glsl");
 	LoadTesselationEvaluationShaderFile(".\\Shader\\tessel_evaluation_shader.glsl");
-	LoadGeometryShader(".\\Shader\\geometry_shader.glsl");
+	//LoadGeometryShader(".\\Shader\\geometry_shader.glsl");
 	CompileShaders();
 	AttachAndLinkShaders();
 }

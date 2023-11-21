@@ -6,13 +6,13 @@ layout (triangles, equal_spacing, ccw) in;
 
 // 테셀레이션 쉐이더에서 모든 input은 배열 형태여야함 -> 패치 형태로 입력이 오기 떄문
 in vec3 fragPositions[];
-out vec3 fragmentPositions;
+out vec3 fragPosition;
 
 in vec2 textureCoords[];
-out vec2 texCoords;
+out vec2 texCoord;
 
 in vec3 normals[];
-out vec3 norms;
+out vec3 vNormal;
 
 
 void main(void)
@@ -39,7 +39,7 @@ void main(void)
 	gl_Position = p;
 
 	// 최종 텍스쳐UV, 노멀, 프래그먼트 위치 설정
-	texCoords = textureUV;
-	norms = normalVec;
-	fragmentPositions = fragPos;
+	texCoord = textureUV;
+	vNormal = normalVec;
+	fragPosition = fragPos;
 }
