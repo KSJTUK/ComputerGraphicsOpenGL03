@@ -63,35 +63,10 @@ struct Meterials {
 uniform vec3 objectColor;
 uniform vec3 viewPosition;
 uniform Meterials meterials;
-// uniform Light light;
-// uniform DirectionLight light;
- uniform PointLight light;
-//uniform FlashLight light;
 
-vec3 calcLighting(Light light, vec3 normal, vec3 viewPos, vec3 fragPos)
-{
-	// calc lighting
-
-	// ¾Úºñ¾ðÆ® Ç×
-	// ¾Úºñ¾ðÆ® ºûÀÇ RGB»ö»ó °ú ¹°Ã¼ÀÇ ¾Úºñ¾ðÆ® °è¼ö°£ÀÇ ¿ø¼Ò°£ °ö¼ÀÀ¸·Î Á¤ÀÇ
-	// s * m (s == RGB, m == object's ambient)
-	vec3 ambient = light.ambient * vec3(texture(meterials.diffuse, texCoord));
-
-	// Æþ¸ðµ¨ÀÇ µðÇ»Áî Ç×
-	vec3 vNorm = normalize(normal);
-	vec3 lightDirection = normalize(light.position - fragPos);
-
-	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
-	vec3 diffuse = light.diffuse * (diffuseN * vec3(texture(meterials.diffuse, texCoord)));
-
-	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
-	vec3 viewDirection = normalize(viewPos - fragPos);
-	vec3 reflectDirection = reflect(-lightDirection, vNorm);
-	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0f), meterials.shininess);
-	vec3 specular = spec * (light.specular * meterials.specular);
-
-	return (ambient + diffuse + specular);
-}
+ uniform DirectionLight dirLight;
+ uniform PointLight pointLight;
+uniform FlashLight spotLight;
 
 vec3 calcDirectionLighting(DirectionLight light, vec3 normal, vec3 viewPos, vec3 fragPos)
 {
@@ -177,10 +152,11 @@ vec3 calcFlashLighting(FlashLight light, vec3 normal, vec3 viewPos,  vec3 fragPo
 
 void main(void)
 {
-//	 vec3 resultColor = calcLighting(light, vNormal, viewPosition, fragPosition);
-//	 vec3 resultColor = calcDirectionLighting(light, vNormal, viewPosition, fragPosition);
-	vec3 resultColor = calcPointLighting(light, vNormal, viewPosition, fragPosition);
-//	vec3 resultColor = calcFlashLighting(light, vNormal, viewPosition, fragPosition);
+	vec3 resultColor = calcDirectionLighting(dirLight, vNormal, viewPosition, fragPosition);
+
+	resultColor += calcPointLighting(pointLight, vNormal, viewPosition, fragPosition);
+
+	resultColor += calcFlashLighting(spotLight, vNormal, viewPosition, fragPosition);
 
 	FragColor = vec4 (resultColor * objectColor, 1.0f);
 }

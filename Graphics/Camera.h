@@ -34,6 +34,8 @@ private:
 	int m_rotateY{ 0 };
 	int m_orbitY{ 0 };
 
+	bool m_spotLightingOn{ true };
+
 public:
 	// getter
 	const glm::mat4& GetViewMat() const;

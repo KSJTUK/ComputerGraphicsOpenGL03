@@ -133,13 +133,15 @@ void Camera::Update(float deltaTime) {
 
 	// for all lighting
 	SHADER->SetUniformVec3("viewPosition", m_EYE);
-	//// for flash lighting values
-	//SHADER->SetUniformVec3("light.position", m_EYE);
-	//SHADER->SetUniformVec3("light.direction", m_AT);
-	//SHADER->SetUniformFloat("light.cutOff", std::cosf(glm::radians(7.5f)));
-	//SHADER->SetUniformFloat("light.outerCutOff", std::cosf(glm::radians(17.5f)));
 
-	//SHADER->SetUniformVec3("viewPositionForDynamicTessel", m_EYE);
+	if (m_spotLightingOn) {
+		//// for flash lighting values
+		SHADER->SetUniformVec3("spotLight.position", m_EYE);
+		SHADER->SetUniformVec3("spotLight.direction", m_AT);
+
+		SHADER->SetUniformFloat("spotLight.cutOff", std::cosf(glm::radians(7.5f)));
+		SHADER->SetUniformFloat("spotLight.outerCutOff", std::cosf(glm::radians(17.5f)));
+	}
 
 	SHADER->UnUseProgram();
 }
