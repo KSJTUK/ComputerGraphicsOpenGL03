@@ -11,7 +11,7 @@ Model::Model(const std::string& objectFilePath) {
 
 Model::Model(const std::string& objectFilePath, const std::string& textureFilePath) {
 	ReadObject(objectFilePath.c_str());
-	m_texture = std::make_unique<TextureComponent>(textureFilePath);
+	m_texture = std::make_unique<TextureComponent>(textureFilePath, true);
 }
 
 Model::~Model() { }

@@ -76,15 +76,17 @@ void GameWorld::Init() {
 
 	// test--------------------------------------------
 	m_cube = new Cube{ };
-	m_cube->SEtScale(glm::vec3{ 0.01f });
+	m_cube->SEtScale(glm::vec3{ 0.05f });
 	// ------------------------------------------------
 
 	for (int i = 0; i < 6; ++i) {
 		m_cubes.push_back(new Cube{ });
 		m_cubes.back()->SetPosition(glm::vec3{ -10.f + 10.f * (i % 3), 0.f, 20.f - 40.f * (i / 3)});
 		//m_cubes.back()->SetPosition(glm::vec3{ 0.f, 0.f, 20.f + 10.f * i });// 일렬로 세우기
-		m_cubes.back()->SEtScale(glm::vec3{ 0.1f });
-		m_cubes.back()->SetObjectColor(glm::linearRand(glm::vec3{ 0.f }, glm::vec3{ 1.f }));
+		m_cubes.back()->SEtScale(glm::vec3{ 0.05f });
+		if (!m_cubes.back()->ExistTexture()) {
+			m_cubes.back()->SetObjectColor(glm::linearRand(glm::vec3{ 0.f }, glm::vec3{ 1.f }));
+		}
 	}
 
 	// 투영 변환 행렬 계산 및 전송

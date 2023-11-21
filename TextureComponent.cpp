@@ -6,6 +6,11 @@ TextureComponent::TextureComponent(const std::string& textureFilePath) {
 	CreateTexture();
 }
 
+TextureComponent::TextureComponent(const std::string& textureFilePath, bool flipImageOnLoad) {
+	m_filePath = textureFilePath;
+	CreateTexture(flipImageOnLoad);
+}
+
 TextureComponent::~TextureComponent() { }
 
 void TextureComponent::SetTextureDefaultOption() {
@@ -15,9 +20,11 @@ void TextureComponent::SetTextureDefaultOption() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
-void TextureComponent::CreateTexture() {
+void TextureComponent::CreateTexture(bool flipImage) {
 	glGenTextures(1, &m_textureID);
 	glBindTexture(GL_TEXTURE_2D, m_textureID);
+
+	stbi_set_flip_vertically_on_load(flipImage);
 
 	unsigned char* imageData = stbi_load(m_filePath.c_str(), &m_width, &m_height, &m_nrChannels, 0);
 	assert(imageData);

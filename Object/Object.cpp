@@ -17,10 +17,14 @@ Object::Object(const std::string& modelTag, const glm::vec3& objectColor) : m_mo
 Object::~Object() { }
 
 void Object::SetMeterials() {
-	//SHADER->SetUniformVec3("meterials.ambient", m_meterial.ambient);
+	SHADER->SetUniformVec3("objectColor", m_objectColor);
 	SHADER->SetUniformInt("meterials.diffuse", 0);
 	SHADER->SetUniformVec3("meterials.specular", m_meterial.specular);
 	SHADER->SetUniformFloat("meterials.shininess", m_meterial.shininess);
+}
+
+bool Object::ExistTexture() const {
+	return m_model->ExistTexture();
 }
 
 void Object::SetObjectColor(const glm::vec3& color) {
@@ -37,9 +41,6 @@ void Object::Render() {
 	glm::mat4 translateMat = glm::translate(unit, m_position);
 
 	m_transform = translateMat * rotateMat * scaleMat;
-
-	m_meterial.ambient = m_objectColor;
-	m_meterial.diffuse = m_objectColor;
 
 	SetMeterials();
 

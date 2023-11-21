@@ -36,6 +36,7 @@ protected:
 
 public:
 	void SetMeterials();
+	bool ExistTexture() const;
 	void SetObjectColor(const glm::vec3& color);
 
 public:

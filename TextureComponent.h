@@ -3,6 +3,7 @@
 class TextureComponent {
 public:
 	TextureComponent(const std::string& textureFilePath);
+	TextureComponent(const std::string& textureFilePath, bool flipImageOnLoad);
 	~TextureComponent();
 
 private:
@@ -17,6 +18,6 @@ private:
 public:
 	static void SetTextureDefaultOption();
 
-	void CreateTexture();
+	void CreateTexture(bool flipImage=false);
 	uint32 GetTextureID() const;
 };
