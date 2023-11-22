@@ -19,6 +19,14 @@ LightObject::LightObject(const std::string& modelTag, const glm::vec3& lightColo
 
 LightObject::~LightObject() { }
 
+void LightObject::StartOnOff() {
+	m_lightOnOff = true;
+}
+
+void LightObject::StopOnOff() {
+	m_lightOnOff = false;
+}
+
 void LightObject::SetLightOption() {
 	glm::vec3 diffuseColor{ m_lightColor * m_lightOption.diffuse };
 	glm::vec3 ambientColor{ diffuseColor * m_lightOption.ambient };
@@ -41,8 +49,8 @@ void LightObject::SetLightOption() {
 	SHADER->SetUniformVec3("pointLight.specular", m_lightOption.specular);
 
 	SHADER->SetUniformFloat("pointLight.constant", 1.0f);
-	SHADER->SetUniformFloat("pointLight.linear", 0.00014f);
-	SHADER->SetUniformFloat("pointLight.quadratic", 0.0000007f);
+	SHADER->SetUniformFloat("pointLight.linear", 0.027f);
+	SHADER->SetUniformFloat("pointLight.quadratic", 0.0028f);
 
 	if (m_sportLightingOn) {
 		SHADER->SetUniformVec3("spotLight.ambient", ambientColor);
@@ -57,38 +65,40 @@ void LightObject::SetLightOption() {
 
 void LightObject::Update(float deltaTime) {
 	//// 밝기 조절
-	//static float lightChangedAngle = 0.f;
-	//static float lightDir{ 1.f };
+	if (m_lightOnOff) {
+		static float lightChangedAngle = 0.f;
+		static float lightDir{ 1.f };
 
-	//float maxColorRGB{ std::max({ m_lightColor.x, m_lightColor.y, m_lightColor.z }) };
-	//float minColorRGB{ std::min({ m_lightColor.x, m_lightColor.y, m_lightColor.z }) };
+		float maxColorRGB{ std::max({ m_lightColor.x, m_lightColor.y, m_lightColor.z }) };
+		float minColorRGB{ std::min({ m_lightColor.x, m_lightColor.y, m_lightColor.z }) };
 
-	//m_lightColor += glm::vec3{ std::sinf(glm::radians(lightChangedAngle)) };
+		m_lightColor += glm::vec3{ std::sinf(glm::radians(lightChangedAngle)) };
 
-	//lightChangedAngle += 0.1f * lightDir * deltaTime;
+		lightChangedAngle += 0.1f * lightDir * deltaTime;
 
-	//if (maxColorRGB >= 1.f) {
-	//	m_lightColor -= glm::vec3{ maxColorRGB - 1.f };
-	//	lightDir = -1.f;
-	//}
-	//else if (maxColorRGB <= 0.f) {
-	//	m_lightColor += glm::vec3{ -maxColorRGB };
-	//	lightDir = 1.f;
-	//}
+		if (maxColorRGB >= 1.f) {
+			m_lightColor -= glm::vec3{ maxColorRGB - 1.f };
+			lightDir = -1.f;
+		}
+		else if (maxColorRGB <= 0.f) {
+			m_lightColor += glm::vec3{ -maxColorRGB };
+			lightDir = 1.f;
+		}
+	}
 
 	//// 원운동 
-	//static float angle = 0.f;
-	//static float radius = 10.f;
+	static float angle = 0.f;
+	if (m_orbit) {
+		m_position.x = m_radius * std::cosf(glm::radians(angle));
+		m_position.z = m_radius * std::sinf(glm::radians(angle));
+		angle += m_angleSpeed * deltaTime;
 
-	//m_position.x = radius * std::cosf(glm::radians(angle));
-	//m_position.z = radius * std::sinf(glm::radians(angle));
-	//angle += radius * deltaTime;
+		if (angle > 360.f) {
+			angle = 0.f;
+		}
 
-	//if (angle > 360.f) {
-	//	angle = 0.f;
-	//}
-
-	//m_lightOption.position = m_position;
+	}
+	m_lightOption.position = m_position;
 }
 
 void LightObject::Render() {

@@ -36,6 +36,7 @@
     <ClCompile Include="Util\Engine.cpp" />
     <ClCompile Include="Util\stb_image.cpp" />
     <ClCompile Include="Util\Timer.cpp" />
+    <ClCompile Include="WorldScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\Camera.h" />
@@ -54,8 +55,14 @@
     <ClInclude Include="Util\Engine.h" />
     <ClInclude Include="Util\stb_image.h" />
     <ClInclude Include="Util\Timer.h" />
+    <ClInclude Include="WorldScene.h" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="obital_vertex_shader.glsl" />
+    <None Include="orbital_fragment_shader.glsl" />
+    <None Include="orbital_geometry_shader.glsl" />
+    <None Include="particle_fragment_shader.glsl" />
+    <None Include="particle_vertex_shader.glsl" />
     <None Include="Shader\fragment_shader.glsl" />
     <None Include="Shader\geometry_shader.glsl" />
     <None Include="Shader\light_object_fshader.glsl" />

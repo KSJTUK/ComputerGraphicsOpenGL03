@@ -17,7 +17,7 @@ private:
 	std::shared_ptr<struct WindowInfo> m_windowInfo{ }; // aspect(종횡비) = width / height
 
 	float m_near{ 0.1f };           // 시야 절두체의 가까운 평면과의 거리
-	float m_far{ 100000.f };           // 시야 절두체의 먼 평면과의 거리
+	float m_far{ 1000.f };           // 시야 절두체의 먼 평면과의 거리
 
 	glm::mat4 m_perspectiveMatrix{ 1.f };
 
@@ -30,6 +30,9 @@ private:
 
 	const int m_objectTesselLevel{ 6 };
 	const int m_objectTesselOff{ 1 };
+
+	std::vector<class WorldScene*> m_scenes{ };
+	int m_sceneIndex{ };
 	// ------------------------------------------------
 
 public:

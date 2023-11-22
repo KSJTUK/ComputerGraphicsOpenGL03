@@ -43,14 +43,6 @@ void Camera::Input(unsigned char key, bool down) {
 		Move(-m_cameraAxisY);
 		break;
 
-	case 'v':
-		if (m_fixAt > 0.f) {
-			ViewPointFix();
-		}
-		else {
-			ViewPointUnFix();
-		}
-
 	case 'd':
 		Move(m_cameraAxisX);
 		break;

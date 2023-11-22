@@ -40,6 +40,18 @@
     <Filter Include="헤더 파일\Util">
       <UniqueIdentifier>{03d96898-5485-4d45-a1d6-253a2fd440ad}</UniqueIdentifier>
     </Filter>
+    <Filter Include="리소스 파일\ObjectShader">
+      <UniqueIdentifier>{b58e2142-d4e3-4a7b-9db6-1574cc5c434a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일\LightingObjectShader">
+      <UniqueIdentifier>{a9959693-3eae-4ba4-9053-0c5abc08f6d1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일\SnowParticleShader">
+      <UniqueIdentifier>{c4a5fa97-9218-4c05-a150-e51e17b16c5e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="리소스 파일\OrbitalParticleShader">
+      <UniqueIdentifier>{28421690-97c6-41c2-b69a-358c0b61da41}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -93,6 +105,9 @@
     <ClCompile Include="TextureComponent.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="WorldScene.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -143,28 +158,46 @@
     <ClInclude Include="TextureComponent.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="WorldScene.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\fragment_shader.glsl">
-      <Filter>리소스 파일</Filter>
-    </None>
-    <None Include="Shader\vertex_shader.glsl">
-      <Filter>리소스 파일</Filter>
-    </None>
-    <None Include="Shader\light_object_vshader.glsl">
-      <Filter>리소스 파일</Filter>
-    </None>
-    <None Include="Shader\light_object_fshader.glsl">
-      <Filter>리소스 파일</Filter>
+    <None Include="Shader\tessel_control_shader.glsl">
+      <Filter>리소스 파일\ObjectShader</Filter>
     </None>
     <None Include="Shader\tessel_evaluation_shader.glsl">
-      <Filter>리소스 파일</Filter>
+      <Filter>리소스 파일\ObjectShader</Filter>
     </None>
-    <None Include="Shader\tessel_control_shader.glsl">
-      <Filter>리소스 파일</Filter>
+    <None Include="Shader\vertex_shader.glsl">
+      <Filter>리소스 파일\ObjectShader</Filter>
+    </None>
+    <None Include="Shader\fragment_shader.glsl">
+      <Filter>리소스 파일\ObjectShader</Filter>
+    </None>
+    <None Include="Shader\light_object_fshader.glsl">
+      <Filter>리소스 파일\LightingObjectShader</Filter>
+    </None>
+    <None Include="Shader\light_object_vshader.glsl">
+      <Filter>리소스 파일\LightingObjectShader</Filter>
     </None>
     <None Include="Shader\geometry_shader.glsl">
-      <Filter>리소스 파일</Filter>
+      <Filter>리소스 파일\SnowParticleShader</Filter>
+    </None>
+    <None Include="particle_fragment_shader.glsl">
+      <Filter>리소스 파일\SnowParticleShader</Filter>
+    </None>
+    <None Include="particle_vertex_shader.glsl">
+      <Filter>리소스 파일\SnowParticleShader</Filter>
+    </None>
+    <None Include="obital_vertex_shader.glsl">
+      <Filter>리소스 파일\OrbitalParticleShader</Filter>
+    </None>
+    <None Include="orbital_fragment_shader.glsl">
+      <Filter>리소스 파일\OrbitalParticleShader</Filter>
+    </None>
+    <None Include="orbital_geometry_shader.glsl">
+      <Filter>리소스 파일\OrbitalParticleShader</Filter>
     </None>
   </ItemGroup>
 </Project>

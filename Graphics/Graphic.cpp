@@ -8,6 +8,7 @@
 #include "Object/Cube.h"
 #include "Object/LightObject.h"
 #include "TextureComponent.h"
+#include "WorldScene.h"
 // ------------------------------------------------
 
 GameWorld::GameWorld() { }
@@ -41,6 +42,7 @@ void GameWorld::CalcPerspectiveMat() {
 
 void GameWorld::Input(unsigned char key, bool down) {
 	m_camera->Input(key, down);
+	m_scenes[m_sceneIndex]->Input(key, down);
 }
 
 void GameWorld::SpecialInput(int key, bool down) {
@@ -93,50 +95,35 @@ void GameWorld::Init() {
 	MODELLIST->LoadModel("cube.obj");
 	MODELLIST->LoadModel("sphere.obj");
 	MODELLIST->LoadModel("earth.obj", "Earth_diffuse_512p.png");
+	MODELLIST->LoadModel("moon.obj", "moon_diffuse_2k.png");
 
 	TextureComponent::SetTextureDefaultOption();
 
 	// test--------------------------------------------
-	m_cube = new Cube{ };
-	m_cube->SEtScale(glm::vec3{ 0.5f });
-	m_cube->SetPosition(glm::vec3{ 900.f, 0.f, 0.f });
+	m_scenes.push_back(new WorldScene1{ });
 	// ------------------------------------------------
 
-	//for (int i = 0; i < 6; ++i) {
-	//	m_cubes.push_back(new Cube{ });
-	//	m_cubes.back()->SetPosition(glm::vec3{ -10.f + 10.f * (i % 3), 0.f, 20.f - 40.f * (i / 3)});
-	//	//m_cubes.back()->SetPosition(glm::vec3{ 0.f, 0.f, 20.f + 10.f * i });// 일렬로 세우기
-	//	m_cubes.back()->SEtScale(glm::vec3{ 0.05f });
-	//	if (!m_cubes.back()->ExistTexture()) {
-	//		m_cubes.back()->SetObjectColor(glm::linearRand(glm::vec3{ 0.f }, glm::vec3{ 1.f }));
-	//	}
-	//}
+	for (auto& scene : m_scenes) {
+		scene->Init();
+	}
+
 
 	// 투영 변환 행렬 계산 및 전송
 	CalcPerspectiveMat();
 
 	m_isInited = true;
 	// 쉐이더 프로그램 사용 종료
-	SHADER->UnUseProgram();
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-
-	LIGHTOBJECTSHADER->UseProgram();
-	m_lightObj = new LightObject{ "sphere", glm::vec3{ 1.f, 1.f, 1.f } };
-	m_lightObj->SEtScale(glm::vec3{ 100.f });
-	LIGHTOBJECTSHADER->UnUseProgram();
+	SHADER->UnUseProgram();
 }
 
 void GameWorld::Update(float deltaTime) {
 	m_deltaTime = deltaTime;
 	m_camera->Update(m_deltaTime);
 	// test--------------------------------------------
-	m_cube->Update(m_deltaTime);
-	m_lightObj->Update(m_deltaTime);
+	m_scenes[m_sceneIndex]->Update(deltaTime);
 	// ------------------------------------------------
-	/*for (auto& cube : m_cubes) {
-		cube->Update(m_deltaTime);
-	}*/
 }
 
 void GameWorld::Render() {
@@ -150,23 +137,15 @@ void GameWorld::Render() {
 	SHADER->UseProgram();
 	SHADER->SetPerspectiveMat(m_perspectiveMatrix);
 	SHADER->SetViewMat(cameraViewMatrix);
-
-	m_lightObj->SetLightOption();
-
-	m_cube->Render();
-	//for (auto& cube : m_cubes) {
-	//	cube->Render();
-	//}
-
 	SHADER->UnUseProgram();
 
 	LIGHTOBJECTSHADER->UseProgram();
 	LIGHTOBJECTSHADER->SetPerspectiveMat(m_perspectiveMatrix);
 	LIGHTOBJECTSHADER->SetViewMat(cameraViewMatrix);
-	
-	m_lightObj->Render();
-
 	LIGHTOBJECTSHADER->UnUseProgram();
+
+	m_scenes[m_sceneIndex]->Render();
+
 
 	glViewport(0, 0, m_windowInfo->width, m_windowInfo->height);
 

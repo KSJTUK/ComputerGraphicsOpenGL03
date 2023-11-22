@@ -23,9 +23,30 @@ private:
 	bool m_directionLightingOn{ false };
 	bool m_sportLightingOn{ false };
 
+	float m_radius{ 3.f };
+	float m_angleSpeed{ 1.f };
+	bool m_orbit{ false };
+	bool m_rotate{ false };
+
+	bool m_lightOnOff{ false };
+
 public:
+	void IncOrbitRadius() { m_radius += 1.f; }
+	void DecOrbitRadius() { m_radius -= 1.f; }
+
+	void IncAngleSpeed() { m_angleSpeed += 1.f; }
+	void DecAngleSpeed() { m_angleSpeed -= 1.f; }
+	
+	void StartOrbit() { m_orbit = true; }
+	void StopOrbit() { m_orbit = false; }
+	void StartRotation() { m_rotate = true; }
+	void StopRotation() { m_rotate = false; }
+	void StartOnOff();
+	void StopOnOff();
+
 	void SetLightOption();
 
+	void SetLightColor(const glm::vec3& color) { m_lightColor = color; }
 	glm::vec3 GetLightColor() const { return m_lightColor; }
 
 public:

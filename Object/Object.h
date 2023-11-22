@@ -4,7 +4,7 @@ struct Meterial {
 	glm::vec3 ambient{ 1.f };
 	glm::vec3 diffuse{ 0.5f };
 	glm::vec3 specular{ 1.f }; // 하이라이트 정도를 조절
-	float shininess{ 32.f };     // 하이라이트의 범위(카메라가 감지하는 하이라이트의 범위)조절
+	float shininess{ 16.f };     // 하이라이트의 범위(카메라가 감지하는 하이라이트의 범위)조절
 };
 
 class Object {
@@ -38,6 +38,7 @@ public:
 	void SetMeterials();
 	bool ExistTexture() const;
 	void SetObjectColor(const glm::vec3& color);
+	std::string GetModelTag() const { return m_modelTag; }
 
 public:
 	void SetInitMat(const glm::mat4& init) { m_initTransform = init; }
