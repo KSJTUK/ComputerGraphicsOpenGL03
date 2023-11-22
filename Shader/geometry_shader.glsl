@@ -1,7 +1,7 @@
 #version 460 core
 
 layout (points) in;
-layout (line_strip, max_vertices = 3) out;
+layout (points, max_vertices = 1) out;
 
 in vec4 vs_out_color[];
 in vec2 vs_out_tex[];
@@ -18,6 +18,6 @@ void main(void)
 		gs_out_tex = vs_out_tex[i];
 
 		EmitVertex();
-		EndPrimitive();
 	}
+	EndPrimitive();
 }

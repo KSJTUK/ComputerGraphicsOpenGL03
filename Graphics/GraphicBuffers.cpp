@@ -59,6 +59,6 @@ void GraphicBuffers::SetDrawMode(unsigned int mode) {
 void GraphicBuffers::Render() {
 	// shaderProgram 에서 UseProgram을 활성화 했다는 가정하에 수행
 	glBindVertexArray(m_vertexArray);
-	glDrawArrays(m_drawMode, 0, m_vertexDataSize);
+	glDrawArrays(m_drawMode, 0, uint32(m_vertexDataSize));
 	glBindVertexArray(0); // Array 바인드 해제
 }

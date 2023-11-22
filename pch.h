@@ -30,13 +30,6 @@ struct Vertex {
 	glm::vec3 normal{ };
 };
 
-struct Particle {
-	glm::vec3 position{ };
-	glm::vec2 texture{ };
-	glm::vec4 color{ };
-	glm::vec3 speed{ };
-};
-
 // 생성할 윈도우의ㅡ 정보를 담을 구조체 정의
 struct WindowInfo {
 	int x;
@@ -66,4 +59,5 @@ namespace constants {
 
 #define SHADER Shader::GetInstance()
 #define LIGHTOBJECTSHADER LightObjectShader::GetInstance()
+#define PARTICLESHADER ParticleShader::GetInstance()
 #define MODELLIST ModelList::GetInstance()

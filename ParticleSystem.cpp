@@ -1,35 +1,53 @@
 #include "pch.h"
 #include "ParticleSystem.h"
+#include "Graphics/Shader.h"
 
 ParticleSystem::ParticleSystem() { 
-	glGenBuffers(1, &m_particleVBO);
+	PARTICLESHADER->UseProgram();
+	glPointSize(m_primitiveSize);
 	glGenVertexArrays(1, &m_particleVAO);
+	glGenBuffers(1, &m_particleVBO);
 
 	glBindVertexArray(m_particleVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_particleVBO);
+	PARTICLESHADER->UnUseProgram();
 }
 
 ParticleSystem::ParticleSystem(float lifeTime, int maxCountParticles) 
-	: m_particlesLifeTime{ lifeTime }, m_maxCountParticle{ maxCountParticles }, m_particleDrawMode{ GL_POINTS } {
-	glGenBuffers(1, &m_particleVBO);
+	: m_particlesLifeTime{ lifeTime }, m_maxCountParticle{ maxCountParticles } {
+	PARTICLESHADER->UseProgram();
+	glPointSize(m_primitiveSize);
 	glGenVertexArrays(1, &m_particleVAO);
+	glGenBuffers(1, &m_particleVBO);
 
 	glBindVertexArray(m_particleVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_particleVBO);
+	PARTICLESHADER->UnUseProgram();
 }
 
 ParticleSystem::ParticleSystem(float lifeTime, int maxCountParticles, float createTime) 
 	:m_particlesLifeTime{ lifeTime }, m_maxCountParticle{ maxCountParticles }, m_newParticleCreateTime{ createTime } {
-	glGenBuffers(1, &m_particleVBO);
+	PARTICLESHADER->UseProgram();
+	glPointSize(m_primitiveSize);
 	glGenVertexArrays(1, &m_particleVAO);
+	glGenBuffers(1, &m_particleVBO);
 
 	glBindVertexArray(m_particleVAO);
 	glBindBuffer(GL_ARRAY_BUFFER, m_particleVBO);
+	PARTICLESHADER->UnUseProgram();
 }
 
 ParticleSystem::ParticleSystem(std::pair<glm::vec3, glm::vec3>& generateParticleArea, float lifeTime, int maxCountParticles, float createTime) 
-	: m_particlesLifeTime{ lifeTime }, m_maxCountParticle{ maxCountParticles }, m_newParticleCreateTime{ createTime } {
+	: m_particleGenerateArea{ generateParticleArea }, m_particlesLifeTime {lifeTime },
+	m_maxCountParticle{ maxCountParticles }, m_newParticleCreateTime{ createTime } {
+	PARTICLESHADER->UseProgram();
+	glPointSize(m_primitiveSize);
+	glGenVertexArrays(1, &m_particleVAO);
+	glGenBuffers(1, &m_particleVBO);
 
+	glBindVertexArray(m_particleVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_particleVBO);
+	PARTICLESHADER->UnUseProgram();
 }
 
 ParticleSystem::~ParticleSystem() { 
@@ -45,14 +63,17 @@ void ParticleSystem::CreateNewParticle() {
 		generatePosition,
 		{ },
 		particleColor,
-		{ },
+		defaultSpeed,
 		m_particlesLifeTime
 	});
 }
 
 void ParticleSystem::ParticleUpdate(Particle& particle) {
 	particle.lifeTime -= m_deltaTime;
-	particle.speed.y -= gravity * m_deltaTime;
+
+	if (particle.speed.y > -endGravitySpeed) {
+		particle.speed.y -= gravity * m_deltaTime;
+	}
 
 	particle.position += particle.speed * m_deltaTime;
 }
@@ -69,6 +90,10 @@ void ParticleSystem::RemoveLifeEndParticles() {
 }
 
 void ParticleSystem::SetParticleVertexs() {
+	PARTICLESHADER->UseProgram();
+
+	glBindVertexArray(m_particleVAO);
+
 	glBufferData(GL_ARRAY_BUFFER, m_particles.size() * sizeof(Particle), &m_particles[0], GL_DYNAMIC_DRAW);
 
 	// location 0번에 Particle객체의 position정보를 넘겨줌
@@ -80,13 +105,20 @@ void ParticleSystem::SetParticleVertexs() {
 	glEnableVertexAttribArray(1);
 
 	// location 2번에 Particle객체의 color정보를 넘겨줌
-	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, color));
+	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, color));
 	glEnableVertexAttribArray(2);
+	PARTICLESHADER->UnUseProgram();
+}
 
-	glPatchParameteri(GL_PATCH_VERTICES, 3);
+void ParticleSystem::SetPerspectiveMatrix(const glm::mat4& perspectiveMatrix) {
+	PARTICLESHADER->UseProgram();
+	PARTICLESHADER->SetPerspectiveMat(perspectiveMatrix);
+	PARTICLESHADER->UnUseProgram();
 }
 
 void ParticleSystem::Update(float deltaTime) {
+	m_deltaTime = deltaTime;
+
 	if (m_timeElapsed > m_newParticleCreateTime) {
 		m_timeElapsed = 0.f;
 		CreateNewParticle();
@@ -95,14 +127,20 @@ void ParticleSystem::Update(float deltaTime) {
 	for (auto& particle : m_particles) {
 		ParticleUpdate(particle);
 	}
+	std::cout << "particles count: " << m_particles.size() << std::endl;
 
 	RemoveLifeEndParticles();
 
-	SetParticleVertexs();
+	if (!m_particles.empty()) {
+		SetParticleVertexs();
+	}
+	m_timeElapsed += deltaTime;
 }
 
 void ParticleSystem::Render() {
+	PARTICLESHADER->UseProgram();
 	glBindVertexArray(m_particleVAO);
-	glDrawArrays(m_particleDrawMode, 0, m_particles.size());
+	glDrawArrays(m_particleDrawMode, 0, uint32(m_particles.size()));
 	glBindVertexArray(0);
+	PARTICLESHADER->UseProgram();
 }

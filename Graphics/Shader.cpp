@@ -120,7 +120,6 @@ void Shader::CompileShaders() {
 	m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
 	m_tesselControlShader = glCreateShader(GL_TESS_CONTROL_SHADER);
 	m_tesselEvaluationShader = glCreateShader(GL_TESS_EVALUATION_SHADER);
-	m_geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
 
 	// 쉐이더 소스코드 불러오기
 	const char* contentsPath = m_vertexShaderFileContents.c_str();
@@ -455,4 +454,225 @@ void LightObjectShader::SetUniformFloat(const std::string& valName, const float&
 	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
 	assert(!(valLocation == -1));
 	glUniform1f(valLocation, fValue);
+}
+
+
+// ParticleShader
+// ----------------------------------------------------------
+ParticleShader* ParticleShader::m_instance = nullptr;
+
+ParticleShader::ParticleShader() { }
+
+ParticleShader::~ParticleShader() {
+	glDeleteShader(m_vertexShader);
+	glDeleteShader(m_fragmentShader);
+	glDeleteProgram(m_shaderProgram);
+}
+
+ParticleShader* ParticleShader::GetInstance() {
+	if (!m_instance) {
+		m_instance = new ParticleShader{ };
+	}
+	return m_instance;
+}
+
+void ParticleShader::Destroy() {
+	if (m_instance) {
+		delete m_instance;
+	}
+}
+
+void ParticleShader::LoadVertexShaderFile(const char* filePath) {
+	std::fstream vertexFile{ filePath, std::ios::in };
+
+	if (!vertexFile.is_open()) {
+		throw "vertex shader file open error";
+	}
+
+
+	m_vertexShaderFileContents = { "" };
+	std::string line{ " " };
+	while (!vertexFile.eof()) {
+		std::getline(vertexFile, line);
+		m_vertexShaderFileContents.append(line + "\n");
+	}
+
+	vertexFile.close();
+}
+
+void ParticleShader::LoadFragmentShaderFile(const char* filePath) {
+	std::fstream fragmentFile{ filePath, std::ios::in };
+
+	if (!fragmentFile.is_open()) {
+		throw "fragment shader file open error";
+	}
+
+	m_fragmentShaderFileContents = { "" };
+	std::string line{ " " };
+	while (!fragmentFile.eof()) {
+		std::getline(fragmentFile, line);
+		m_fragmentShaderFileContents.append(line + "\n");
+	}
+
+
+	fragmentFile.close();
+}
+
+void ParticleShader::LoadGeometryShader(const char* filePath) {
+	std::fstream geometryFile{ filePath, std::ios::in };
+
+	if (!geometryFile.is_open()) {
+		throw "tesselation evaluate shader file open error";
+	}
+
+	m_geometryShaderFileContents = { "" };
+	std::string line{ " " };
+	while (!geometryFile.eof()) {
+		std::getline(geometryFile, line);
+		m_geometryShaderFileContents.append(line + "\n");
+	}
+
+	geometryFile.close();
+}
+
+void ParticleShader::CompileShaders() {
+	m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	m_geometryShader = glCreateShader(GL_GEOMETRY_SHADER);
+
+	// 쉐이더 소스코드 불러오기
+	const char* contentsPath = m_vertexShaderFileContents.c_str();
+	glShaderSource(m_vertexShader, 1, &contentsPath, NULL);
+
+	contentsPath = m_fragmentShaderFileContents.c_str();
+	glShaderSource(m_fragmentShader, 1, &contentsPath, NULL);
+
+	contentsPath = m_geometryShaderFileContents.c_str();
+	glShaderSource(m_geometryShader, 1, &contentsPath, NULL);
+
+	// 쉐이더 컴파일
+	glCompileShader(m_vertexShader);
+	glCompileShader(m_fragmentShader);
+	glCompileShader(m_geometryShader);
+
+	// 쉐이더 컴파일 여부 확인
+	CheckAndPrintShaderCompileError(m_vertexShader);
+	CheckAndPrintShaderCompileError(m_fragmentShader);
+	CheckAndPrintShaderCompileError(m_geometryShader);
+}
+
+void ParticleShader::AttachAndLinkShaders() {
+	glAttachShader(m_shaderProgram, m_vertexShader);
+	glAttachShader(m_shaderProgram, m_geometryShader);
+	glAttachShader(m_shaderProgram, m_fragmentShader);
+
+	// 쉐이더 링크
+	glLinkProgram(m_shaderProgram);
+
+	// 쉐이더들이 제대로 링크 되었는지 확인
+	int result{ };
+	char errLog[BUFSIZ]{ };
+	glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &result);
+	if (!result) {
+		glGetProgramInfoLog(m_shaderProgram, sizeof(errLog), NULL, errLog);
+		std::cerr << std::string{ errLog } << std::endl;
+		throw "Shaders are not Linked";
+	}
+}
+
+void ParticleShader::CreateShaderProgram() {
+	m_shaderProgram = glCreateProgram();
+	LoadVertexShaderFile(".\\Shader\\particle_vertex_shader.glsl");
+	LoadFragmentShaderFile(".\\Shader\\particle_fragment_shader.glsl");
+	LoadGeometryShader(".\\Shader\\geometry_shader.glsl");
+	CompileShaders();
+	AttachAndLinkShaders();
+}
+
+void ParticleShader::UseProgram() {
+	glUseProgram(m_shaderProgram);
+}
+
+void ParticleShader::UnUseProgram() {
+	glUseProgram(0);
+}
+
+void ParticleShader::SetViewMat(const glm::mat4& viewMat) {
+	int viewMatLocation = glGetUniformLocation(m_shaderProgram, "viewMat");
+	if (viewMatLocation == -1) {
+		assert(0);
+	}
+	glUniformMatrix4fv(viewMatLocation, 1, GL_FALSE, glm::value_ptr(viewMat));
+}
+
+void ParticleShader::SetPerspectiveMat(const glm::mat4& perspectiveMat) {
+	int perspectiveMatLocation = glGetUniformLocation(m_shaderProgram, "perspectiveMat");
+	if (perspectiveMatLocation == -1) {
+		assert(0);
+	}
+	glUniformMatrix4fv(perspectiveMatLocation, 1, GL_FALSE, glm::value_ptr(perspectiveMat));
+}
+
+void ParticleShader::CheckAndPrintShaderCompileError(const uint32& shaderID) {
+	int result{ };
+	char errLog[BUFSIZ]{ };
+	glGetShaderiv(shaderID, GL_COMPILE_STATUS, &result);
+	if (!result) {
+		glGetShaderInfoLog(shaderID, sizeof(errLog), NULL, errLog);
+		std::cout << std::string{ errLog } << std::endl;
+	}
+}
+
+void ParticleShader::SetUniformMat4(const std::string& valName, const glm::mat4& matrix) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniformMatrix4fv(valLocation, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void ParticleShader::SetUniformMat3(const std::string& valName, const glm::mat3& matrix) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniformMatrix3fv(valLocation, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void ParticleShader::SetUniformMat2(const std::string& valName, const glm::mat2& matrix) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniformMatrix2fv(valLocation, 1, GL_FALSE, glm::value_ptr(matrix));
+}
+
+void ParticleShader::SetUniformVec4(const std::string& valName, const glm::vec4& vector) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniform4fv(valLocation, 1, glm::value_ptr(vector));
+}
+
+void ParticleShader::SetUniformVec3(const std::string& valName, const glm::vec3& vector) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniform3fv(valLocation, 1, glm::value_ptr(vector));
+}
+
+void ParticleShader::SetUniformVec2(const std::string& valName, const glm::vec2& vector) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniform2fv(valLocation, 1, glm::value_ptr(vector));
+}
+
+void ParticleShader::SetUniformFloat(const std::string& valName, const float& fValue) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniform1fv(valLocation, 1, &fValue);
+}
+
+void ParticleShader::SetUniformInt(const std::string& valName, const int& iValue) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniform1iv(valLocation, 1, &iValue);
+}
+
+void ParticleShader::SetUniformBool(const std::string& valName, const int& bValue) {
+	int valLocation{ glGetUniformLocation(m_shaderProgram, valName.c_str()) };
+	assert(!(valLocation == -1));
+	glUniform1iv(valLocation, 1, &bValue);
 }

@@ -5,8 +5,8 @@ struct Particle {
 	glm::vec3 position{ };
 	glm::vec2 texture{ };
 	glm::vec4 color{ };
-	glm::vec3 speed{ };
 
+	glm::vec3 speed{ };
 	float lifeTime{ };
 };
 
@@ -30,6 +30,7 @@ private:
 	unsigned int m_particleVAO{ };
 	unsigned int m_particleVBO{ };
 	int m_particleDrawMode{ GL_POINTS };
+	float m_primitiveSize{ 4.0f };
 
 	float m_timeElapsed{ };
 
@@ -42,10 +43,12 @@ private:
 	int m_maxCountParticle{ 100 };
 
 private:
-	void CreateNewParticle{ };
+	void CreateNewParticle();
 	void ParticleUpdate(Particle& particle);
 	void RemoveLifeEndParticles();
 	void SetParticleVertexs();
+
+	void SetPerspectiveMatrix(const glm::mat4& perspectiveMatrix);
 
 public:
 	void Update(float deltaTime);

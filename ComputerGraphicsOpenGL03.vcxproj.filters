@@ -196,20 +196,11 @@
     <None Include="Shader\geometry_shader.glsl">
       <Filter>리소스 파일\SnowParticleShader</Filter>
     </None>
-    <None Include="particle_fragment_shader.glsl">
+    <None Include="Shader\particle_fragment_shader.glsl">
       <Filter>리소스 파일\SnowParticleShader</Filter>
     </None>
-    <None Include="particle_vertex_shader.glsl">
+    <None Include="Shader\particle_vertex_shader.glsl">
       <Filter>리소스 파일\SnowParticleShader</Filter>
-    </None>
-    <None Include="obital_vertex_shader.glsl">
-      <Filter>리소스 파일\OrbitalParticleShader</Filter>
-    </None>
-    <None Include="orbital_fragment_shader.glsl">
-      <Filter>리소스 파일\OrbitalParticleShader</Filter>
-    </None>
-    <None Include="orbital_geometry_shader.glsl">
-      <Filter>리소스 파일\OrbitalParticleShader</Filter>
     </None>
   </ItemGroup>
 </Project>

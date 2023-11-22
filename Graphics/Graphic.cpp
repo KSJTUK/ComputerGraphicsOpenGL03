@@ -80,6 +80,7 @@ void GameWorld::Init() {
 	// 쉐이더 프로그램 생성
 	SHADER->CreateShaderProgram();
 	LIGHTOBJECTSHADER->CreateShaderProgram();
+	PARTICLESHADER->CreateShaderProgram();
 	// 쉐이더 프로그램이 각종 정점 정보, 행렬들을 등록, 전송할 수 있도록 프로그램 사용 설정
 	SHADER->UseProgram();
 
@@ -133,6 +134,11 @@ void GameWorld::Render() {
 
 	m_camera->Render();
 	glm::mat4 cameraViewMatrix{ m_camera->GetViewMat() };
+
+	PARTICLESHADER->UseProgram();
+	PARTICLESHADER->SetPerspectiveMat(m_perspectiveMatrix);
+	PARTICLESHADER->SetViewMat(cameraViewMatrix);
+	PARTICLESHADER->UnUseProgram();
 
 	SHADER->UseProgram();
 	SHADER->SetPerspectiveMat(m_perspectiveMatrix);

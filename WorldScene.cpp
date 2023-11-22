@@ -1,9 +1,14 @@
 #include "pch.h"
 #include "WorldScene.h"
+#include "ParticleSystem.h"
 #include "Object/Cube.h"
 #include "Object/LightObject.h"
 #include "Graphics/Shader.h"
 #include "tank.h"
+
+WorldScene1::WorldScene1() { }
+
+WorldScene1::~WorldScene1() { }
 
 void WorldScene1::Init() {
 	SHADER->UseProgram();
@@ -32,6 +37,11 @@ void WorldScene1::Init() {
 	m_lightObject->SEtScale(glm::vec3{ 0.1f });
 	m_lightObject->SetPosition(glm::vec3{ 3.f, 0.f, 0.f });
 	LIGHTOBJECTSHADER->UnUseProgram();
+
+	PARTICLESHADER->UseProgram();
+	auto particleGenerateArea = std::make_pair(glm::vec3{ -10.f, 20.f, -10.f }, glm::vec3{ 10.f, 20.f, 10.f });
+	m_particleSystem = std::make_unique<ParticleSystem>(particleGenerateArea, 20.f, 500, 0.5f);
+	PARTICLESHADER->UnUseProgram();
 }
 
 void WorldScene1::Input(unsigned char key, bool down) {
@@ -104,6 +114,7 @@ void WorldScene1::Input(unsigned char key, bool down) {
 void WorldScene1::Update(float deltaTime) {
 	m_earth->Update(deltaTime);
 	m_lightObject->Update(deltaTime);
+	m_particleSystem->Update(deltaTime);
 }
 
 void WorldScene1::Render() {
@@ -116,12 +127,11 @@ void WorldScene1::Render() {
 
 	m_lightObject->SetLightOption();
 
-	m_earth->Render();
+	//m_earth->Render();
 	for (auto& sphere : m_spheres) {
 		sphere->Render();
 	}
 	m_ground->Render();
-	m_tank->Render();
 
 
 	SHADER->UnUseProgram();
@@ -129,4 +139,6 @@ void WorldScene1::Render() {
 	LIGHTOBJECTSHADER->UseProgram();
 	m_lightObject->Render();
 	LIGHTOBJECTSHADER->UnUseProgram();
+
+	m_particleSystem->Render();
 }
