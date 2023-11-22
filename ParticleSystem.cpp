@@ -130,7 +130,6 @@ void ParticleSystem::Update(float deltaTime) {
 	for (auto& particle : m_particles) {
 		ParticleUpdate(particle);
 	}
-	std::cout << "particles count: " << m_particles.size() << std::endl;
 
 	RemoveLifeEndParticles();
 
