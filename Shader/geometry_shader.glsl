@@ -1,25 +1,21 @@
 #version 460 core
 
-layout (triangles) in;
-layout (points, max_vertices = 3) out;
+layout (points) in;
+layout (line_strip, max_vertices = 3) out;
 
-in vec3 fragmentPositions[];
-out vec3 fragPosition;
+in vec4 vs_out_color[];
+in vec2 vs_out_tex[];
 
-in vec2 texCoords[];
-out vec2 texCoord;
-
-in vec3 norms[];
-out vec3 vNormal;
+out vec4 gs_out_color;
+out vec2 gs_out_tex;
 
 void main(void)
 {
 	for (int i = 0; i < gl_in.length(); ++i) { 
 		gl_Position = gl_in[i].gl_Position;
 
-		fragPosition = fragmentPositions[i];
-		texCoord = texCoords[i];
-		vNormal = norms[i];
+		gs_out_color = vs_out_color[i];
+		gs_out_tex = vs_out_tex[i];
 
 		EmitVertex();
 		EndPrimitive();

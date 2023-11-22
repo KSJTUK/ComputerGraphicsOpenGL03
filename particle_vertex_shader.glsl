@@ -1,14 +1,17 @@
 #version 460 core
 
-layout(location = 0) in vec3 in_vertex;
-layout(location = 1) in vec2 in_tex;
+layout(location=0) vec3 in_position;
+layout(location=1) vec4 in_particleColor;
+layout(location=2) vec2 in_tex;
 
-uniform vec3 objectColor;
+out vec4 vs_out_color;
+out vec2 vs_out_tex;
 
-out vec3 fragColor;
+uniform mat4 projectionMat;
 
 void main(void)
 {
-	gl_Position = vec4(in_vertex, 0.0f);
-	fragColor = objectColor;
+	gl_Position = projectionMat * vec4(in_position, 0.0f);
+	vs_out_color = in_particleColor;
+	vs_out_tex = in_tex;
 }

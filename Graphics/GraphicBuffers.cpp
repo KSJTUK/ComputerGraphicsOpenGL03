@@ -5,7 +5,6 @@ GraphicBuffers::GraphicBuffers() : m_drawMode{ GL_PATCHES } { }
 
 GraphicBuffers::~GraphicBuffers() {
 	glDeleteVertexArrays(1, &m_vertexArray);
-	glDeleteBuffers(1, &m_elementBuffer);
 	glDeleteBuffers(1, &m_vertexBuffer);
 }
 
@@ -17,16 +16,12 @@ void GraphicBuffers::Init() {
 
 	glBindVertexArray(m_vertexArray);
 	glBindBuffer(GL_ARRAY_BUFFER, m_vertexBuffer);
-
-	// EBO 객체 생성 및 바인드
-	glGenBuffers(1, &m_elementBuffer);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, m_elementBuffer); //--- GL_ELEMENT_ARRAY_BUFFER 버퍼 유형으로 바인딩
 }
 
 void GraphicBuffers::SetVerticies(const std::vector<Vertex>& verticies) {
 	m_vertexDataSize = verticies.size();
 	// Vertex객체의 정보를 VBO에 넘겨줌
-	glBufferData(GL_ARRAY_BUFFER, m_vertexDataSize * sizeof(Vertex), &verticies[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_vertexDataSize * sizeof(Vertex), &verticies[0], GL_DYNAMIC_DRAW);
 
 	// location 0번에 Vertex객체의 position정보를 넘겨줌
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));

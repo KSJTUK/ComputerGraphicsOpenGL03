@@ -28,7 +28,7 @@ void main(void)
 	vec4 p2 = gl_in[2].gl_Position;
 
 	// 컨트롤 포인트에 가중치를 곱하고 더한 보간을 통해 새로운 정점 생성
-	vec4 p = p0 * u + p1 * v + p2 * w;
+	vec4 p = u * p0 + v * p1 + w * p2;
 
 	// 프래그먼트 위치, 텍스쳐UV, 노멀 벡터도 새롭게 생성된 정점에 따라 새로 생성
 	vec2 textureUV = u * textureCoords[0]  + v * textureCoords[1] + w * textureCoords[2];
