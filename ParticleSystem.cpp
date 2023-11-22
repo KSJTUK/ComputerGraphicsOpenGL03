@@ -76,6 +76,9 @@ void ParticleSystem::ParticleUpdate(Particle& particle) {
 	}
 
 	particle.position += particle.speed * m_deltaTime;
+	if (particle.position.y < -2.5f) {
+		particle.position.y = -2.5f;
+	}
 }
 
 void ParticleSystem::RemoveLifeEndParticles() {
