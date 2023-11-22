@@ -12,6 +12,10 @@ Cube::Cube(const std::string& modelTag) : Object{ modelTag } {
 
 }
 
+Cube::Cube(const std::string& modelTag, const glm::mat4& initTransform) : Object{ modelTag } {
+	m_initTransform = initTransform;
+}
+
 Cube::~Cube() { }
 
 void Cube::Update(float deltaTime) {

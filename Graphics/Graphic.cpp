@@ -94,8 +94,8 @@ void GameWorld::Init() {
 	MODELLIST->Init();
 	MODELLIST->LoadModel("cube.obj");
 	MODELLIST->LoadModel("sphere.obj");
+	MODELLIST->LoadModel("cylinder.obj");
 	MODELLIST->LoadModel("earth.obj", "Earth_diffuse_512p.png");
-	MODELLIST->LoadModel("moon.obj", "moon_diffuse_2k.png");
 
 	TextureComponent::SetTextureDefaultOption();
 

@@ -169,9 +169,11 @@ void Model::Update() {
 void Model::Render() {
 	if (m_texture) {
 		m_graphicsBuffer->BindingTexture(m_texture->GetTextureID());
+		SHADER->SetUniformBool("notextureID", false);
 	}
 	else {
 		m_graphicsBuffer->BindingTexture(0);
+		SHADER->SetUniformBool("notextureID", true);
 	}
 
 	m_graphicsBuffer->Render();

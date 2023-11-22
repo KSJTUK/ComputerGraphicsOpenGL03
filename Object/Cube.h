@@ -7,7 +7,7 @@ public:
 	~Cube();
 
 	Cube(const std::string& modelTag);
-	Cube(const glm::mat4& initTransform);
+	Cube(const std::string& modelTag, const glm::mat4& initTransform);
 	Cube(const glm::vec3& initPosition, const glm::vec3& initRotate, const glm::vec3& initScale);
 
 private:

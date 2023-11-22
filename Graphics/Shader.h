@@ -62,6 +62,7 @@ public:
 	void SetUniformVec2(const std::string& valName, const glm::vec2& vector);
 	void SetUniformFloat(const std::string& valueName, const float& fValue);
 	void SetUniformInt(const std::string& valName, const int& iValue);
+	void SetUniformBool(const std::string& valName, const int& bValue);
 
 public:
 	// Getter ÇÔ¼öµé

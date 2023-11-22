@@ -64,9 +64,11 @@ uniform vec3 objectColor;
 uniform vec3 viewPosition;
 uniform Meterials meterials;
 
- uniform DirectionLight dirLight;
- uniform PointLight pointLight;
+uniform DirectionLight dirLight;
+uniform PointLight pointLight;
 uniform FlashLight spotLight;
+
+uniform int notextureID;
 
 vec3 calcDirectionLighting(DirectionLight light, vec3 normal, vec3 viewPos, vec3 fragPos)
 {
@@ -149,12 +151,46 @@ vec3 calcFlashLighting(FlashLight light, vec3 normal, vec3 viewPos,  vec3 fragPo
 	return ambient + diffuse + specular;
 }
 
+vec3 notexturePointLighting(PointLight light, vec3 normal, vec3 viewPos, vec3 fragPos)
+{
+	vec3 notexDiffuse = vec3(0.5f);
+
+	vec3 ambient = light.ambient * notexDiffuse;
+
+	// Æþ¸ðµ¨ÀÇ µðÇ»Áî Ç×
+	vec3 vNorm = normalize(normal);
+	vec3 lightDirection = normalize(light.position - fragPos);
+
+	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
+	vec3 diffuse = light.diffuse * (diffuseN * notexDiffuse);
+
+	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
+	vec3 viewDirection = normalize(viewPos - fragPos);
+	vec3 reflectDirection = reflect(-lightDirection, vNorm);
+	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0f), meterials.shininess);
+	vec3 specular = spec * (light.specular * meterials.specular);
+
+	float dist = length(light.position - fragPos);
+	float attenuationUnder = light.constant + light.linear * dist + light.quadratic * dist * dist;
+	float attenuation = 1.0f / attenuationUnder;
+
+	ambient *= attenuation;
+	diffuse *= attenuation;
+	specular *= attenuation;
+
+	return (ambient + diffuse + specular);	
+}
+
 
 void main(void)
 {
 	vec3 resultColor = calcDirectionLighting(dirLight, vNormal, viewPosition, fragPosition);
 
-	resultColor += calcPointLighting(pointLight, vNormal, viewPosition, fragPosition);
+	if (notextureID == 1) {
+		resultColor += notexturePointLighting(pointLight, vNormal, viewPosition, fragPosition);
+	} else {
+		resultColor += calcPointLighting(pointLight, vNormal, viewPosition, fragPosition);
+	}
 
 	resultColor += calcFlashLighting(spotLight, vNormal, viewPosition, fragPosition);
 

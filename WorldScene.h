@@ -34,6 +34,13 @@ private:
 	std::unique_ptr<class Cube> m_earth{ };
 	std::unique_ptr<class Cube> m_moon{ };
 	std::unique_ptr<class Cube> m_mars{ };
+
+	std::unique_ptr<class Cube> m_ground{ };
+
+	//std::unique_ptr<class Tank> m_tank{ };
+	class Tank* m_tank{ };
+
+	std::vector<std::unique_ptr<class Cube>> m_spheres{ };
 	std::unique_ptr<class LightObject> m_lightObject{ };
 
 public:
@@ -41,5 +48,4 @@ public:
 	void Input(unsigned char key, bool down);
 	void Update(float deltaTime);
 	void Render();
-
 };
