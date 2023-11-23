@@ -127,7 +127,7 @@ void ParticleSystem::SetParticleVertexs() {
 
 void ParticleSystem::SetPerspectiveMatrix(const glm::mat4& perspectiveMatrix) {
 	PARTICLESHADER->UseProgram();
-	PARTICLESHADER->SetPerspectiveMat(perspectiveMatrix);
+	PARTICLESHADER->SetUniformMat4("perspectiveMat", perspectiveMatrix);
 	PARTICLESHADER->UnUseProgram();
 }
 

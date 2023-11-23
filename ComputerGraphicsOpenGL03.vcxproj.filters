@@ -49,7 +49,7 @@
     <Filter Include="리소스 파일\SnowParticleShader">
       <UniqueIdentifier>{c4a5fa97-9218-4c05-a150-e51e17b16c5e}</UniqueIdentifier>
     </Filter>
-    <Filter Include="리소스 파일\OrbitalParticleShader">
+    <Filter Include="리소스 파일\TerrainShader">
       <UniqueIdentifier>{28421690-97c6-41c2-b69a-358c0b61da41}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -114,6 +114,9 @@
     <ClCompile Include="ParticleSystem.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="Terrain.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -173,6 +176,9 @@
     <ClInclude Include="ParticleSystem.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="Terrain.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\tessel_control_shader.glsl">
@@ -201,6 +207,12 @@
     </None>
     <None Include="Shader\particle_vertex_shader.glsl">
       <Filter>리소스 파일\SnowParticleShader</Filter>
+    </None>
+    <None Include="Shader\terrain_vertex_shader.glsl">
+      <Filter>리소스 파일\TerrainShader</Filter>
+    </None>
+    <None Include="Shader\terrain_fragment_shader.glsl">
+      <Filter>리소스 파일\TerrainShader</Filter>
     </None>
   </ItemGroup>
 </Project>

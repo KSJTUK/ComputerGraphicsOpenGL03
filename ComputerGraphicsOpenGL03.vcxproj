@@ -38,6 +38,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="Terrain.cpp" />
     <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="Util\callbacks.cpp" />
     <ClCompile Include="Util\Engine.cpp" />
@@ -64,6 +65,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
       </ExcludedFromBuild>
     </ClInclude>
+    <ClInclude Include="Terrain.h" />
     <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="Util\callbacks.h" />
     <ClInclude Include="Util\Engine.h" />
@@ -76,6 +78,8 @@
     <None Include="Shader\geometry_shader.glsl" />
     <None Include="Shader\light_object_fshader.glsl" />
     <None Include="Shader\light_object_vshader.glsl" />
+    <None Include="Shader\terrain_vertex_shader.glsl" />
+    <None Include="Shader\terrain_fragment_shader.glsl" />
     <None Include="Shader\particle_fragment_shader.glsl" />
     <None Include="Shader\particle_vertex_shader.glsl" />
     <None Include="Shader\tessel_control_shader.glsl" />

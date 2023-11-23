@@ -57,7 +57,7 @@ namespace constants {
 	extern float epsilon;
 };
 
-#define SHADER Shader::GetInstance()
+#define SHADER ObjectShader::GetInstance()
 #define LIGHTOBJECTSHADER LightObjectShader::GetInstance()
 #define PARTICLESHADER ParticleShader::GetInstance()
 #define MODELLIST ModelList::GetInstance()

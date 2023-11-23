@@ -138,18 +138,18 @@ void GameWorld::Render() {
 	glm::mat4 cameraViewMatrix{ m_camera->GetViewMat() };
 
 	PARTICLESHADER->UseProgram();
-	PARTICLESHADER->SetPerspectiveMat(m_perspectiveMatrix);
-	PARTICLESHADER->SetViewMat(cameraViewMatrix);
+	PARTICLESHADER->SetUniformMat4("perspectiveMat", m_perspectiveMatrix);
+	PARTICLESHADER->SetUniformMat4("viewMat", cameraViewMatrix);
 	PARTICLESHADER->UnUseProgram();
 
 	SHADER->UseProgram();
-	SHADER->SetPerspectiveMat(m_perspectiveMatrix);
-	SHADER->SetViewMat(cameraViewMatrix);
+	SHADER->SetUniformMat4("perspectiveMat", m_perspectiveMatrix);
+	SHADER->SetUniformMat4("viewMat", cameraViewMatrix);
 	SHADER->UnUseProgram();
 
 	LIGHTOBJECTSHADER->UseProgram();
-	LIGHTOBJECTSHADER->SetPerspectiveMat(m_perspectiveMatrix);
-	LIGHTOBJECTSHADER->SetViewMat(cameraViewMatrix);
+	LIGHTOBJECTSHADER->SetUniformMat4("perspective", m_perspectiveMatrix);
+	LIGHTOBJECTSHADER->SetUniformMat4("view", cameraViewMatrix);
 	LIGHTOBJECTSHADER->UnUseProgram();
 
 	m_scenes[m_sceneIndex]->Render();
