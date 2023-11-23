@@ -4,7 +4,7 @@
 
 ParticleSystem::ParticleSystem() { 
 	PARTICLESHADER->UseProgram();
-	glPointSize(m_primitiveSize);
+	//glPointSize(m_primitiveSize);
 	glGenVertexArrays(1, &m_particleVAO);
 	glGenBuffers(1, &m_particleVBO);
 
@@ -16,7 +16,7 @@ ParticleSystem::ParticleSystem() {
 ParticleSystem::ParticleSystem(float lifeTime, int maxCountParticles) 
 	: m_particlesLifeTime{ lifeTime }, m_maxCountParticle{ maxCountParticles } {
 	PARTICLESHADER->UseProgram();
-	glPointSize(m_primitiveSize);
+	//glPointSize(m_primitiveSize);
 	glGenVertexArrays(1, &m_particleVAO);
 	glGenBuffers(1, &m_particleVBO);
 
@@ -28,7 +28,7 @@ ParticleSystem::ParticleSystem(float lifeTime, int maxCountParticles)
 ParticleSystem::ParticleSystem(float lifeTime, int maxCountParticles, float createTime) 
 	:m_particlesLifeTime{ lifeTime }, m_maxCountParticle{ maxCountParticles }, m_newParticleCreateTime{ createTime } {
 	PARTICLESHADER->UseProgram();
-	glPointSize(m_primitiveSize);
+	//glPointSize(m_primitiveSize);
 	glGenVertexArrays(1, &m_particleVAO);
 	glGenBuffers(1, &m_particleVBO);
 
@@ -40,8 +40,8 @@ ParticleSystem::ParticleSystem(float lifeTime, int maxCountParticles, float crea
 ParticleSystem::ParticleSystem(std::pair<glm::vec3, glm::vec3>& generateParticleArea, float lifeTime, int maxCountParticles, float createTime) 
 	: m_particleGenerateArea{ generateParticleArea }, m_particlesLifeTime {lifeTime },
 	m_maxCountParticle{ maxCountParticles }, m_newParticleCreateTime{ createTime } {
+	//glPointSize(m_primitiveSize);
 	PARTICLESHADER->UseProgram();
-	glPointSize(m_primitiveSize);
 	glGenVertexArrays(1, &m_particleVAO);
 	glGenBuffers(1, &m_particleVBO);
 
@@ -59,12 +59,13 @@ void ParticleSystem::CreateNewParticle() {
 	glm::vec3 generatePosition{ glm::linearRand(m_particleGenerateArea.first, m_particleGenerateArea.second) };
 	glm::vec4 particleColor{ 1.f };
 	glm::vec3 defaultSpeed{ 0.f };
+	float randomLife{ glm::linearRand(2.f, m_particlesLifeTime) };
 	m_particles.push_back(Particle{
 		generatePosition,
 		{ },
 		particleColor,
 		defaultSpeed,
-		m_particlesLifeTime
+		randomLife
 	});
 }
 
