@@ -7,8 +7,8 @@ layout (location = 2) in vec3 in_Normal; //--- 정점 노멀 변수: attribute positio
 out vec2 vs_out_tex;
 out vec3 vs_out_normal;
 
-uniform mat4 perspectiveMat;
 uniform mat4 viewMat;
+uniform mat4 perspectiveMat;
 
 void main(void)
 {

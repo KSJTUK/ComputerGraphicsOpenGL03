@@ -9,7 +9,15 @@ in vec3 vs_out_normal[];
 out vec2 tcs_out_tex[];
 out vec3 tcs_out_normal[];
 
-const int tessLevel = 16;
+uniform vec3 cameraPosition;
+
+const int minTesselLevel = 3;
+const int maxTesselLevel = 24;
+
+const float minDist = 20;
+const float maxDist = 400;
+
+const int tessLevel = 64;
 
 void main()
 {
@@ -23,6 +31,7 @@ void main()
     // invocation zero controls tessellation levels for the entire patch
     if (gl_InvocationID == 0)
     {
+
         gl_TessLevelOuter[0] = tessLevel;
         gl_TessLevelOuter[1] = tessLevel;
         gl_TessLevelOuter[2] = tessLevel;

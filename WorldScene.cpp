@@ -112,11 +112,12 @@ void WorldScene1::Render() {
 	TERRAINSHADER->UnUseProgram();
 
 	OBJECTSHADER->UseProgram();
+
 	m_earth->SetMeterials();
 	for (auto& sphere : m_spheres) {
 		sphere->SetMeterials();
 	}
-	//m_earth->Render();
+	m_earth->Render();
 
 	m_lightObject->SetLightOption();
 
@@ -124,7 +125,6 @@ void WorldScene1::Render() {
 	for (auto& sphere : m_spheres) {
 		sphere->Render();
 	}
-	m_ground->Render();
 
 
 	OBJECTSHADER->UnUseProgram();
