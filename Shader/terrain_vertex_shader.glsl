@@ -1,18 +1,10 @@
 #version 460 core
 
-uniform vec3 in_vertex;
-uniform vec3 in_color;
-
-uniform float in_radius;
-
-out vec3 out_vertex;
-out vec3 out_color;
-out float out_radius;
+layout (location = 0) in vec3 in_Position; //--- 위치 변수: attribute position 0
+layout (location = 1) in vec2 in_Texture; //--- 텍스처 변수: attribute position 1
+layout (location = 2) in vec3 in_Normal; //--- 정점 노멀 변수: attribute position 2
 
 void main(void)
 {
-	out_vertex = in_vertex;
-	out_color = in_color;
-	out_radius = in_radius;
-	gl_Position = vec4(in_vertex, 0.0f);
+	gl_Position = vec4(in_Position, 1.0f);
 }

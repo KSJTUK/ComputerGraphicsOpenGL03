@@ -60,4 +60,5 @@ namespace constants {
 #define SHADER ObjectShader::GetInstance()
 #define LIGHTOBJECTSHADER LightObjectShader::GetInstance()
 #define PARTICLESHADER ParticleShader::GetInstance()
+#define TERRAINSHADER TerrainShader::GetInstance()
 #define MODELLIST ModelList::GetInstance()

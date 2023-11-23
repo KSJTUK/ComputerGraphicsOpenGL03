@@ -3,13 +3,7 @@
 
 Shader::Shader() { }
 
-Shader::~Shader() {
-	glDeleteShader(m_tesselEvaluationShader);
-	glDeleteShader(m_tesselControlShader);
-	glDeleteShader(m_vertexShader);
-	glDeleteShader(m_fragmentShader);
-	glDeleteProgram(m_shaderProgram);
-}
+Shader::~Shader() { }
 
 void Shader::LoadVertexShaderFile(const char* filePath) {
 	std::fstream vertexFile{ filePath, std::ios::in };
@@ -404,6 +398,78 @@ void ParticleShader::CreateShaderProgram() {
 	LoadVertexShaderFile(".\\Shader\\particle_vertex_shader.glsl");
 	LoadFragmentShaderFile(".\\Shader\\particle_fragment_shader.glsl");
 	LoadGeometryShader(".\\Shader\\geometry_shader.glsl");
+	CompileShaders();
+	AttachAndLinkShaders();
+}
+
+// terrain shader
+// ---------------------------------------------------
+TerrainShader* TerrainShader::m_instance = nullptr;
+
+TerrainShader::TerrainShader() { }
+
+TerrainShader::~TerrainShader() {
+	glDeleteShader(m_vertexShader);
+	glDeleteShader(m_fragmentShader);
+	glDeleteProgram(m_shaderProgram);
+}
+
+TerrainShader* TerrainShader::GetInstance() {
+	if (!m_instance) {
+		m_instance = new TerrainShader{ };
+	}
+	return m_instance;
+}
+
+void TerrainShader::Destroy() {
+	if (m_instance) {
+		delete m_instance;
+	}
+	m_instance = nullptr;
+}
+
+void TerrainShader::CompileShaders() {
+	m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+	// 쉐이더 소스코드 불러오기
+	const char* contentsPath = m_vertexShaderFileContents.c_str();
+	glShaderSource(m_vertexShader, 1, &contentsPath, NULL);
+
+	contentsPath = m_fragmentShaderFileContents.c_str();
+	glShaderSource(m_fragmentShader, 1, &contentsPath, NULL);
+
+	// 쉐이더 컴파일
+	glCompileShader(m_vertexShader);
+	glCompileShader(m_fragmentShader);
+
+	// 쉐이더 컴파일 여부 확인
+	CheckAndPrintShaderCompileError(m_vertexShader);
+	CheckAndPrintShaderCompileError(m_fragmentShader);
+}
+
+void TerrainShader::AttachAndLinkShaders() {
+	glAttachShader(m_shaderProgram, m_vertexShader);
+	glAttachShader(m_shaderProgram, m_fragmentShader);
+
+	// 쉐이더 링크
+	glLinkProgram(m_shaderProgram);
+
+	// 쉐이더들이 제대로 링크 되었는지 확인
+	int result{ };
+	char errLog[BUFSIZ]{ };
+	glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &result);
+	if (!result) {
+		glGetProgramInfoLog(m_shaderProgram, sizeof(errLog), NULL, errLog);
+		std::cerr << std::string{ errLog } << std::endl;
+		throw "Shaders are not Linked";
+	}
+}
+
+void TerrainShader::CreateShaderProgram() {
+	m_shaderProgram = glCreateProgram();
+	LoadVertexShaderFile(".\\Shader\\terrain_vertex_shader.glsl");
+	LoadFragmentShaderFile(".\\Shader\\terrain_fragment_shader.glsl");
 	CompileShaders();
 	AttachAndLinkShaders();
 }

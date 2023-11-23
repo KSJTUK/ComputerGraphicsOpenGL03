@@ -115,3 +115,22 @@ public:
 	void AttachAndLinkShaders();
 	void CreateShaderProgram();
 };
+
+class TerrainShader : public Shader {
+private:
+	TerrainShader();
+	~TerrainShader();
+
+private:
+	static TerrainShader* m_instance;
+
+public:
+	static TerrainShader* GetInstance();
+	static void Destroy();
+
+public:
+	// 쉐이더 작성 함수들
+	void CompileShaders();
+	void AttachAndLinkShaders();
+	void CreateShaderProgram();
+};

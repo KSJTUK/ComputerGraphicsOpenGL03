@@ -81,6 +81,7 @@ void GameWorld::Init() {
 	SHADER->CreateShaderProgram();
 	LIGHTOBJECTSHADER->CreateShaderProgram();
 	PARTICLESHADER->CreateShaderProgram();
+	TERRAINSHADER->CreateShaderProgram();
 	// 쉐이더 프로그램이 각종 정점 정보, 행렬들을 등록, 전송할 수 있도록 프로그램 사용 설정
 	SHADER->UseProgram();
 

@@ -18,8 +18,8 @@ Terrain::Terrain(const glm::uvec2& mapSize) : m_terrainMapSize{ mapSize } {
 Terrain::~Terrain() { }
 
 void Terrain::CreateTerrainMeshMap() {
-	float tileWidth = m_heightMapImgWidth / m_terrainMapSize.x;
-	float tileHeight = m_heightMapImgHeight / m_terrainMapSize.y;
+	float tileWidth = m_heightMapImgWidth / static_cast<float>(m_terrainMapSize.x);
+	float tileHeight = m_heightMapImgHeight / static_cast<float>(m_terrainMapSize.y);
 	float left = (-m_heightMapImgWidth / 2.f);
 	float bottom = (-m_heightMapImgHeight / 2.f);
 	// xz평면 상에 지형을 그려줄 큐브 메쉬들의 정점을 생성함
@@ -35,12 +35,12 @@ void Terrain::CreateTerrainMeshMap() {
 			// u,v = x / mapsize.x, z / mapsize.z
 			Vertex leftTop{
 				glm::vec3{
-					left + (x * tileWidth),
+					left + static_cast<float>(x * tileWidth),
 					0.f,
-					bottom + ((z + 1) * tileHeight)
+					bottom + static_cast<float>((z + 1) * tileHeight)
 				},
 				glm::vec2{
-					x / m_terrainMapSize.x, (z + 1) / m_terrainMapSize.y
+					static_cast<float>(x) / m_terrainMapSize.x, static_cast<float>(z + 1) / m_terrainMapSize.y
 				},
 				glm::vec3{ },
 			};
@@ -48,12 +48,12 @@ void Terrain::CreateTerrainMeshMap() {
 
 			Vertex leftBottom{
 				glm::vec3{
-					left + (x * tileWidth),
+					left + static_cast<float>(x * tileWidth),
 					0.f,
-					bottom + (z * tileHeight)
+					bottom + static_cast<float>((z * tileHeight))
 				},
 				glm::vec2{
-					x / m_terrainMapSize.x, z / m_terrainMapSize.y
+					static_cast<float>(x) / m_terrainMapSize.x, static_cast<float>(z) / m_terrainMapSize.y
 				},
 				glm::vec3{ },
 			};
@@ -61,12 +61,12 @@ void Terrain::CreateTerrainMeshMap() {
 
 			Vertex rightTop{
 				glm::vec3{
-					left + ((x + 1) * tileWidth),
+					left + static_cast<float>(((x + 1) * tileWidth)),
 					0.f,
-					bottom + ((z + 1) * tileHeight)
+					bottom + static_cast<float>((z + 1) * tileHeight)
 				},
 				glm::vec2{
-					(x + 1) / m_terrainMapSize.x, (z + 1) / m_terrainMapSize.y
+					static_cast<float>(x + 1) / m_terrainMapSize.x, static_cast<float>(z + 1) / m_terrainMapSize.y
 				},
 				glm::vec3{ },
 			};
@@ -74,12 +74,12 @@ void Terrain::CreateTerrainMeshMap() {
 
 			Vertex rightBottom{
 				glm::vec3{
-					left + ((x + 1) * tileWidth),
+					left + static_cast<float>((x + 1) * tileWidth),
 					0.f,
-					bottom + (z * tileHeight)
+					bottom + static_cast<float>(z * tileHeight)
 				},
 				glm::vec2{
-					x / m_terrainMapSize.x, z / m_terrainMapSize.y
+					static_cast<float>(x) / m_terrainMapSize.x, static_cast<float>(z) / m_terrainMapSize.y
 				},
 				glm::vec3{ },
 			};
@@ -96,7 +96,7 @@ void Terrain::CreateTerrainVertexBuffers() {
 	glBindVertexArray(m_terrainVAO);
 	glBindBuffer(GL_VERTEX_ARRAY, m_terrainVBO);
 
-	glBufferData(GL_ARRAY_BUFFER, m_verticies.size() * sizeof(Vertex), &m_verticies[0], GL_STATIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, uint32(m_verticies.size()) * sizeof(Vertex), &m_verticies[0], GL_STATIC_DRAW);
 
 	// location 0번에 Vertex객체의 position정보를 넘겨줌
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position));
