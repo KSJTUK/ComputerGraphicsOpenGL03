@@ -2,13 +2,14 @@
 
 class TextureComponent {
 public:
-	TextureComponent(const std::string& textureFilePath);
-	TextureComponent(const std::string& textureFilePath, bool flipImageOnLoad);
+	TextureComponent(const std::string& textureFilePath, int channel);
+	TextureComponent(const std::string& textureFilePath, int channel, bool flipImageOnLoad);
 	~TextureComponent();
 
 private:
 	uint32 m_textureID{ };
 
+	int32 m_alphaChannel{ };
 	int32 m_width{ };
 	int32 m_height{ };
 	int32 m_nrChannels{ };

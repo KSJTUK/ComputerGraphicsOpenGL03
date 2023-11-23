@@ -181,16 +181,16 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\tessel_control_shader.glsl">
+    <None Include="Shader\object_tessel_control_shader.glsl">
       <Filter>리소스 파일\ObjectShader</Filter>
     </None>
-    <None Include="Shader\tessel_evaluation_shader.glsl">
+    <None Include="Shader\object_tessel_evaluation_shader.glsl">
       <Filter>리소스 파일\ObjectShader</Filter>
     </None>
-    <None Include="Shader\vertex_shader.glsl">
+    <None Include="Shader\object_vertex_shader.glsl">
       <Filter>리소스 파일\ObjectShader</Filter>
     </None>
-    <None Include="Shader\fragment_shader.glsl">
+    <None Include="Shader\object_fragment_shader.glsl">
       <Filter>리소스 파일\ObjectShader</Filter>
     </None>
     <None Include="Shader\light_object_fshader.glsl">
@@ -212,6 +212,12 @@
       <Filter>리소스 파일\TerrainShader</Filter>
     </None>
     <None Include="Shader\terrain_fragment_shader.glsl">
+      <Filter>리소스 파일\TerrainShader</Filter>
+    </None>
+    <None Include="Shader\terrain_tessel_control_shader.glsl">
+      <Filter>리소스 파일\TerrainShader</Filter>
+    </None>
+    <None Include="Shader\terrain_tessel_evaluation_shader.glsl">
       <Filter>리소스 파일\TerrainShader</Filter>
     </None>
   </ItemGroup>

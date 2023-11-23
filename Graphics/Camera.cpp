@@ -121,21 +121,21 @@ void Camera::Update(float deltaTime) {
 	m_cameraAxisZ = glm::normalize(-m_AT);
 	m_cameraAxisX = glm::normalize(glm::cross(m_UP, m_cameraAxisZ));
 	m_cameraAxisY = glm::normalize(glm::cross(m_cameraAxisZ, m_cameraAxisX));
-	SHADER->UseProgram();
+	OBJECTSHADER->UseProgram();
 
 	// for all lighting
-	SHADER->SetUniformVec3("viewPosition", m_EYE);
+	OBJECTSHADER->SetUniformVec3("viewPosition", m_EYE);
 
 	if (m_spotLightingOn) {
 		//// for flash lighting values
-		SHADER->SetUniformVec3("spotLight.position", m_EYE);
-		SHADER->SetUniformVec3("spotLight.direction", m_AT);
+		OBJECTSHADER->SetUniformVec3("spotLight.position", m_EYE);
+		OBJECTSHADER->SetUniformVec3("spotLight.direction", m_AT);
 
-		SHADER->SetUniformFloat("spotLight.cutOff", std::cosf(glm::radians(7.5f)));
-		SHADER->SetUniformFloat("spotLight.outerCutOff", std::cosf(glm::radians(17.5f)));
+		OBJECTSHADER->SetUniformFloat("spotLight.cutOff", std::cosf(glm::radians(7.5f)));
+		OBJECTSHADER->SetUniformFloat("spotLight.outerCutOff", std::cosf(glm::radians(17.5f)));
 	}
 
-	SHADER->UnUseProgram();
+	OBJECTSHADER->UnUseProgram();
 }
 
 void Camera::Render() {

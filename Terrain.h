@@ -14,8 +14,11 @@ private:
 
 	std::unique_ptr<class TextureComponent> m_heightMap{ };
 
+	unsigned int m_textureID{ };
 	int32 m_heightMapImgWidth{ };
 	int32 m_heightMapImgHeight{ };
+
+	std::unique_ptr<class GraphicBuffers> m_vertexBuffer{ };
 
 private:
 	void CreateTerrainMeshMap();

@@ -17,10 +17,10 @@ Object::Object(const std::string& modelTag, const glm::vec3& objectColor) : m_mo
 Object::~Object() { }
 
 void Object::SetMeterials() {
-	SHADER->SetUniformVec3("objectColor", m_objectColor);
-	SHADER->SetUniformInt("meterials.diffuse", 0);
-	SHADER->SetUniformVec3("meterials.specular", m_meterial.specular);
-	SHADER->SetUniformFloat("meterials.shininess", m_meterial.shininess);
+	OBJECTSHADER->SetUniformVec3("objectColor", m_objectColor);
+	OBJECTSHADER->SetUniformInt("meterials.diffuse", 0);
+	OBJECTSHADER->SetUniformVec3("meterials.specular", m_meterial.specular);
+	OBJECTSHADER->SetUniformFloat("meterials.shininess", m_meterial.shininess);
 }
 
 bool Object::ExistTexture() const {
@@ -44,9 +44,9 @@ void Object::Render() {
 
 	SetMeterials();
 
-	SHADER->SetUniformMat4("modelInitTransform", m_initTransform);
-	SHADER->SetUniformMat4("modelTransform", m_transform);
-	SHADER->SetUniformMat4("modelsParentTransform", m_parentTransform);
+	OBJECTSHADER->SetUniformMat4("modelInitTransform", m_initTransform);
+	OBJECTSHADER->SetUniformMat4("modelTransform", m_transform);
+	OBJECTSHADER->SetUniformMat4("modelsParentTransform", m_parentTransform);
 
 	m_model->SetDrawMode(GL_PATCHES);
 

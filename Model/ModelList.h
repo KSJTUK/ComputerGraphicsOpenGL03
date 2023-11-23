@@ -30,6 +30,6 @@ public:
 public:
 	void Init();
 	void LoadModel(const std::string& objectFilePath);
-	void LoadModel(const std::string& objectFilePaht, const std::string& textureFilePath);
+	void LoadModel(const std::string& objectFilePaht, const std::string& textureFilePath, int rgbChannel=GL_RGB);
 	void LoadModelFromFile(const std::string& modelsFilePath);
 };

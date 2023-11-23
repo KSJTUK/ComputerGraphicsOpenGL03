@@ -55,7 +55,7 @@ void ModelList::LoadModel(const std::string& objectFilePath) {
 	m_modelList.insert(std::make_pair(key, newModel));
 }
 
-void ModelList::LoadModel(const std::string& objectFilePath, const std::string& textureFilePath) {
+void ModelList::LoadModel(const std::string& objectFilePath, const std::string& textureFilePath, int rgbChannel) {
 	std::string key = MakeStringToKey(objectFilePath);
 
 	auto iter = m_modelList.find(key);
@@ -67,7 +67,7 @@ void ModelList::LoadModel(const std::string& objectFilePath, const std::string& 
 	std::string texFilePath{ m_defaultTextureFilePath + textureFilePath };
 
 	std::shared_ptr<class Model> newModel{ };
-	newModel = std::make_shared<class Model>(objFilePath, texFilePath);
+	newModel = std::make_shared<class Model>(objFilePath, texFilePath, rgbChannel);
 	newModel->Init();
 
 	m_modelList.insert(std::make_pair(key, newModel));

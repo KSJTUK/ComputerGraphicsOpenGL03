@@ -74,17 +74,19 @@
     <ClInclude Include="WorldScene.h" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Shader\fragment_shader.glsl" />
+    <None Include="Shader\object_fragment_shader.glsl" />
     <None Include="Shader\geometry_shader.glsl" />
     <None Include="Shader\light_object_fshader.glsl" />
     <None Include="Shader\light_object_vshader.glsl" />
+    <None Include="Shader\terrain_tessel_control_shader.glsl" />
+    <None Include="Shader\terrain_tessel_evaluation_shader.glsl" />
     <None Include="Shader\terrain_vertex_shader.glsl" />
     <None Include="Shader\terrain_fragment_shader.glsl" />
     <None Include="Shader\particle_fragment_shader.glsl" />
     <None Include="Shader\particle_vertex_shader.glsl" />
-    <None Include="Shader\tessel_control_shader.glsl" />
-    <None Include="Shader\tessel_evaluation_shader.glsl" />
-    <None Include="Shader\vertex_shader.glsl" />
+    <None Include="Shader\object_tessel_control_shader.glsl" />
+    <None Include="Shader\object_tessel_evaluation_shader.glsl" />
+    <None Include="Shader\object_vertex_shader.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

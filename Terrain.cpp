@@ -1,19 +1,24 @@
 #include "pch.h"
 #include "Terrain.h"
+#include "Graphics/GraphicBuffers.h"
 #include "TextureComponent.h"
 #include "Graphics/Shader.h"
 
 Terrain::Terrain(const glm::uvec2& mapSize) : m_terrainMapSize{ mapSize } {
 	// 먼저 하이트맵의 텍스쳐를 불러옴
-	m_heightMap = std::make_unique<TextureComponent>(".\\Textures\\terrain_height_map.png");
-	auto textureID = m_heightMap->GetTextureID();
+	m_heightMap = std::make_unique<TextureComponent>(".\\textures\\height.png", GL_RGBA);
+	m_textureID = m_heightMap->GetTextureID();
 	auto textureImgInfo = m_heightMap->GetTextureInfo();
 
 	m_heightMapImgWidth = textureImgInfo.x;
 	m_heightMapImgHeight = textureImgInfo.y;
 
+	m_vertexBuffer = std::make_unique<GraphicBuffers>();
+	m_vertexBuffer->Init();
+
 	CreateTerrainMeshMap();
-	CreateTerrainVertexBuffers();
+	//CreateTerrainVertexBuffers();
+	m_vertexBuffer->SetVerticies(m_verticies);
 }
 
 Terrain::~Terrain() { }
@@ -35,7 +40,31 @@ void Terrain::CreateTerrainMeshMap() {
 			// xz평면 상에 생성할 것이므로 y좌표는 항상 0
 			// 텍스쳐 좌표는 정규화된 좌표이므로 0,1 사이에 존재해야함 따라서 
 			// u,v = x / mapsize.x, z / mapsize.z
-			Vertex leftTop{
+			Vertex p0{
+				glm::vec3{
+					left + static_cast<float>(x * tileWidth),
+					0.f,
+					bottom + static_cast<float>(z * tileHeight)
+				},
+				glm::vec2{
+					static_cast<float>(x) / m_terrainMapSize.x, static_cast<float>(z) / m_terrainMapSize.y
+				},
+				terrainNorm
+			};
+
+			Vertex p1{
+				glm::vec3{
+					left + static_cast<float>((x + 1) * tileWidth),
+					0.f,
+					bottom + static_cast<float>((z * tileHeight))
+				},
+				glm::vec2{
+					static_cast<float>(x + 1) / m_terrainMapSize.x, static_cast<float>(z) / m_terrainMapSize.y
+				},
+				terrainNorm
+			};
+
+			Vertex p2{
 				glm::vec3{
 					left + static_cast<float>(x * tileWidth),
 					0.f,
@@ -47,21 +76,9 @@ void Terrain::CreateTerrainMeshMap() {
 				terrainNorm
 			};
 
-			Vertex leftBottom{
+			Vertex p3{
 				glm::vec3{
-					left + static_cast<float>(x * tileWidth),
-					0.f,
-					bottom + static_cast<float>((z * tileHeight))
-				},
-				glm::vec2{
-					static_cast<float>(x) / m_terrainMapSize.x, static_cast<float>(z) / m_terrainMapSize.y
-				},
-				terrainNorm
-			};
-
-			Vertex rightTop{
-				glm::vec3{
-					left + static_cast<float>(((x + 1) * tileWidth)),
+					left + static_cast<float>((x + 1) * tileWidth),
 					0.f,
 					bottom + static_cast<float>((z + 1) * tileHeight)
 				},
@@ -71,38 +88,20 @@ void Terrain::CreateTerrainMeshMap() {
 				terrainNorm
 			};
 
-			Vertex rightBottom{
-				glm::vec3{
-					left + static_cast<float>((x + 1) * tileWidth),
-					0.f,
-					bottom + static_cast<float>(z * tileHeight)
-				},
-				glm::vec2{
-					static_cast<float>(x) / m_terrainMapSize.x, static_cast<float>(z) / m_terrainMapSize.y
-				},
-				terrainNorm
-			};
-
-			m_verticies.push_back(leftTop);      // triangle 1
-			m_verticies.push_back(rightTop);
-			m_verticies.push_back(leftBottom);
-
-			m_verticies.push_back(rightBottom);
-			m_verticies.push_back(leftBottom);
-			m_verticies.push_back(rightTop);     // triangle 2
+			m_verticies.push_back(p0);      // triangle 1
+			m_verticies.push_back(p2);
+			m_verticies.push_back(p1);
+			m_verticies.push_back(p1);
+			m_verticies.push_back(p2);
+			m_verticies.push_back(p3);
 		}
 	}
 }
 
 void Terrain::CreateTerrainVertexBuffers() {
 	TERRAINSHADER->UseProgram();
+
 	// 지형을 그릴 VAO, VBO생성 및 정점 바인딩
-	glGenBuffers(1, &m_terrainVBO);
-	glGenVertexArrays(1, &m_terrainVAO);
-
-	glBindVertexArray(m_terrainVAO);
-	glBindBuffer(GL_VERTEX_ARRAY, m_terrainVBO);
-
 	glBufferData(GL_ARRAY_BUFFER, uint32(m_verticies.size()) * sizeof(Vertex), &m_verticies[0], GL_STATIC_DRAW);
 
 	// location 0번에 Vertex객체의 position정보를 넘겨줌
@@ -119,11 +118,26 @@ void Terrain::CreateTerrainVertexBuffers() {
 
 	// 사각형 패치로 넘겨줌
 	glPatchParameteri(GL_PATCH_VERTICES, 3);
+
 	TERRAINSHADER->UnUseProgram();
 }
 
+void Terrain::Init() {
+
+}
+
+void Terrain::Update(float deltaTime) {
+
+}
+
 void Terrain::Render() {
-	glBindVertexArray(m_terrainVAO);
-	glDrawArrays(GL_PATCHES, 0, uint32(m_verticies.size()));
-	glBindVertexArray(0);
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_2D, m_textureID);
+	//TERRAINSHADER->SetUniformInt("heightMap", 0);
+	//glBindVertexArray(m_terrainVAO);
+	//glDrawArrays(GL_PATCHES, 0, uint32(m_verticies.size()));
+	//glBindVertexArray(0);
+	m_vertexBuffer->BindingTexture(m_textureID);
+	m_vertexBuffer->SetDrawMode(GL_PATCHES);
+	m_vertexBuffer->Render();
 }

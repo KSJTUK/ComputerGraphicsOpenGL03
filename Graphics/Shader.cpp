@@ -245,10 +245,10 @@ void ObjectShader::AttachAndLinkShaders() {
 
 void ObjectShader::CreateShaderProgram() {
 	m_shaderProgram = glCreateProgram();
-	LoadVertexShaderFile(".\\Shader\\vertex_shader.glsl");
-	LoadFragmentShaderFile(".\\Shader\\fragment_shader.glsl");
-	LoadTesselationControlShaderFile(".\\Shader\\tessel_control_shader.glsl");
-	LoadTesselationEvaluationShaderFile(".\\Shader\\tessel_evaluation_shader.glsl");
+	LoadVertexShaderFile(".\\Shader\\object_vertex_shader.glsl");
+	LoadFragmentShaderFile(".\\Shader\\object_fragment_shader.glsl");
+	LoadTesselationControlShaderFile(".\\Shader\\object_tessel_control_shader.glsl");
+	LoadTesselationEvaluationShaderFile(".\\Shader\\object_tessel_evaluation_shader.glsl");
 	//LoadGeometryShader(".\\Shader\\geometry_shader.glsl");
 	CompileShaders();
 	AttachAndLinkShaders();
@@ -431,6 +431,8 @@ void TerrainShader::Destroy() {
 void TerrainShader::CompileShaders() {
 	m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
 	m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+	m_tesselControlShader = glCreateShader(GL_TESS_CONTROL_SHADER);
+	m_tesselEvaluationShader = glCreateShader(GL_TESS_EVALUATION_SHADER);
 
 	// 쉐이더 소스코드 불러오기
 	const char* contentsPath = m_vertexShaderFileContents.c_str();
@@ -439,17 +441,31 @@ void TerrainShader::CompileShaders() {
 	contentsPath = m_fragmentShaderFileContents.c_str();
 	glShaderSource(m_fragmentShader, 1, &contentsPath, NULL);
 
+	contentsPath = m_tesselationControlFileContents.c_str();
+	glShaderSource(m_tesselControlShader, 1, &contentsPath, NULL);
+
+	contentsPath = m_tesselationEvaluationFileContents.c_str();
+	glShaderSource(m_tesselEvaluationShader, 1, &contentsPath, NULL);
+
+	std::cout << m_tesselationEvaluationFileContents << std::endl;
+
 	// 쉐이더 컴파일
 	glCompileShader(m_vertexShader);
+	glCompileShader(m_tesselControlShader);
+	glCompileShader(m_tesselEvaluationShader);
 	glCompileShader(m_fragmentShader);
 
 	// 쉐이더 컴파일 여부 확인
 	CheckAndPrintShaderCompileError(m_vertexShader);
+	CheckAndPrintShaderCompileError(m_tesselControlShader);
+	CheckAndPrintShaderCompileError(m_tesselEvaluationShader);
 	CheckAndPrintShaderCompileError(m_fragmentShader);
 }
 
 void TerrainShader::AttachAndLinkShaders() {
 	glAttachShader(m_shaderProgram, m_vertexShader);
+	glAttachShader(m_shaderProgram, m_tesselControlShader);
+	glAttachShader(m_shaderProgram, m_tesselEvaluationShader);
 	glAttachShader(m_shaderProgram, m_fragmentShader);
 
 	// 쉐이더 링크
@@ -470,6 +486,8 @@ void TerrainShader::CreateShaderProgram() {
 	m_shaderProgram = glCreateProgram();
 	LoadVertexShaderFile(".\\Shader\\terrain_vertex_shader.glsl");
 	LoadFragmentShaderFile(".\\Shader\\terrain_fragment_shader.glsl");
+	LoadTesselationControlShaderFile(".\\Shader\\terrain_tessel_control_shader.glsl");
+	LoadTesselationEvaluationShaderFile(".\\Shader\\terrain_tessel_evaluation_shader.glsl");
 	CompileShaders();
 	AttachAndLinkShaders();
 }

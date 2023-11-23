@@ -9,9 +9,9 @@ Model::Model(const std::string& objectFilePath) {
 	m_texture = nullptr;
 }
 
-Model::Model(const std::string& objectFilePath, const std::string& textureFilePath) {
+Model::Model(const std::string& objectFilePath, const std::string& textureFilePath, int rgbChannel) {
 	ReadObject(objectFilePath.c_str());
-	m_texture = std::make_unique<TextureComponent>(textureFilePath, true);
+	m_texture = std::make_unique<TextureComponent>(textureFilePath, rgbChannel, true);
 }
 
 Model::~Model() { }
@@ -169,11 +169,11 @@ void Model::Update() {
 void Model::Render() {
 	if (m_texture) {
 		m_graphicsBuffer->BindingTexture(m_texture->GetTextureID());
-		SHADER->SetUniformBool("notextureID", false);
+		OBJECTSHADER->SetUniformBool("notextureID", false);
 	}
 	else {
 		m_graphicsBuffer->BindingTexture(0);
-		SHADER->SetUniformBool("notextureID", true);
+		OBJECTSHADER->SetUniformBool("notextureID", true);
 	}
 
 	m_graphicsBuffer->Render();

@@ -48,15 +48,15 @@ void GameWorld::Input(unsigned char key, bool down) {
 void GameWorld::SpecialInput(int key, bool down) {
 	if (down) {
 		if (key == GLUT_KEY_F1) {
-			SHADER->UseProgram();
-			SHADER->SetUniformInt("tesselLevel", m_objectTesselOff);
-			SHADER->UnUseProgram();
+			OBJECTSHADER->UseProgram();
+			OBJECTSHADER->SetUniformInt("tesselLevel", m_objectTesselOff);
+			OBJECTSHADER->UnUseProgram();
 		}
 
 		if (key == GLUT_KEY_F2) {
-			SHADER->UseProgram();
-			SHADER->SetUniformInt("tesselLevel", m_objectTesselLevel);
-			SHADER->UnUseProgram();
+			OBJECTSHADER->UseProgram();
+			OBJECTSHADER->SetUniformInt("tesselLevel", m_objectTesselLevel);
+			OBJECTSHADER->UnUseProgram();
 		}
 
 		if (key == GLUT_KEY_F3) {
@@ -78,17 +78,17 @@ void GameWorld::MousePassiveMotionInput(int x, int y, int prevX, int prevY) {
 
 void GameWorld::Init() {
 	// 쉐이더 프로그램 생성
-	SHADER->CreateShaderProgram();
+	OBJECTSHADER->CreateShaderProgram();
 	LIGHTOBJECTSHADER->CreateShaderProgram();
 	PARTICLESHADER->CreateShaderProgram();
 	TERRAINSHADER->CreateShaderProgram();
 	// 쉐이더 프로그램이 각종 정점 정보, 행렬들을 등록, 전송할 수 있도록 프로그램 사용 설정
-	SHADER->UseProgram();
+	OBJECTSHADER->UseProgram();
 
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	SHADER->SetUniformInt("tesselLevel", m_objectTesselOff);
+	OBJECTSHADER->SetUniformInt("tesselLevel", m_objectTesselOff);
 
 	// 카메라 생성
 	m_camera = std::make_unique<Camera>();
@@ -100,8 +100,6 @@ void GameWorld::Init() {
 	MODELLIST->LoadModel("sphere.obj");
 	MODELLIST->LoadModel("cylinder.obj");
 	MODELLIST->LoadModel("earth.obj", "Earth_diffuse_512p.png");
-
-	TextureComponent::SetTextureDefaultOption();
 
 	// test--------------------------------------------
 	m_scenes.push_back(new WorldScene1{ });
@@ -119,7 +117,7 @@ void GameWorld::Init() {
 	// 쉐이더 프로그램 사용 종료
 
 	glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-	SHADER->UnUseProgram();
+	OBJECTSHADER->UnUseProgram();
 }
 
 void GameWorld::Update(float deltaTime) {
@@ -148,10 +146,10 @@ void GameWorld::Render() {
 	PARTICLESHADER->SetUniformMat4("viewMat", cameraViewMatrix);
 	PARTICLESHADER->UnUseProgram();
 
-	SHADER->UseProgram();
-	SHADER->SetUniformMat4("perspectiveMat", m_perspectiveMatrix);
-	SHADER->SetUniformMat4("viewMat", cameraViewMatrix);
-	SHADER->UnUseProgram();
+	OBJECTSHADER->UseProgram();
+	OBJECTSHADER->SetUniformMat4("perspectiveMat", m_perspectiveMatrix);
+	OBJECTSHADER->SetUniformMat4("viewMat", cameraViewMatrix);
+	OBJECTSHADER->UnUseProgram();
 
 	LIGHTOBJECTSHADER->UseProgram();
 	LIGHTOBJECTSHADER->SetUniformMat4("perspective", m_perspectiveMatrix);

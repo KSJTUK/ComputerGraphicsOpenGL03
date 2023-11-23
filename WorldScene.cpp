@@ -11,26 +11,21 @@ WorldScene1::WorldScene1() { }
 WorldScene1::~WorldScene1() { }
 
 void WorldScene1::Init() {
-	SHADER->UseProgram();
+	OBJECTSHADER->UseProgram();
 	m_earth = std::make_unique<Cube>("earth");
 	m_earth->SEtScale(glm::vec3{ 0.01f });
 	m_earth->SetPosition(glm::vec3{ 0.f });
-
-	for (int i = 0; i < 3; ++i) {
-		m_spheres.push_back(std::make_unique<Cube>("sphere"));
-		m_spheres.back()->SEtScale(glm::vec3{ 0.1f });
-		m_spheres.back()->SetPosition(glm::vec3{ -5.f + -5.f * i, 0.f, 0.f });
-		m_spheres.back()->SetObjectColor(glm::linearRand(glm::vec3{ }, glm::vec3{ 1.f }));
-	}
-	SHADER->UnUseProgram();
-
-	m_ground = std::make_unique<Terrain>(glm::uvec2{ 20, 20 });
+	OBJECTSHADER->UnUseProgram();
 
 	LIGHTOBJECTSHADER->UseProgram();
 	m_lightObject = std::make_unique<LightObject>("sphere", glm::vec3{ 1.f });
 	m_lightObject->SEtScale(glm::vec3{ 0.1f });
 	m_lightObject->SetPosition(glm::vec3{ 3.f, 0.f, 0.f });
 	LIGHTOBJECTSHADER->UnUseProgram();
+
+	TERRAINSHADER->UseProgram();
+	m_ground = std::make_unique<Terrain>(glm::uvec2{ 20, 20 });
+	TERRAINSHADER->UnUseProgram();
 
 	PARTICLESHADER->UseProgram();
 	auto particleGenerateArea = std::make_pair(glm::vec3{ -10.f, 20.f, -10.f }, glm::vec3{ 10.f, 20.f, 10.f });
@@ -116,11 +111,12 @@ void WorldScene1::Render() {
 	m_ground->Render();
 	TERRAINSHADER->UnUseProgram();
 
-	SHADER->UseProgram();
+	OBJECTSHADER->UseProgram();
 	m_earth->SetMeterials();
 	for (auto& sphere : m_spheres) {
 		sphere->SetMeterials();
 	}
+	//m_earth->Render();
 
 	m_lightObject->SetLightOption();
 
@@ -131,7 +127,7 @@ void WorldScene1::Render() {
 	m_ground->Render();
 
 
-	SHADER->UnUseProgram();
+	OBJECTSHADER->UnUseProgram();
 	
 	LIGHTOBJECTSHADER->UseProgram();
 	m_lightObject->Render();
