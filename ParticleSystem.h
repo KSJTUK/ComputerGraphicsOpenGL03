@@ -33,6 +33,7 @@ private:
 	float m_primitiveSize{ 4.0f };
 
 	float m_timeElapsed{ };
+	float m_randSpeedTime{ };
 
 	float m_deltaTime{ };
 	

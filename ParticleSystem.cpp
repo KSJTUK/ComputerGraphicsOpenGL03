@@ -70,6 +70,7 @@ void ParticleSystem::CreateNewParticle() {
 
 void ParticleSystem::ParticleUpdate(Particle& particle) {
 	particle.lifeTime -= m_deltaTime;
+	m_randSpeedTime += m_deltaTime;
 
 	if (particle.speed.y > -endGravitySpeed) {
 		particle.speed.y -= gravity * m_deltaTime;
@@ -78,6 +79,15 @@ void ParticleSystem::ParticleUpdate(Particle& particle) {
 	particle.position += particle.speed * m_deltaTime;
 	if (particle.position.y < -2.5f) {
 		particle.position.y = -2.5f;
+		particle.speed.x = 0.f;
+		particle.speed.z = 0.f;
+		return;
+	}
+
+	if (m_randSpeedTime > 2.f) {
+		m_randSpeedTime = 0.0f;
+		particle.speed.x = glm::linearRand(-5.f, 5.f);
+		particle.speed.z = glm::linearRand(-5.f, 5.f);
 	}
 }
 
