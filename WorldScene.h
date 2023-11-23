@@ -35,10 +35,7 @@ private:
 	std::unique_ptr<class Cube> m_moon{ };
 	std::unique_ptr<class Cube> m_mars{ };
 
-	std::unique_ptr<class Cube> m_ground{ };
-
-	//std::unique_ptr<class Tank> m_tank{ };
-	class Tank* m_tank{ };
+	std::unique_ptr<class Terrain> m_ground{ };
 
 	std::vector<std::unique_ptr<class Cube>> m_spheres{ };
 	std::unique_ptr<class LightObject> m_lightObject{ };

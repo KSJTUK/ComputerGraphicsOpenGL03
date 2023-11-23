@@ -132,11 +132,16 @@ void GameWorld::Update(float deltaTime) {
 
 void GameWorld::Render() {
 
-	glClearColor(0.f, 0.f, 0.f, 1.f);
+	glClearColor(0.5f, 0.5f, 0.5f, 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_camera->Render();
 	glm::mat4 cameraViewMatrix{ m_camera->GetViewMat() };
+
+	TERRAINSHADER->UseProgram();
+	TERRAINSHADER->SetUniformMat4("perspectiveMat", m_perspectiveMatrix);
+	TERRAINSHADER->SetUniformMat4("viewMat", cameraViewMatrix);
+	TERRAINSHADER->UnUseProgram();
 
 	PARTICLESHADER->UseProgram();
 	PARTICLESHADER->SetUniformMat4("perspectiveMat", m_perspectiveMatrix);

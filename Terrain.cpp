@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "Terrain.h"
 #include "TextureComponent.h"
+#include "Graphics/Shader.h"
 
 Terrain::Terrain(const glm::uvec2& mapSize) : m_terrainMapSize{ mapSize } {
 	// 먼저 하이트맵의 텍스쳐를 불러옴
@@ -22,6 +23,7 @@ void Terrain::CreateTerrainMeshMap() {
 	float tileHeight = m_heightMapImgHeight / static_cast<float>(m_terrainMapSize.y);
 	float left = (-m_heightMapImgWidth / 2.f);
 	float bottom = (-m_heightMapImgHeight / 2.f);
+	glm::vec3 terrainNorm{ 0.f, 1.f, 0.f };
 	// xz평면 상에 지형을 그려줄 큐브 메쉬들의 정점을 생성함
 	for (unsigned int x = 0; x < m_terrainMapSize.x; ++x) {
 		for (unsigned int z = 0; z < m_terrainMapSize.y; ++z) {
@@ -42,9 +44,8 @@ void Terrain::CreateTerrainMeshMap() {
 				glm::vec2{
 					static_cast<float>(x) / m_terrainMapSize.x, static_cast<float>(z + 1) / m_terrainMapSize.y
 				},
-				glm::vec3{ },
+				terrainNorm
 			};
-			m_verticies.push_back(leftTop);
 
 			Vertex leftBottom{
 				glm::vec3{
@@ -55,9 +56,8 @@ void Terrain::CreateTerrainMeshMap() {
 				glm::vec2{
 					static_cast<float>(x) / m_terrainMapSize.x, static_cast<float>(z) / m_terrainMapSize.y
 				},
-				glm::vec3{ },
+				terrainNorm
 			};
-			m_verticies.push_back(leftBottom);
 
 			Vertex rightTop{
 				glm::vec3{
@@ -68,9 +68,8 @@ void Terrain::CreateTerrainMeshMap() {
 				glm::vec2{
 					static_cast<float>(x + 1) / m_terrainMapSize.x, static_cast<float>(z + 1) / m_terrainMapSize.y
 				},
-				glm::vec3{ },
+				terrainNorm
 			};
-			m_verticies.push_back(rightTop);
 
 			Vertex rightBottom{
 				glm::vec3{
@@ -81,14 +80,22 @@ void Terrain::CreateTerrainMeshMap() {
 				glm::vec2{
 					static_cast<float>(x) / m_terrainMapSize.x, static_cast<float>(z) / m_terrainMapSize.y
 				},
-				glm::vec3{ },
+				terrainNorm
 			};
+
+			m_verticies.push_back(leftTop);      // triangle 1
+			m_verticies.push_back(rightTop);
+			m_verticies.push_back(leftBottom);
+
 			m_verticies.push_back(rightBottom);
+			m_verticies.push_back(leftBottom);
+			m_verticies.push_back(rightTop);     // triangle 2
 		}
 	}
 }
 
 void Terrain::CreateTerrainVertexBuffers() {
+	TERRAINSHADER->UseProgram();
 	// 지형을 그릴 VAO, VBO생성 및 정점 바인딩
 	glGenBuffers(1, &m_terrainVBO);
 	glGenVertexArrays(1, &m_terrainVAO);
@@ -111,7 +118,8 @@ void Terrain::CreateTerrainVertexBuffers() {
 	glEnableVertexAttribArray(2);
 
 	// 사각형 패치로 넘겨줌
-	glPatchParameteri(GL_PATCH_VERTICES, 4);
+	glPatchParameteri(GL_PATCH_VERTICES, 3);
+	TERRAINSHADER->UnUseProgram();
 }
 
 void Terrain::Render() {
