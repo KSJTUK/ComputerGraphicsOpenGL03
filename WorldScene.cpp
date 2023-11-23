@@ -40,7 +40,7 @@ void WorldScene1::Init() {
 
 	PARTICLESHADER->UseProgram();
 	auto particleGenerateArea = std::make_pair(glm::vec3{ -10.f, 20.f, -10.f }, glm::vec3{ 10.f, 20.f, 10.f });
-	m_particleSystem = std::make_unique<ParticleSystem>(particleGenerateArea, 20.f, 500, 0.0001f);
+	m_particleSystem = std::make_unique<ParticleSystem>(particleGenerateArea, 20.f, 500, 0.00001f);
 	PARTICLESHADER->UnUseProgram();
 }
 

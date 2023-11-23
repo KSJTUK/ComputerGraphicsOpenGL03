@@ -1,7 +1,7 @@
 #version 460 core
 
 layout(points) in;
-layout(triangle_strip, max_vertices=4) out;
+layout(triangle_strip, max_vertices=3) out;
 //layout(triangle_strip, max_vertices=3) out;
 //layout(points, max_vertices=1) out;
 
@@ -12,6 +12,7 @@ out vec4 gs_out_color;
 out vec2 gs_out_tex;
 
 float primitiveSize = 0.05f;
+uniform float u_primiriveSize;
 
 void createPoint(int index)
 {
@@ -80,9 +81,10 @@ void createRectangle(int index)
 
 void main(void)
 {
-	for (int i = 0; i < gl_in.length(); ++i) { 
-		createRectangle(i);
-//		createTriangle(i);
+	int inputPrimitives = gl_in.length();
+	for (int i = 0; i < inputPrimitives; ++i) { 
+//		createRectangle(i);
+		createTriangle(i);
 	}
 	EndPrimitive();
 }

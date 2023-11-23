@@ -17,6 +17,8 @@ public:
 	ParticleSystem(float lifeTime, int maxCountParticles);
 	ParticleSystem(float lifeTime, int maxCountParticles, float createTime);
 	ParticleSystem(std::pair<glm::vec3, glm::vec3>& generateParticleArea, float lifeTime, int maxCountParticles, float createTime);
+	ParticleSystem(std::pair<glm::vec3, glm::vec3>& generateParticleArea, float lifeTime, int maxCountParticles, float createTime,
+		float primitiveSize, bool randValues = false);
 	~ParticleSystem();
 
 private:

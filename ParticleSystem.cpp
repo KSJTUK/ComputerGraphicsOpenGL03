@@ -2,7 +2,7 @@
 #include "ParticleSystem.h"
 #include "Graphics/Shader.h"
 
-ParticleSystem::ParticleSystem() { 
+ParticleSystem::ParticleSystem() {
 	PARTICLESHADER->UseProgram();
 	//glPointSize(m_primitiveSize);
 	glGenVertexArrays(1, &m_particleVAO);
@@ -13,7 +13,7 @@ ParticleSystem::ParticleSystem() {
 	PARTICLESHADER->UnUseProgram();
 }
 
-ParticleSystem::ParticleSystem(float lifeTime, int maxCountParticles) 
+ParticleSystem::ParticleSystem(float lifeTime, int maxCountParticles)
 	: m_particlesLifeTime{ lifeTime }, m_maxCountParticle{ maxCountParticles } {
 	PARTICLESHADER->UseProgram();
 	//glPointSize(m_primitiveSize);
@@ -25,7 +25,7 @@ ParticleSystem::ParticleSystem(float lifeTime, int maxCountParticles)
 	PARTICLESHADER->UnUseProgram();
 }
 
-ParticleSystem::ParticleSystem(float lifeTime, int maxCountParticles, float createTime) 
+ParticleSystem::ParticleSystem(float lifeTime, int maxCountParticles, float createTime)
 	:m_particlesLifeTime{ lifeTime }, m_maxCountParticle{ maxCountParticles }, m_newParticleCreateTime{ createTime } {
 	PARTICLESHADER->UseProgram();
 	//glPointSize(m_primitiveSize);
@@ -37,8 +37,8 @@ ParticleSystem::ParticleSystem(float lifeTime, int maxCountParticles, float crea
 	PARTICLESHADER->UnUseProgram();
 }
 
-ParticleSystem::ParticleSystem(std::pair<glm::vec3, glm::vec3>& generateParticleArea, float lifeTime, int maxCountParticles, float createTime) 
-	: m_particleGenerateArea{ generateParticleArea }, m_particlesLifeTime {lifeTime },
+ParticleSystem::ParticleSystem(std::pair<glm::vec3, glm::vec3>& generateParticleArea, float lifeTime, int maxCountParticles, float createTime)
+	: m_particleGenerateArea{ generateParticleArea }, m_particlesLifeTime{ lifeTime },
 	m_maxCountParticle{ maxCountParticles }, m_newParticleCreateTime{ createTime } {
 	//glPointSize(m_primitiveSize);
 	PARTICLESHADER->UseProgram();
@@ -50,7 +50,7 @@ ParticleSystem::ParticleSystem(std::pair<glm::vec3, glm::vec3>& generateParticle
 	PARTICLESHADER->UnUseProgram();
 }
 
-ParticleSystem::~ParticleSystem() { 
+ParticleSystem::~ParticleSystem() {
 	glDeleteBuffers(1, &m_particleVBO);
 	glDeleteVertexArrays(1, &m_particleVAO);
 }
@@ -60,13 +60,14 @@ void ParticleSystem::CreateNewParticle() {
 	glm::vec4 particleColor{ 1.f };
 	glm::vec3 defaultSpeed{ 0.f };
 	float randomLife{ glm::linearRand(2.f, m_particlesLifeTime) };
+
 	m_particles.push_back(Particle{
 		generatePosition,
 		{ },
 		particleColor,
 		defaultSpeed,
 		randomLife
-	});
+		});
 }
 
 void ParticleSystem::ParticleUpdate(Particle& particle) {
