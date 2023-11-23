@@ -20,4 +20,5 @@ public:
 
 	void CreateTexture(bool flipImage=false);
 	uint32 GetTextureID() const;
+	glm::ivec3 GetTextureInfo() const;
 };

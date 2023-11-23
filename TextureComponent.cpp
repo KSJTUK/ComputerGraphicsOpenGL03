@@ -38,3 +38,7 @@ void TextureComponent::CreateTexture(bool flipImage) {
 uint32 TextureComponent::GetTextureID() const {
 	return m_textureID;
 }
+
+glm::ivec3 TextureComponent::GetTextureInfo() const {
+	return glm::ivec3{ m_width, m_height, m_nrChannels };
+}
