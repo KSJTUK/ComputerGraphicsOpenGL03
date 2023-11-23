@@ -85,6 +85,8 @@ void GameWorld::Init() {
 	SHADER->UseProgram();
 
 	glEnable(GL_CULL_FACE);
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LESS);
 	SHADER->SetUniformInt("tesselLevel", m_objectTesselOff);
 
 	// 朝五虞 持失

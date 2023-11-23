@@ -12,21 +12,21 @@ out vec2 gs_out_tex;
 void main(void)
 {
 	for (int i = 0; i < gl_in.length(); ++i) { 
-		gl_Position = gl_in[i].gl_Position + vec4(0.0f, 0.1f, 0.0f, 1.0f);
+		gl_Position = gl_in[i].gl_Position + vec4(0.0f, 0.1f, 0.0f, 0.0f);
 
 		gs_out_color = vs_out_color[i];
 		gs_out_tex = vs_out_tex[i];
 
 		EmitVertex();
 
-		gl_Position = gl_in[i].gl_Position + vec4(-0.1f, -0.1f, 0.0f, 1.0f);
+		gl_Position = gl_in[i].gl_Position + vec4(-0.1f, -0.1f, 0.0f, 0.0f);
 
 		gs_out_color = vs_out_color[i];
 		gs_out_tex = vs_out_tex[i];
 
 		EmitVertex();
 
-		gl_Position = gl_in[i].gl_Position + vec4(0.1f, -0.1f, 0.0f, 1.0f);
+		gl_Position = gl_in[i].gl_Position + vec4(0.1f, -0.1f, 0.0f, 0.0f);
 
 		gs_out_color = vs_out_color[i];
 		gs_out_tex = vs_out_tex[i];

@@ -72,14 +72,15 @@ uniform int notextureID;
 
 vec3 calcDirectionLighting(DirectionLight light, vec3 normal, vec3 viewPos, vec3 fragPos)
 {
-	vec3 ambient = light.ambient * vec3(texture(meterials.diffuse, texCoord));
+	vec3 textureDiffuse = notextureID == 1 ? vec3(0.5f) : vec3(texture(meterials.diffuse, texCoord));
+	vec3 ambient = light.ambient * textureDiffuse;
 
 	// Æþ¸ðµ¨ÀÇ µðÇ»Áî Ç×
 	vec3 vNorm = normalize(normal);
 	vec3 lightDirection = normalize(-light.direction);
 
 	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
-	vec3 diffuse = light.diffuse * (diffuseN * vec3(texture(meterials.diffuse, texCoord)));
+	vec3 diffuse = light.diffuse * (diffuseN * textureDiffuse);
 
 	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
 	vec3 viewDirection = normalize(viewPos - fragPos);

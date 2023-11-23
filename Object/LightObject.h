@@ -20,7 +20,7 @@ private:
 	glm::vec3 m_lightColor{ 1.f };
 	LightOption m_lightOption{ };
 
-	bool m_directionLightingOn{ false };
+	bool m_directionLightingOn{ true };
 	bool m_sportLightingOn{ false };
 
 	float m_radius{ 3.f };

@@ -37,10 +37,10 @@ void LightObject::SetLightOption() {
 
 	// Direction Lighting
 	if (m_directionLightingOn) {
-		SHADER->SetUniformVec3("dirLight.direction", glm::vec3{ 0.f });
+		SHADER->SetUniformVec3("dirLight.direction", glm::vec3{ 0.f, -1.f, 0.f });
 		SHADER->SetUniformVec3("dirLight.ambient", ambientColor);
 		SHADER->SetUniformVec3("dirLight.diffuse", diffuseColor);
-		SHADER->SetUniformVec3("dirLight.specular", m_lightOption.specular);
+		SHADER->SetUniformVec3("dirLight.specular", glm::vec3{ 0.f });
 	}
 
 	 //point, flash lightting
