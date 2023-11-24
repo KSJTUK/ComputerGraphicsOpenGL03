@@ -5,6 +5,9 @@ layout (quads, fractional_odd_spacing, ccw) in;
 in vec2 tcs_out_tex[];
 in vec3 tcs_out_normal[];
 
+out vec2 tes_out_tex;
+out vec3 tes_out_normal;
+
 out float height;
 
 uniform sampler2D heightMap;
@@ -28,7 +31,7 @@ void main()
     vec2 texCoord = (t1 - t0) * v + t0;
 
     // 하이트 맵에서 텍스쳐 색상을 받아옴
-    height = texture(heightMap, texCoord).y * 128.0f - 64.0f;
+    height = texture(heightMap, texCoord).x * 128.0f - 64.0f;
 
     // 컨트롤 포인트
     vec4 p00 = gl_in[0].gl_Position;
@@ -47,4 +50,7 @@ void main()
     vec4 p = (p1 - p0) * v + p0 + normal * height;
 
     gl_Position = perspectiveMat * p;
+
+    tes_out_tex = texCoord;
+    tes_out_normal = vec3(normal);
 }

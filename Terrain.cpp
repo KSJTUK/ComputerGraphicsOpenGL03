@@ -7,7 +7,8 @@
 Terrain::Terrain(const glm::uvec2& mapSize) : m_terrainMapSize{ mapSize } {
 	// 먼저 하이트맵의 텍스쳐를 불러옴
 	m_textureComponent = std::make_unique<TextureComponent>();
-	m_textureComponent->LoadTexture(".\\textures\\height.png", GL_RGBA, false);
+	m_textureComponent->LoadTexture(".\\textures\\height1.png", false);
+	m_textureComponent->LoadTexture(".\\textures\\terrain1.png", false);
 
 	m_vertexBuffer = std::make_unique<GraphicBuffers>();
 	m_vertexBuffer->Init();
@@ -135,7 +136,9 @@ void Terrain::Render() {
 	//glDrawArrays(GL_PATCHES, 0, uint32(m_verticies.size()));
 	//glBindVertexArray(0);
 	m_textureComponent->BindingTexture(HEIGHT_MAP);
+	m_textureComponent->BindingTexture(TERRAIN_TEX);
 	m_vertexBuffer->SetDrawMode(GL_PATCHES);
+	TERRAINSHADER->SetUniformInt("heightMapTexture", 1);
 	m_vertexBuffer->SetPatchParameters(4);
 	m_vertexBuffer->Render();
 }

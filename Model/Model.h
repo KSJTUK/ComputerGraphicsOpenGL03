@@ -3,7 +3,7 @@
 class Model {
 public:
 	Model(const std::string& objectFilePath);
-	Model(const std::string& objectFilePath, const std::string& textureFilePath, int rgbChannel=GL_RGB);
+	Model(const std::string& objectFilePath, const std::string& textureFilePath);
 	~Model();
 
 	Model(const Model& other) = delete;

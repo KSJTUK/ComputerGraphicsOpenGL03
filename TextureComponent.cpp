@@ -5,7 +5,7 @@ TextureComponent::TextureComponent() { }
 
 TextureComponent::~TextureComponent() { }
 
-void TextureComponent::LoadTexture(const std::string& textureFilePath, int channel, bool flipImageOnLoad) {
+void TextureComponent::LoadTexture(const std::string& textureFilePath, bool flipImageOnLoad) {
 	TextureInfo texInfo{ };
 	glGenTextures(1, &texInfo.id);
 	glBindTexture(GL_TEXTURE_2D, texInfo.id);
@@ -21,7 +21,21 @@ void TextureComponent::LoadTexture(const std::string& textureFilePath, int chann
 	}
 	std::cout << "texture file load success : file name{ " << textureFilePath << " }\n";
 
-	glTexImage2D(GL_TEXTURE_2D, 0, channel, texInfo.width, texInfo.height, 0, channel, GL_UNSIGNED_BYTE, imageData);
+	int channel{ };
+	switch (texInfo.nrChannel) {
+	case 1:
+		channel = GL_RED;
+		break;
+	case 2:
+		break;
+	case 3:
+		channel = GL_RGB;
+		break;
+	case 4:
+		channel = GL_RGBA;
+	}
+
+	glTexImage2D(GL_TEXTURE_2D, 0, channel, texInfo.width, texInfo.height, 0, channel, GL_UNSIGNED_BYTE, (void*)imageData);
 	glGenerateMipmap(GL_TEXTURE_2D);
 
 	stbi_image_free(imageData);

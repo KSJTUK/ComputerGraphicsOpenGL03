@@ -9,10 +9,10 @@ Model::Model(const std::string& objectFilePath) {
 	m_textureComponent = nullptr;
 }
 
-Model::Model(const std::string& objectFilePath, const std::string& textureFilePath, int rgbChannel) {
+Model::Model(const std::string& objectFilePath, const std::string& textureFilePath) {
 	ReadObject(objectFilePath.c_str());
 	m_textureComponent = std::make_unique<TextureComponent>();
-	m_textureComponent->LoadTexture(textureFilePath, rgbChannel, true);
+	m_textureComponent->LoadTexture(textureFilePath, true);
 }
 
 Model::~Model() { }

@@ -11,7 +11,7 @@ private:
 public:
 	static void SetTextureDefaultOption();
 
-	void LoadTexture(const std::string& textureFilePath, int channel, bool flipImageOnLoad);
+	void LoadTexture(const std::string& textureFilePath, bool flipImageOnLoad);
 
 	void BindingTexture(int textureIndex);
 	void UnBindingTextures();
