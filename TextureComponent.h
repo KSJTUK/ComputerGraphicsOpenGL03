@@ -2,24 +2,20 @@
 
 class TextureComponent {
 public:
-	TextureComponent(const std::string& textureFilePath, int channel);
-	TextureComponent(const std::string& textureFilePath, int channel, bool flipImageOnLoad);
+	TextureComponent();
 	~TextureComponent();
 
 private:
-	uint32 m_textureID{ };
-
-	int32 m_alphaChannel{ };
-	int32 m_width{ };
-	int32 m_height{ };
-	int32 m_nrChannels{ };
-
-	std::string m_filePath{ };
+	std::vector<TextureInfo> m_textures{ };
 
 public:
 	static void SetTextureDefaultOption();
 
-	void CreateTexture(bool flipImage=false);
-	uint32 GetTextureID() const;
-	glm::ivec3 GetTextureInfo() const;
+	void LoadTexture(const std::string& textureFilePath, int channel, bool flipImageOnLoad);
+
+	void BindingTexture(int textureIndex);
+	void UnBindingTextures();
+
+	uint32 GetTextureID(int textureIndex);
+	const TextureInfo& GetTextureInfo(int textureIndex) const;
 };

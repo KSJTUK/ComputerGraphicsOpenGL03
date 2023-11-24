@@ -24,10 +24,27 @@
 
 #include "Util/stb_image.h"
 
+
+using int8 = __int8;
+using int16 = __int16;
+using int32 = __int32;
+using int64 = __int64;
+using uint8 = unsigned __int8;
+using uint16 = unsigned __int16;
+using uint32 = unsigned __int32;
+using uint64 = unsigned __int64;
+
 struct Vertex {
 	glm::vec3 position{ };
 	glm::vec2 texture{ };
 	glm::vec3 normal{ };
+};
+
+struct TextureInfo {
+	uint32 id{ };
+	int32 width{ };
+	int32 height{ };
+	int32 nrChannel{ };
 };
 
 // 생성할 윈도우의ㅡ 정보를 담을 구조체 정의
@@ -40,15 +57,6 @@ struct WindowInfo {
 	float fHeight;
 	char* windowTitle;
 };
-
-using int8 = __int8;
-using int16 = __int16;
-using int32 = __int32;
-using int64 = __int64;
-using uint8 = unsigned __int8;
-using uint16 = unsigned __int16;
-using uint32 = unsigned __int32;
-using uint64 = unsigned __int64;
 
 extern std::unique_ptr<class Engine> engine;
 

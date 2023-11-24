@@ -447,8 +447,6 @@ void TerrainShader::CompileShaders() {
 	contentsPath = m_tesselationEvaluationFileContents.c_str();
 	glShaderSource(m_tesselEvaluationShader, 1, &contentsPath, NULL);
 
-	std::cout << m_tesselationEvaluationFileContents << std::endl;
-
 	// 쉐이더 컴파일
 	glCompileShader(m_vertexShader);
 	glCompileShader(m_tesselControlShader);

@@ -12,7 +12,7 @@ public:
 private:
 	// VAO, VBO, EBO를 가지는 객체
 	std::unique_ptr<class GraphicBuffers> m_graphicsBuffer{ };
-	std::unique_ptr<class TextureComponent> m_texture{ };
+	std::unique_ptr<class TextureComponent> m_textureComponent{ };
 
 	// 정점 속성들을 저장할 vector
 	std::vector<Vertex> m_verticies{ };

@@ -6,28 +6,24 @@
 
 Terrain::Terrain(const glm::uvec2& mapSize) : m_terrainMapSize{ mapSize } {
 	// 먼저 하이트맵의 텍스쳐를 불러옴
-	m_heightMap = std::make_unique<TextureComponent>(".\\textures\\height.png", GL_RGBA);
-	m_textureID = m_heightMap->GetTextureID();
-	auto textureImgInfo = m_heightMap->GetTextureInfo();
-
-	m_heightMapImgWidth = textureImgInfo.x;
-	m_heightMapImgHeight = textureImgInfo.y;
+	m_textureComponent = std::make_unique<TextureComponent>();
+	m_textureComponent->LoadTexture(".\\textures\\height.png", GL_RGBA, false);
 
 	m_vertexBuffer = std::make_unique<GraphicBuffers>();
 	m_vertexBuffer->Init();
 
 	CreateTerrainMeshMap();
-	//CreateTerrainVertexBuffers();
 	m_vertexBuffer->SetVerticies(m_verticies);
 }
 
 Terrain::~Terrain() { }
 
 void Terrain::CreateTerrainMeshMap() {
-	float tileWidth = m_heightMapImgWidth / static_cast<float>(m_terrainMapSize.x);
-	float tileHeight = m_heightMapImgHeight / static_cast<float>(m_terrainMapSize.y);
-	float left = (-m_heightMapImgWidth / 2.f);
-	float bottom = (-m_heightMapImgHeight / 2.f);
+	auto heightMapInfo = m_textureComponent->GetTextureInfo(HEIGHT_MAP);
+	float tileWidth =  heightMapInfo.width / static_cast<float>(m_terrainMapSize.x);
+	float tileHeight = heightMapInfo.height / static_cast<float>(m_terrainMapSize.y);
+	float left = (-heightMapInfo.width / 2.f);
+	float bottom = (-heightMapInfo.height / 2.f);
 	glm::vec3 terrainNorm{ 0.f, 1.f, 0.f };
 	// xz평면 상에 지형을 그려줄 큐브 메쉬들의 정점을 생성함
 	for (unsigned int x = 0; x < m_terrainMapSize.x; ++x) {
@@ -94,6 +90,9 @@ void Terrain::CreateTerrainMeshMap() {
 			m_verticies.push_back(p3);
 		}
 	}
+
+	std::cout << "creating terrain success : \n\tterrain patch size{ " << m_terrainMapSize.x << " x " << m_terrainMapSize.x << " }, "
+		<< "\n\tterrain vertex size{ " << m_verticies.size() << " }\n";
 }
 
 void Terrain::CreateTerrainVertexBuffers() {
@@ -135,7 +134,7 @@ void Terrain::Render() {
 	//glBindVertexArray(m_terrainVAO);
 	//glDrawArrays(GL_PATCHES, 0, uint32(m_verticies.size()));
 	//glBindVertexArray(0);
-	m_vertexBuffer->BindingTexture(m_textureID);
+	m_textureComponent->BindingTexture(HEIGHT_MAP);
 	m_vertexBuffer->SetDrawMode(GL_PATCHES);
 	m_vertexBuffer->SetPatchParameters(4);
 	m_vertexBuffer->Render();
