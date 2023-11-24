@@ -24,6 +24,7 @@ public:
 	void Init();
 
 	void SetVerticies(const std::vector<Vertex>& verticies);
+	void SetPatchParameters(int numOfPatches);
 	void BindingTexture(const uint32& textureID);
 
 	void SetDrawMode(unsigned int mode);

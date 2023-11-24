@@ -88,11 +88,9 @@ void Terrain::CreateTerrainMeshMap() {
 				terrainNorm
 			};
 
-			m_verticies.push_back(p0);      // triangle 1
+			m_verticies.push_back(p0);
 			m_verticies.push_back(p2);
 			m_verticies.push_back(p1);
-			m_verticies.push_back(p1);
-			m_verticies.push_back(p2);
 			m_verticies.push_back(p3);
 		}
 	}
@@ -139,5 +137,6 @@ void Terrain::Render() {
 	//glBindVertexArray(0);
 	m_vertexBuffer->BindingTexture(m_textureID);
 	m_vertexBuffer->SetDrawMode(GL_PATCHES);
+	m_vertexBuffer->SetPatchParameters(4);
 	m_vertexBuffer->Render();
 }

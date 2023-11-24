@@ -148,6 +148,10 @@ void Model::ReadObject(const char* filePath) {
 	MakeBoundingBox();
 }
 
+void Model::SetPatchParameters(int numOfPatches) {
+	m_graphicsBuffer->SetPatchParameters(numOfPatches);
+}
+
 void Model::SetDrawMode(int drawMode) {
 	m_graphicsBuffer->SetDrawMode(drawMode);
 }

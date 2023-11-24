@@ -41,6 +41,7 @@ private:
 
 public:
 	// setter
+	void SetPatchParameters(int numOfPatches);
 	void SetDrawMode(int drawMode);
 	bool ExistTexture() const;
 

@@ -34,8 +34,10 @@ void GraphicBuffers::SetVerticies(const std::vector<Vertex>& verticies) {
 	// location 2번에 Vertex객체의 normal정보를 넘겨줌
 	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, normal));
 	glEnableVertexAttribArray(2);
+}
 
-	glPatchParameteri(GL_PATCH_VERTICES, 3);
+void GraphicBuffers::SetPatchParameters(int numOfPatches) {
+	glPatchParameteri(GL_PATCH_VERTICES, numOfPatches);
 }
 
 void GraphicBuffers::BindingTexture(const uint32& textureID) {

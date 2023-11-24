@@ -8,11 +8,10 @@ out vec2 vs_out_tex;
 out vec3 vs_out_normal;
 
 uniform mat4 viewMat;
-uniform mat4 perspectiveMat;
 
 void main(void)
 {
-	gl_Position = perspectiveMat * viewMat * vec4(in_Position, 1.0f);
+	gl_Position = viewMat * vec4(in_Position, 1.0f);
 	vs_out_tex = in_Texture;
 	vs_out_normal = in_Normal;
 }
