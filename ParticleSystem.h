@@ -23,7 +23,7 @@ public:
 
 private:
 	const float gravity{ 9.8f };
-	const float endGravitySpeed{ 5.f };
+	const float endGravitySpeed{ 10.f };
 
 private:
 	std::vector<Particle> m_particles{ };

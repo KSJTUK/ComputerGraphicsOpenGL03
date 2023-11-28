@@ -14,7 +14,7 @@ void WorldScene1::Init() {
 	OBJECTSHADER->UseProgram();
 	m_earth = std::make_unique<Cube>("earth");
 	m_earth->SEtScale(glm::vec3{ 0.01f });
-	m_earth->SetPosition(glm::vec3{ 0.f });
+	m_earth->SetPosition(glm::vec3{ 0.f, 3.f, 0.f });
 	OBJECTSHADER->UnUseProgram();
 
 	LIGHTOBJECTSHADER->UseProgram();
@@ -28,8 +28,15 @@ void WorldScene1::Init() {
 	TERRAINSHADER->UnUseProgram();
 
 	PARTICLESHADER->UseProgram();
-	auto particleGenerateArea = std::make_pair(glm::vec3{ -10.f, 20.f, -10.f }, glm::vec3{ 10.f, 20.f, 10.f });
-	m_particleSystem = std::make_unique<ParticleSystem>(particleGenerateArea, 20.f, 500, 0.00001f);
+	auto particleGenerateArea = std::make_pair(glm::vec3{ -1024.f, 100.f, -1024.f }, glm::vec3{ 1024.f, 100.f, 1024.f });
+	m_particleSystem.push_back(std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.00001f));
+	m_particleSystem.push_back(std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.00001f));
+	m_particleSystem.push_back(std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.00001f));
+	m_particleSystem.push_back(std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.00001f));
+	m_particleSystem.push_back(std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.00001f));
+	m_particleSystem.push_back(std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.00001f));
+	m_particleSystem.push_back(std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.00001f));
+	m_particleSystem.push_back(std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.00001f));
 	PARTICLESHADER->UnUseProgram();
 }
 
@@ -103,7 +110,9 @@ void WorldScene1::Input(unsigned char key, bool down) {
 void WorldScene1::Update(float deltaTime) {
 	m_earth->Update(deltaTime);
 	m_lightObject->Update(deltaTime);
-	m_particleSystem->Update(deltaTime);
+	for (auto& ps : m_particleSystem) {
+		ps->Update(deltaTime);
+	}
 }
 
 void WorldScene1::Render() {
@@ -133,5 +142,7 @@ void WorldScene1::Render() {
 	m_lightObject->Render();
 	LIGHTOBJECTSHADER->UnUseProgram();
 
-	m_particleSystem->Render();
+	for (auto& ps : m_particleSystem) {
+		ps->Render();
+	}
 }

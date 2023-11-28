@@ -11,7 +11,7 @@ in vec2 vs_out_tex[];
 out vec4 gs_out_color;
 out vec2 gs_out_tex;
 
-float primitiveSize = 0.05f;
+float primitiveSize = 1.5f;
 uniform float u_primiriveSize;
 
 void createPoint(int index)

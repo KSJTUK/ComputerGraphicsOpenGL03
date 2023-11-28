@@ -40,7 +40,7 @@ private:
 	std::vector<std::unique_ptr<class Cube>> m_spheres{ };
 	std::unique_ptr<class LightObject> m_lightObject{ };
 
-	std::unique_ptr<class ParticleSystem> m_particleSystem{ };
+	std::vector<std::unique_ptr<class ParticleSystem>> m_particleSystem{ };
 
 public:
 	void Init();

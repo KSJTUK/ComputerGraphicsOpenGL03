@@ -35,6 +35,7 @@ void TextureComponent::LoadTexture(const std::string& textureFilePath, bool flip
 		channel = GL_RGBA;
 	}
 
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
 	glTexImage2D(GL_TEXTURE_2D, 0, channel, texInfo.width, texInfo.height, 0, channel, GL_UNSIGNED_BYTE, (void*)imageData);
 	glGenerateMipmap(GL_TEXTURE_2D);
 

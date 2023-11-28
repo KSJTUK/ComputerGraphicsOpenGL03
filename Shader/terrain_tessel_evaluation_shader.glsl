@@ -9,9 +9,18 @@ out vec2 tes_out_tex;
 out vec3 tes_out_normal;
 
 out float height;
+out float heightFactor;
 
 uniform sampler2D heightMap;
 uniform mat4 perspectiveMat;
+
+vec3 calcTessellationedNormal(vec3 cp0, vec3 cp1, vec3 cpNormal0, vec3 cpNormal1)
+{
+    vec3 dirVec = cp0 - cp1;
+    vec3 addNormal = cpNormal0 + cpNormal1;
+    vec3 normal = addNormal - (2 * (dot(addNormal, dirVec) / dot(dirVec, dirVec))) * dirVec;
+    return normal;
+}
 
 void main()
 {
@@ -31,7 +40,8 @@ void main()
     vec2 texCoord = (t1 - t0) * v + t0;
 
     // 하이트 맵에서 텍스쳐 색상을 받아옴
-    height = texture(heightMap, texCoord).x * 128.0f - 64.0f;
+    heightFactor = 64.0f;
+    height = texture(heightMap, texCoord).x * heightFactor - heightFactor / 2.0f;
 
     // 컨트롤 포인트
     vec4 p00 = gl_in[0].gl_Position;
