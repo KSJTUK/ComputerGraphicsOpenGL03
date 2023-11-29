@@ -18,18 +18,20 @@ Cube::Cube(const std::string& modelTag, const glm::mat4& initTransform) : Object
 
 Cube::~Cube() { }
 
+void Cube::SetOrbitAxis(const glm::vec3& axis) {
+	m_orbitAxis = axis;
+}
+
+void Cube::Orbit() {
+	m_position = glm::rotate(m_position, glm::radians(0.01f), m_orbitAxis);
+}
+
 void Cube::Update(float deltaTime) {
 	static float angle = 0.f;
 	static float rotateAngle = 0.f;
 
 	if (m_orbit) {
-		m_position.x = radius * std::cosf(glm::radians(angle));
-		m_position.z = radius * std::sinf(glm::radians(angle));
-		angle += angleSpeed * deltaTime;
-
-		if (angle > 360.f) {
-			angle = 0.f;
-		}
+		Orbit();
 	}
 
 	if (m_rotate) {

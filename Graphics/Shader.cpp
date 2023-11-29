@@ -204,29 +204,29 @@ void ObjectShader::CompileShaders() {
 	contentsPath = m_fragmentShaderFileContents.c_str();
 	glShaderSource(m_fragmentShader, 1, &contentsPath, NULL);
 
-	contentsPath = m_tesselationControlFileContents.c_str();
-	glShaderSource(m_tesselControlShader, 1, &contentsPath, NULL);
+	//contentsPath = m_tesselationControlFileContents.c_str();
+	//glShaderSource(m_tesselControlShader, 1, &contentsPath, NULL);
 
-	contentsPath = m_tesselationEvaluationFileContents.c_str();
-	glShaderSource(m_tesselEvaluationShader, 1, &contentsPath, NULL);
+	//contentsPath = m_tesselationEvaluationFileContents.c_str();
+	//glShaderSource(m_tesselEvaluationShader, 1, &contentsPath, NULL);
 
 	// 쉐이더 컴파일
 	glCompileShader(m_vertexShader);
-	glCompileShader(m_tesselControlShader);
-	glCompileShader(m_tesselEvaluationShader);
+	//glCompileShader(m_tesselControlShader);
+	//glCompileShader(m_tesselEvaluationShader);
 	glCompileShader(m_fragmentShader);
 
 	// 쉐이더 컴파일 여부 확인
 	CheckAndPrintShaderCompileError(m_vertexShader);
-	CheckAndPrintShaderCompileError(m_tesselControlShader);
-	CheckAndPrintShaderCompileError(m_tesselEvaluationShader);
+	//CheckAndPrintShaderCompileError(m_tesselControlShader);
+	//CheckAndPrintShaderCompileError(m_tesselEvaluationShader);
 	CheckAndPrintShaderCompileError(m_fragmentShader);
 }
 
 void ObjectShader::AttachAndLinkShaders() {
 	glAttachShader(m_shaderProgram, m_vertexShader);
-	glAttachShader(m_shaderProgram, m_tesselControlShader);
-	glAttachShader(m_shaderProgram, m_tesselEvaluationShader);
+	//glAttachShader(m_shaderProgram, m_tesselControlShader);
+	//glAttachShader(m_shaderProgram, m_tesselEvaluationShader);
 	glAttachShader(m_shaderProgram, m_fragmentShader);
 
 	// 쉐이더 링크
@@ -247,8 +247,8 @@ void ObjectShader::CreateShaderProgram() {
 	m_shaderProgram = glCreateProgram();
 	LoadVertexShaderFile(".\\Shader\\object_vertex_shader.glsl");
 	LoadFragmentShaderFile(".\\Shader\\object_fragment_shader.glsl");
-	LoadTesselationControlShaderFile(".\\Shader\\object_tessel_control_shader.glsl");
-	LoadTesselationEvaluationShaderFile(".\\Shader\\object_tessel_evaluation_shader.glsl");
+	//LoadTesselationControlShaderFile(".\\Shader\\object_tessel_control_shader.glsl");
+	//LoadTesselationEvaluationShaderFile(".\\Shader\\object_tessel_evaluation_shader.glsl");
 	//LoadGeometryShader(".\\Shader\\geometry_shader.glsl");
 	CompileShaders();
 	AttachAndLinkShaders();

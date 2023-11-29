@@ -44,6 +44,48 @@ void Model::MakeBoundingBox() {
 	m_boundingBox = { m_maxCoord, m_minCoord };
 }
 
+Vertex Model::GetMid(const Vertex& a, const Vertex& b) {
+	Vertex mid = {
+		(a.position + b.position) / 2.f,
+		a.texture,
+		a.normal
+	};
+	return mid;
+}
+
+void Model::CreateSierpinski(const int& level, int recursionDepth) {
+	if (level == ++recursionDepth) {
+		return;
+	}
+
+	std::vector<Vertex> tempVertex{ };
+
+	int triangleSize = 3;
+	size_t loopSize = m_verticies.size();
+	for (int i = 0; i < loopSize; i += triangleSize) {
+		Vertex mid1 = GetMid(m_verticies[i], m_verticies[i + 1]);
+		Vertex mid2 = GetMid(m_verticies[i + 1], m_verticies[i + 2]);
+		Vertex mid3 = GetMid(m_verticies[i + 2], m_verticies[i]);
+
+		tempVertex.push_back(m_verticies[i]); // triangle 1
+		tempVertex.push_back(mid1);
+		tempVertex.push_back(mid3);
+
+		tempVertex.push_back(mid1);          // triangle 2
+		tempVertex.push_back(m_verticies[i + 1]);
+		tempVertex.push_back(mid2);
+
+		tempVertex.push_back(mid3);           // triangle 3
+		tempVertex.push_back(mid2);
+		tempVertex.push_back(m_verticies[i + 2]);
+	}
+
+	m_verticies.swap(tempVertex);
+	//std::copy(tempVertex.begin(), tempVertex.end(), m_verticies.begin());
+	
+	Model::CreateSierpinski(level, recursionDepth);
+}
+
 void Model::ReadFace(std::stringstream& contents, std::vector<unsigned int>* indiciesVec) {
 	std::string delTag{ };
 	std::string face[3]{ };        // f a/b/c -> a == 정점 인덱스, b == 텍스처 인덱스, c == 노멀 인덱스
@@ -136,8 +178,8 @@ void Model::ReadObject(const char* filePath) {
 
 	for (auto i = 0; i < endLoop; ++i) {
 		m_verticies[i].position = vertexPositions[indiciesVec[0][i]];
-		m_verticies[i].texture = vertexTextureCoord[indiciesVec[1][i]];
-		m_verticies[i].normal = vertexNormals[indiciesVec[2][i]];
+		if (!indiciesVec[1].empty()) m_verticies[i].texture = vertexTextureCoord[indiciesVec[1][i]];
+		if (!indiciesVec[2].empty()) m_verticies[i].normal = vertexNormals[indiciesVec[2][i]];
 	}
 
 	std::cout << m_verticies.size() << std::endl;
@@ -161,8 +203,16 @@ bool Model::ExistTexture() const {
 	return bool{ m_textureComponent };
 }
 
+void Model::MakeSierpinskiTriangle(const int& level) {
+	CreateSierpinski(level);
+	m_graphicsBuffer.release();
+	m_graphicsBuffer = std::make_unique<GraphicBuffers>();
+	m_graphicsBuffer->Init();
+	m_graphicsBuffer->SetVerticies(m_verticies);
+}
+
 void Model::Init() {
-	m_graphicsBuffer = std::make_unique<class GraphicBuffers>();
+	m_graphicsBuffer = std::make_unique<GraphicBuffers>();
 	m_graphicsBuffer->Init();
 
 	m_graphicsBuffer->SetVerticies(m_verticies);

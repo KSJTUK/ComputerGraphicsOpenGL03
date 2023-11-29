@@ -31,6 +31,10 @@ void Object::SetObjectColor(const glm::vec3& color) {
 	m_objectColor = color;
 }
 
+void Object::CreateSierpinskiTriangle(const int& level) {
+	m_model->MakeSierpinskiTriangle(level);
+}
+
 void Object::Render() {
 	glm::mat4 unit{ 1.f };
 
@@ -48,7 +52,6 @@ void Object::Render() {
 	OBJECTSHADER->SetUniformMat4("modelTransform", m_transform);
 	OBJECTSHADER->SetUniformMat4("modelsParentTransform", m_parentTransform);
 
-	m_model->SetDrawMode(GL_PATCHES);
-	m_model->SetPatchParameters(3);
+	m_model->SetDrawMode(GL_TRIANGLES);
 	m_model->Render();
 }

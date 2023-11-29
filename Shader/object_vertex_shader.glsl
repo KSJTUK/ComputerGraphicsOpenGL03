@@ -13,8 +13,8 @@ uniform mat4 modelInitTransform;
 uniform mat4 modelTransform;
 
 // lighting
-out vec3 norms;
-out vec2 texCoords;
+out vec3 vNormal;
+out vec2 texCoord;
 out vec3 fragPosition;
 
 void main(void)
@@ -22,8 +22,8 @@ void main(void)
 	mat4 transform = modelsParentTransform * modelTransform * modelInitTransform;
 
 	fragPosition = vec3(transform * vec4(in_Position, 1.0f));
-	norms = mat3(transpose(inverse(transform))) * in_Normal;
-	texCoords = in_Texture;
+	vNormal = mat3(transpose(inverse(transform))) * in_Normal;
+	texCoord = in_Texture;
 
 	gl_Position = perspectiveMat * viewMat * vec4(fragPosition, 1.0f);
 }

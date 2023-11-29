@@ -13,6 +13,8 @@ public:
 
 	void LoadTexture(const std::string& textureFilePath, bool flipImageOnLoad);
 
+	void LoadTexture(const std::string& textureFilePath, bool flipImageOnLoad, unsigned char* dataStorePointer);
+
 	void BindingTexture(int textureIndex);
 	void UnBindingTextures();
 

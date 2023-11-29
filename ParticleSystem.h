@@ -32,7 +32,7 @@ private:
 	unsigned int m_particleVAO{ };
 	unsigned int m_particleVBO{ };
 	int m_particleDrawMode{ GL_POINTS };
-	float m_primitiveSize{ 4.0f };
+	float m_primitiveSize{ 1.0f };
 
 	float m_timeElapsed{ };
 	float m_randSpeedTime{ };
@@ -51,9 +51,13 @@ private:
 	void RemoveLifeEndParticles();
 	void SetParticleVertexs();
 
+
 	void SetPerspectiveMatrix(const glm::mat4& perspectiveMatrix);
 
 public:
+	void IncGenerateTime();
+	void DecGenerateTime();
+
 	void Update(float deltaTime);
 	void Render();
 };

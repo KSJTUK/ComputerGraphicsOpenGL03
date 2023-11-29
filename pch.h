@@ -40,6 +40,13 @@ struct Vertex {
 	glm::vec3 normal{ };
 };
 
+struct Meterial {
+	glm::vec3 ambient{ 1.f };
+	glm::vec3 diffuse{ 0.5f };
+	glm::vec3 specular{ 1.f }; // 하이라이트 정도를 조절
+	float shininess{ 16.f };     // 하이라이트의 범위(카메라가 감지하는 하이라이트의 범위)조절
+};
+
 struct TextureInfo {
 	uint32 id{ };
 	int32 width{ };

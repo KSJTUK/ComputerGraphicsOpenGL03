@@ -44,6 +44,8 @@ public:
 	void StartOnOff();
 	void StopOnOff();
 
+	void SetSimpleLightOption();
+
 	void SetLightOption();
 
 	void SetLightColor(const glm::vec3& color) { m_lightColor = color; }

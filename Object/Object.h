@@ -1,12 +1,5 @@
 #pragma once
 
-struct Meterial {
-	glm::vec3 ambient{ 1.f };
-	glm::vec3 diffuse{ 0.5f };
-	glm::vec3 specular{ 1.f }; // 하이라이트 정도를 조절
-	float shininess{ 16.f };     // 하이라이트의 범위(카메라가 감지하는 하이라이트의 범위)조절
-};
-
 class Object {
 public:
 	Object();
@@ -36,6 +29,7 @@ protected:
 
 public:
 	void SetMeterials();
+	void SetSimpleMeterials();
 	bool ExistTexture() const;
 	void SetObjectColor(const glm::vec3& color);
 	std::string GetModelTag() const { return m_modelTag; }
@@ -53,6 +47,10 @@ public:
 	bool IsDeleted() const { return m_isDeleted; }
 	glm::mat4 GetTransformMat() const { return m_transform; }
 	glm::vec3 GetPosition() const { return m_position; }
+
+	void CreateSierpinskiTriangle(const int& level);
+
+	void RenderSimple();
 
 public:
 	virtual void Update(float deltaTime) = 0;

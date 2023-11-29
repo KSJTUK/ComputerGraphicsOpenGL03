@@ -17,7 +17,13 @@ private:
 	bool m_orbit{ false };
 	bool m_rotate{ false };
 
+	glm::vec3 m_orbitAxis{ 0.f, 1.f, 0.f };
+
 public:
+	void SetOrbitAxis(const glm::vec3& axis);
+
+	void Orbit();
+
 	void StartOrbit() { m_orbit = true; }
 	void StopOrbit() { m_orbit = false; }
 

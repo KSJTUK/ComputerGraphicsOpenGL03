@@ -88,8 +88,8 @@ void ParticleSystem::ParticleUpdate(Particle& particle) {
 
 	if (m_randSpeedTime > 2.f) {
 		m_randSpeedTime = 0.0f;
-		particle.speed.x = glm::linearRand(-5.f, 5.f);
-		particle.speed.z = glm::linearRand(-5.f, 5.f);
+		particle.speed.x = glm::linearRand(-10.f, 10.f);
+		particle.speed.z = glm::linearRand(-10.f, 10.f);
 	}
 }
 
@@ -105,11 +105,16 @@ void ParticleSystem::RemoveLifeEndParticles() {
 }
 
 void ParticleSystem::SetParticleVertexs() {
-	PARTICLESHADER->UseProgram();
+	glDeleteBuffers(1, &m_particleVBO);
+	glDeleteVertexArrays(1, &m_particleVAO);
+
+	glGenVertexArrays(1, &m_particleVAO);
+	glGenBuffers(1, &m_particleVBO);
 
 	glBindVertexArray(m_particleVAO);
+	glBindBuffer(GL_ARRAY_BUFFER, m_particleVBO);
 
-	glBufferData(GL_ARRAY_BUFFER, m_particles.size() * sizeof(Particle), &m_particles[0], GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, m_particles.size() * sizeof(Particle), &m_particles[0], GL_STATIC_DRAW);
 
 	// location 0번에 Particle객체의 position정보를 넘겨줌
 	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, position));
@@ -122,13 +127,25 @@ void ParticleSystem::SetParticleVertexs() {
 	// location 2번에 Particle객체의 color정보를 넘겨줌
 	glVertexAttribPointer(2, 4, GL_FLOAT, GL_FALSE, sizeof(Particle), (void*)offsetof(Particle, color));
 	glEnableVertexAttribArray(2);
-	PARTICLESHADER->UnUseProgram();
+
+	glBindVertexArray(0);
 }
 
 void ParticleSystem::SetPerspectiveMatrix(const glm::mat4& perspectiveMatrix) {
 	PARTICLESHADER->UseProgram();
 	PARTICLESHADER->SetUniformMat4("perspectiveMat", perspectiveMatrix);
 	PARTICLESHADER->UnUseProgram();
+}
+
+void ParticleSystem::DecGenerateTime() {
+	if (abs(m_newParticleCreateTime) < 0.00001f) {
+		m_newParticleCreateTime = 0.001f;
+	}
+	m_newParticleCreateTime -= 0.01f;
+}
+
+void ParticleSystem::IncGenerateTime() {
+	m_newParticleCreateTime += 0.01f;
 }
 
 void ParticleSystem::Update(float deltaTime) {
@@ -156,5 +173,5 @@ void ParticleSystem::Render() {
 	glBindVertexArray(m_particleVAO);
 	glDrawArrays(m_particleDrawMode, 0, uint32(m_particles.size()));
 	glBindVertexArray(0);
-	PARTICLESHADER->UseProgram();
+	PARTICLESHADER->UnUseProgram();
 }

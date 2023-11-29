@@ -134,3 +134,22 @@ public:
 	void AttachAndLinkShaders();
 	void CreateShaderProgram();
 };
+
+class SimpleShader : public Shader {
+private:
+	SimpleShader();
+	~SimpleShader();
+
+private:
+	static SimpleShader* m_instance;
+
+public:
+	static SimpleShader* GetInstance();
+	static void Destroy();
+
+public:
+	// 쉐이더 작성 함수들
+	void CompileShaders();
+	void AttachAndLinkShaders();
+	void CreateShaderProgram();
+};

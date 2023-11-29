@@ -1,38 +1,40 @@
-ï»¿#pragma once
+#pragma once
 
-class Model {
+class SierpinskiCone {
 public:
-	Model(const std::string& objectFilePath);
-	Model(const std::string& objectFilePath, const std::string& textureFilePath);
-	~Model();
+	SierpinskiCone(const std::string& objectFilePath);
+	SierpinskiCone(const std::string& objectFilePath, const std::string& textureFilePath);
+	~SierpinskiCone();
 
-	Model(const Model& other) = delete;
-	Model& operator=(const Model& other) = delete;
+	SierpinskiCone(const SierpinskiCone& other) = delete;
+	SierpinskiCone& operator=(const SierpinskiCone& other) = delete;
 
 private:
-	// VAO, VBO, EBOë¥¼ ê°€ì§€ëŠ” ê°ì²´
+	// VAO, VBO, EBO¸¦ °¡Áö´Â °´Ã¼
 	std::unique_ptr<class GraphicBuffers> m_graphicsBuffer{ };
 	std::unique_ptr<class TextureComponent> m_textureComponent{ };
 
-	// ì •ì  ì†ì„±ë“¤ì„ ì €ì¥í•  vector
+	// Á¤Á¡ ¼Ó¼ºµéÀ» ÀúÀåÇÒ vector
+	std::vector<Vertex> m_originVerticies{ };
 	std::vector<Vertex> m_verticies{ };
+	std::vector<Vertex> m_tempVertex{ };
 
-	// ì •ì  ë…¸ë©€ë“¤ì„ ì €ì¥í•  vector
+	// Á¤Á¡ ³ë¸ÖµéÀ» ÀúÀåÇÒ vector
 	std::vector<glm::vec3> m_vertexNormals{ };
 	std::vector<glm::vec3> m_noDuplicatedVertex{ };
 
-	// ì •ì ì¢Œí‘œë“¤ ì¤‘ ìµœëŒ€ ìµœì†Œì¸ x, y, z ê°’ì„ ì €ì¥í•  ë³€ìˆ˜ë“¤
+	// Á¤Á¡ÁÂÇ¥µé Áß ÃÖ´ë ÃÖ¼ÒÀÎ x, y, z °ªÀ» ÀúÀåÇÒ º¯¼öµé
 	glm::vec3 m_maxCoord{ };
 	glm::vec3 m_minCoord{ };
 
 	std::pair<glm::vec3, glm::vec3> m_boundingBox{ };
 
+	glm::vec3 m_objectColor{ 0.f, 1.f, 0.f };
+	Meterial m_meterial{ };
+
 private:
 	void CalcMinMaxVertexElem();
 	void MakeBoundingBox();
-
-	Vertex GetMid(const Vertex& a, const Vertex& b);
-	void CreateSierpinski(const int& level, int recursionDepth=0);
 
 private:
 	void ReadFace(std::stringstream& contents, std::vector<unsigned int>* indiciesVec);
@@ -42,15 +44,20 @@ private:
 
 	void ReadObject(const char* filePath);
 
+	Vertex GetMid(const Vertex& a, const Vertex& b);
+
+
+	void SetMeterials() const;
+	void CreateSierpinski(const int& level, int recursionDepth=0);
+
 public:
 	// setter
+	void SetColor(const glm::vec3& color);
 	void SetPatchParameters(int numOfPatches);
 	void SetDrawMode(int drawMode);
 	bool ExistTexture() const;
 
 	std::pair<glm::vec3, glm::vec3> GetBoundingBox() const { return m_boundingBox; }
-
-	void MakeSierpinskiTriangle(const int& level);
 
 public:
 	void Init();

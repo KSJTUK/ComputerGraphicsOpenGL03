@@ -32,6 +32,7 @@
     <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Physics.cpp" />
+    <ClCompile Include="SierpinskiCone.cpp" />
     <ClCompile Include="tank.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ExcludedFromBuild>
@@ -59,6 +60,7 @@
     <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="pch.h" />
     <ClInclude Include="Physics.h" />
+    <ClInclude Include="SierpinskiCone.h" />
     <ClInclude Include="tank.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ExcludedFromBuild>

@@ -49,13 +49,11 @@ void GameWorld::SpecialInput(int key, bool down) {
 	if (down) {
 		if (key == GLUT_KEY_F1) {
 			OBJECTSHADER->UseProgram();
-			OBJECTSHADER->SetUniformInt("tesselLevel", m_objectTesselOff);
 			OBJECTSHADER->UnUseProgram();
 		}
 
 		if (key == GLUT_KEY_F2) {
 			OBJECTSHADER->UseProgram();
-			OBJECTSHADER->SetUniformInt("tesselLevel", m_objectTesselLevel);
 			OBJECTSHADER->UnUseProgram();
 		}
 
@@ -85,10 +83,10 @@ void GameWorld::Init() {
 	// 쉐이더 프로그램이 각종 정점 정보, 행렬들을 등록, 전송할 수 있도록 프로그램 사용 설정
 	OBJECTSHADER->UseProgram();
 
+	glPointSize(2.f);
 	glEnable(GL_CULL_FACE);
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LESS);
-	OBJECTSHADER->SetUniformInt("tesselLevel", m_objectTesselOff);
 
 	// 카메라 생성
 	m_camera = std::make_unique<Camera>();
@@ -97,6 +95,7 @@ void GameWorld::Init() {
 	// 모델리스트를 생성하고 모델 불러오기
 	MODELLIST->Init();
 	MODELLIST->LoadModel("cube.obj");
+	MODELLIST->LoadModel("cone.obj");
 	MODELLIST->LoadModel("sphere.obj");
 	MODELLIST->LoadModel("cylinder.obj");
 	MODELLIST->LoadModel("earth.obj", "Earth_diffuse_512p.png");
@@ -130,7 +129,7 @@ void GameWorld::Update(float deltaTime) {
 
 void GameWorld::Render() {
 
-	glClearColor(0.5f, 0.5f, 0.5f, 1.f);
+	glClearColor(0.f, 0.f, 0.f , 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_camera->Render();
