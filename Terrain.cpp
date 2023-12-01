@@ -15,6 +15,8 @@ Terrain::Terrain(const glm::uvec2& mapSize) : m_terrainMapSize{ mapSize } {
 
 	CreateTerrainMeshMap();
 	m_vertexBuffer->SetVerticies(m_verticies);
+
+	Init();
 }
 
 Terrain::~Terrain() { }
@@ -121,7 +123,7 @@ void Terrain::CreateTerrainVertexBuffers() {
 }
 
 void Terrain::Init() {
-
+	
 }
 
 void Terrain::Update(float deltaTime) {

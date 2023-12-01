@@ -1,5 +1,28 @@
 #pragma once
 
+class P {
+public:
+	P();
+	~P();
+
+private:
+	glm::vec3 position{ };
+	glm::vec2 texture{ };
+	glm::vec4 color{ };
+
+	glm::vec3 speed{ };
+	float lifeTime{ };
+
+	const float m_gravityEndSpeed{ };
+
+	unsigned int VAO{ };
+	unsigned int VBO{ };
+
+public:
+	void Gravity();
+	void Render();
+};
+
 
 struct Particle {
 	glm::vec3 position{ };
@@ -38,6 +61,8 @@ private:
 	float m_randSpeedTime{ };
 
 	float m_deltaTime{ };
+
+	const float limitGenerateTime{ 0.001f };
 	
 	// 
 	std::pair<glm::vec3, glm::vec3> m_particleGenerateArea{ };

@@ -120,6 +120,9 @@
     <ClCompile Include="SierpinskiCone.cpp">
       <Filter>소스 파일</Filter>
     </ClCompile>
+    <ClCompile Include="SkyBox.cpp">
+      <Filter>소스 파일</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="pch.h">
@@ -185,6 +188,9 @@
     <ClInclude Include="SierpinskiCone.h">
       <Filter>헤더 파일</Filter>
     </ClInclude>
+    <ClInclude Include="SkyBox.h">
+      <Filter>헤더 파일</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\object_tessel_control_shader.glsl">
@@ -226,5 +232,7 @@
     <None Include="Shader\terrain_tessel_evaluation_shader.glsl">
       <Filter>리소스 파일\TerrainShader</Filter>
     </None>
+    <None Include="Shader\skybox_fragment_shader.glsl" />
+    <None Include="Shader\skybox_vertex_shader.glsl" />
   </ItemGroup>
 </Project>

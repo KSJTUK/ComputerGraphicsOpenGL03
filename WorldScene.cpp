@@ -4,6 +4,7 @@
 #include "Object/Cube.h"
 #include "Object/LightObject.h"
 #include "Graphics/Shader.h"
+#include "SkyBox.h"
 #include "Terrain.h"
 
 WorldScene1::WorldScene1() { }
@@ -11,6 +12,10 @@ WorldScene1::WorldScene1() { }
 WorldScene1::~WorldScene1() { }
 
 void WorldScene1::Init() {
+	BACKGROUNDSHADER->UseProgram();
+	m_background = std::make_unique<SkyBox>();
+	BACKGROUNDSHADER->UnUseProgram();
+
 	OBJECTSHADER->UseProgram();
 	m_cone = std::make_unique<Cube>("cone");
 	m_cone->SetObjectColor(glm::vec3{ 0.f, 1.f, 1.f });
@@ -135,6 +140,10 @@ void WorldScene1::Update(float deltaTime) {
 }
 
 void WorldScene1::Render() {
+	BACKGROUNDSHADER->UseProgram();
+	m_background->Render();
+	BACKGROUNDSHADER->UnUseProgram();
+
 	TERRAINSHADER->UseProgram();
 	m_ground->Render();
 	TERRAINSHADER->UnUseProgram();
@@ -146,9 +155,6 @@ void WorldScene1::Render() {
 	OBJECTSHADER->UseProgram();
 
 	m_lightObject->SetLightOption();
-	glDisable(GL_CULL_FACE);
-	m_cone->Render();
-	glEnable(GL_CULL_FACE);
 
 	for (auto& s : m_sphere) {
 		s->Render();

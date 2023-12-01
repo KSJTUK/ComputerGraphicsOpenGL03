@@ -80,6 +80,7 @@ void GameWorld::Init() {
 	LIGHTOBJECTSHADER->CreateShaderProgram();
 	PARTICLESHADER->CreateShaderProgram();
 	TERRAINSHADER->CreateShaderProgram();
+	BACKGROUNDSHADER->CreateShaderProgram();
 	// 쉐이더 프로그램이 각종 정점 정보, 행렬들을 등록, 전송할 수 있도록 프로그램 사용 설정
 	OBJECTSHADER->UseProgram();
 
@@ -129,11 +130,16 @@ void GameWorld::Update(float deltaTime) {
 
 void GameWorld::Render() {
 
-	glClearColor(0.f, 0.f, 0.f , 1.f);
+	glClearColor(1.f, 1.f, 1.f , 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	m_camera->Render();
 	glm::mat4 cameraViewMatrix{ m_camera->GetViewMat() };
+
+	BACKGROUNDSHADER->UseProgram();
+	BACKGROUNDSHADER->SetUniformMat4("perspectiveMat", m_perspectiveMatrix);
+	BACKGROUNDSHADER->SetUniformMat4("viewMat", glm::mat4(glm::mat3(cameraViewMatrix)));
+	BACKGROUNDSHADER->UnUseProgram();
 
 	TERRAINSHADER->UseProgram();
 	TERRAINSHADER->SetUniformMat4("perspectiveMat", m_perspectiveMatrix);

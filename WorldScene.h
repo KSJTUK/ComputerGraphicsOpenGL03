@@ -37,6 +37,8 @@ private:
 	std::unique_ptr<class Cube> m_cone{ };
 	std::vector<std::unique_ptr<class Cube>> m_sphere{ };
 
+	std::unique_ptr<class SkyBox> m_background{ };
+
 	std::vector<std::unique_ptr<class ParticleSystem>> m_particleSystem{ };
 
 public:

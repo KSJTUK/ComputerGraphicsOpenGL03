@@ -135,16 +135,16 @@ public:
 	void CreateShaderProgram();
 };
 
-class SimpleShader : public Shader {
+class BackGroundShader : public Shader {
 private:
-	SimpleShader();
-	~SimpleShader();
+	BackGroundShader();
+	~BackGroundShader();
 
 private:
-	static SimpleShader* m_instance;
+	static BackGroundShader* m_instance;
 
 public:
-	static SimpleShader* GetInstance();
+	static BackGroundShader* GetInstance();
 	static void Destroy();
 
 public:

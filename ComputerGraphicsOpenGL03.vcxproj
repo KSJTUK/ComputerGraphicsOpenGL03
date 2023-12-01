@@ -33,6 +33,7 @@
     <ClCompile Include="pch.cpp" />
     <ClCompile Include="Physics.cpp" />
     <ClCompile Include="SierpinskiCone.cpp" />
+    <ClCompile Include="SkyBox.cpp" />
     <ClCompile Include="tank.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ExcludedFromBuild>
@@ -61,6 +62,7 @@
     <ClInclude Include="pch.h" />
     <ClInclude Include="Physics.h" />
     <ClInclude Include="SierpinskiCone.h" />
+    <ClInclude Include="SkyBox.h" />
     <ClInclude Include="tank.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
       </ExcludedFromBuild>
@@ -80,6 +82,8 @@
     <None Include="Shader\geometry_shader.glsl" />
     <None Include="Shader\light_object_fshader.glsl" />
     <None Include="Shader\light_object_vshader.glsl" />
+    <None Include="Shader\skybox_fragment_shader.glsl" />
+    <None Include="Shader\skybox_vertex_shader.glsl" />
     <None Include="Shader\terrain_tessel_control_shader.glsl" />
     <None Include="Shader\terrain_tessel_evaluation_shader.glsl" />
     <None Include="Shader\terrain_vertex_shader.glsl" />

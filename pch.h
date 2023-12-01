@@ -34,6 +34,8 @@ using uint16 = unsigned __int16;
 using uint32 = unsigned __int32;
 using uint64 = unsigned __int64;
 
+using byte = unsigned char;
+
 struct Vertex {
 	glm::vec3 position{ };
 	glm::vec2 texture{ };
@@ -44,7 +46,7 @@ struct Meterial {
 	glm::vec3 ambient{ 1.f };
 	glm::vec3 diffuse{ 0.5f };
 	glm::vec3 specular{ 1.f }; // 하이라이트 정도를 조절
-	float shininess{ 16.f };     // 하이라이트의 범위(카메라가 감지하는 하이라이트의 범위)조절
+	float shininess{ 32.f };     // 하이라이트의 범위(카메라가 감지하는 하이라이트의 범위)조절
 };
 
 struct TextureInfo {
@@ -52,6 +54,14 @@ struct TextureInfo {
 	int32 width{ };
 	int32 height{ };
 	int32 nrChannel{ };
+};
+
+struct CubeMapInfo {
+	enum { SIZE = 6 };
+	uint32 id{ };
+	int32 width[SIZE]{ };
+	int32 height[SIZE]{ };
+	int32 nrChannel[SIZE]{ };
 };
 
 // 생성할 윈도우의ㅡ 정보를 담을 구조체 정의
@@ -76,4 +86,5 @@ namespace constants {
 #define LIGHTOBJECTSHADER LightObjectShader::GetInstance()
 #define PARTICLESHADER ParticleShader::GetInstance()
 #define TERRAINSHADER TerrainShader::GetInstance()
+#define BACKGROUNDSHADER BackGroundShader::GetInstance()
 #define MODELLIST ModelList::GetInstance()
