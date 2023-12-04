@@ -22,28 +22,21 @@
     <ClCompile Include="Graphics\Camera.cpp" />
     <ClCompile Include="Graphics\Graphic.cpp" />
     <ClCompile Include="Graphics\GraphicBuffers.cpp" />
+    <ClCompile Include="Graphics\ParticleSystem.cpp" />
     <ClCompile Include="Graphics\Shader.cpp" />
+    <ClCompile Include="Graphics\SkyBox.cpp" />
+    <ClCompile Include="Graphics\Terrain.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Model\Model.cpp" />
     <ClCompile Include="Model\ModelList.cpp" />
     <ClCompile Include="Object\Cube.cpp" />
     <ClCompile Include="Object\LightObject.cpp" />
     <ClCompile Include="Object\Object.cpp" />
-    <ClCompile Include="ParticleSystem.cpp" />
     <ClCompile Include="pch.cpp" />
-    <ClCompile Include="SierpinskiCone.cpp" />
-    <ClCompile Include="SkyBox.cpp" />
-    <ClCompile Include="tank.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="Terrain.cpp" />
-    <ClCompile Include="TextureComponent.cpp" />
     <ClCompile Include="Util\callbacks.cpp" />
     <ClCompile Include="Util\Engine.cpp" />
     <ClCompile Include="Util\stb_image.cpp" />
+    <ClCompile Include="Util\TextureComponent.cpp" />
     <ClCompile Include="Util\Timer.cpp" />
     <ClCompile Include="WorldScene.cpp" />
   </ItemGroup>
@@ -51,27 +44,20 @@
     <ClInclude Include="Graphics\Camera.h" />
     <ClInclude Include="Graphics\Graphic.h" />
     <ClInclude Include="Graphics\GraphicBuffers.h" />
+    <ClInclude Include="Graphics\ParticleSystem.h" />
     <ClInclude Include="Graphics\Shader.h" />
+    <ClInclude Include="Graphics\SkyBox.h" />
+    <ClInclude Include="Graphics\Terrain.h" />
     <ClInclude Include="Model\Model.h" />
     <ClInclude Include="Model\ModelList.h" />
     <ClInclude Include="Object\Cube.h" />
     <ClInclude Include="Object\LightObject.h" />
     <ClInclude Include="Object\Object.h" />
-    <ClInclude Include="ParticleSystem.h" />
     <ClInclude Include="pch.h" />
-    <ClInclude Include="SierpinskiCone.h" />
-    <ClInclude Include="SkyBox.h" />
-    <ClInclude Include="tank.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-      </ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-      </ExcludedFromBuild>
-    </ClInclude>
-    <ClInclude Include="Terrain.h" />
-    <ClInclude Include="TextureComponent.h" />
     <ClInclude Include="Util\callbacks.h" />
     <ClInclude Include="Util\Engine.h" />
     <ClInclude Include="Util\stb_image.h" />
+    <ClInclude Include="Util\TextureComponent.h" />
     <ClInclude Include="Util\Timer.h" />
     <ClInclude Include="WorldScene.h" />
   </ItemGroup>

@@ -2,7 +2,7 @@
 #include "SkyBox.h"
 #include "Graphics/GraphicBuffers.h"
 #include "Graphics/Shader.h"
-#include "TextureComponent.h"
+#include "Util/TextureComponent.h"
 
 SkyBox::SkyBox() {
     std::vector<glm::vec3> temp{

@@ -2,7 +2,7 @@
 #include "Model/Model.h"
 #include "Graphics/GraphicBuffers.h"
 #include "Graphics/Shader.h"
-#include "TextureComponent.h"
+#include "Util/TextureComponent.h"
 
 Model::Model(const std::string& objectFilePath) {
 	ReadObject(objectFilePath.c_str());

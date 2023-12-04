@@ -11,6 +11,7 @@ private:
 
 public:
 	void SetTextureDefaultOption();
+	std::vector<std::vector<float>> LoadHeightMap(const std::string& heightMap, float yScale, float yShift, bool flipOnLoad);
 	void LoadTexture(const std::string& textureFilePath, bool flipImageOnLoad);
 
 	void BindingTexture(int textureIndex);

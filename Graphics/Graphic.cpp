@@ -7,8 +7,10 @@
 // test--------------------------------------------
 #include "Object/Cube.h"
 #include "Object/LightObject.h"
-#include "TextureComponent.h"
+#include "Util/TextureComponent.h"
 #include "WorldScene.h"
+#include "Terrain.h"
+#include "SkyBox.h"
 // ------------------------------------------------
 
 GameWorld::GameWorld() { }
@@ -93,6 +95,14 @@ void GameWorld::Init() {
 	m_camera = std::make_unique<Camera>();
 	m_camera->Init();
 
+	BACKGROUNDSHADER->UseProgram();
+	m_background = std::make_unique<SkyBox>();
+	BACKGROUNDSHADER->UnUseProgram();
+
+	TERRAINSHADER->UseProgram();
+	m_ground = std::make_unique<Terrain>(glm::uvec2{ 20, 20 });
+	TERRAINSHADER->UnUseProgram();
+
 	// 모델리스트를 생성하고 모델 불러오기
 	MODELLIST->Init();
 	MODELLIST->LoadModel("cube.obj");
@@ -123,6 +133,10 @@ void GameWorld::Init() {
 void GameWorld::Update(float deltaTime) {
 	m_deltaTime = deltaTime;
 	m_camera->Update(m_deltaTime);
+
+	glm::vec3 heightPosition = m_camera->GetCameraPosition();
+	m_ground->MoveHeightPosition(heightPosition);
+	m_camera->CameraPositionSet(heightPosition);
 	// test--------------------------------------------
 	m_scenes[m_sceneIndex]->Update(deltaTime);
 	// ------------------------------------------------
@@ -160,6 +174,14 @@ void GameWorld::Render() {
 	LIGHTOBJECTSHADER->SetUniformMat4("perspective", m_perspectiveMatrix);
 	LIGHTOBJECTSHADER->SetUniformMat4("view", cameraViewMatrix);
 	LIGHTOBJECTSHADER->UnUseProgram();
+
+	BACKGROUNDSHADER->UseProgram();
+	m_background->Render();
+	BACKGROUNDSHADER->UnUseProgram();
+
+	TERRAINSHADER->UseProgram();
+	m_ground->Render();
+	TERRAINSHADER->UnUseProgram();
 
 	m_scenes[m_sceneIndex]->Render();
 

@@ -24,6 +24,9 @@ private:
 	float m_deltaTime{ };
 
 	// test--------------------------------------------
+	std::unique_ptr<class SkyBox> m_background{ };
+	std::unique_ptr<class Terrain> m_ground{ };
+
 	class Cube* m_cube{ };
 	std::vector<class Cube*> m_cubes{ };
 	class LightObject* m_lightObj{ };

@@ -1,13 +1,15 @@
 #include "pch.h"
 #include "Terrain.h"
 #include "Graphics/GraphicBuffers.h"
-#include "TextureComponent.h"
+#include "Util/TextureComponent.h"
 #include "Graphics/Shader.h"
 
 Terrain::Terrain(const glm::uvec2& mapSize) : m_terrainMapSize{ mapSize } {
 	// 먼저 하이트맵의 텍스쳐를 불러옴
 	m_textureComponent = std::make_unique<TextureComponent>();
-	m_textureComponent->LoadTexture(".\\textures\\height1.png", false);
+	m_textureHeight = m_textureComponent->LoadHeightMap(".\\textures\\height1.png", m_yScale, m_yShift, false);
+	auto info = m_textureComponent->GetTextureInfo(0);
+	m_terrainScale = { info.width, info.height };
 	m_textureComponent->LoadTexture(".\\textures\\terrain1.png", false);
 
 	m_vertexBuffer = std::make_unique<GraphicBuffers>();
@@ -120,6 +122,38 @@ void Terrain::CreateTerrainVertexBuffers() {
 	glPatchParameteri(GL_PATCH_VERTICES, 3);
 
 	TERRAINSHADER->UnUseProgram();
+}
+
+float Terrain::GetHeight(const glm::vec3& position) {
+	int32 xPos = static_cast<int32>(position.x) + m_terrainScale.x / 2;
+	int32 zPos = static_cast<int32>(position.z) + m_terrainScale.y / 2;
+
+	if (xPos < 0 or xPos > m_textureHeight[0].size()) {
+		return 0.f;
+	}
+
+	if (zPos < 0 or zPos > m_textureHeight.size()) {
+		return 0.f;
+	}
+
+	return m_textureHeight[zPos][xPos];
+}
+
+void Terrain::MoveHeightPosition(glm::vec3& position) {
+	int32 xPos = static_cast<int32>(position.x) + m_terrainScale.x / 2;
+	int32 zPos = static_cast<int32>(position.z) + m_terrainScale.y / 2;
+
+	if (xPos < 0 or xPos > m_textureHeight[0].size()) {
+		position.y = 0.f;
+		return;
+	}
+
+	if (zPos < 0 or zPos > m_textureHeight.size()) {
+		position.y = 0.f;
+		return;
+	}
+
+	position.y = m_textureHeight[zPos][xPos];
 }
 
 void Terrain::Init() {

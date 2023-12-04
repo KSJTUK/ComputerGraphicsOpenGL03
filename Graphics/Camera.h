@@ -45,6 +45,8 @@ public:
 	void CameraViewPointSet(const glm::vec3& at);
 	void CameraMoveSpeedSet(const float& speed);
 
+	glm::vec3 GetCameraPosition() const { return m_EYE; }
+
 	float GetCameraAngleX() const { return m_cameraAngleX; }
 	float GetCameraAngleY() const { return m_cameraAngleY; }
 

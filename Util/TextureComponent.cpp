@@ -60,6 +60,62 @@ void TextureComponent::SetTextureDefaultOption() {
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 }
 
+std::vector<std::vector<float>> TextureComponent::LoadHeightMap(const std::string& heightMap, float yScale, float yShift, bool flipOnLoad) {
+	TextureInfo texInfo{ };
+	glGenTextures(1, &texInfo.id);
+	glBindTexture(GL_TEXTURE_2D, texInfo.id);
+
+	SetTextureDefaultOption();
+
+	stbi_set_flip_vertically_on_load(flipOnLoad);
+
+	unsigned char* imageData = stbi_load(heightMap.c_str(), &texInfo.width, &texInfo.height, &texInfo.nrChannel, 0);
+	if (!imageData) {
+		std::cerr << "texture file path wrong: not exist texture file, file name{ " << heightMap << " }";
+		exit(EXIT_FAILURE);
+	}
+	std::cout << "texture file load success : file name{ " << heightMap << " }\n";
+
+	int channel{ };
+	switch (texInfo.nrChannel) {
+	case 1:
+		channel = GL_RED;
+		break;
+	case 2:
+		break;
+	case 3:
+		channel = GL_RGB;
+		break;
+	case 4:
+		channel = GL_RGBA;
+	}
+
+	glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
+	glTexImage2D(GL_TEXTURE_2D, 0, channel, texInfo.width, texInfo.height, 0, channel, GL_UNSIGNED_BYTE, (void*)imageData);
+	glGenerateMipmap(GL_TEXTURE_2D);
+	
+	std::vector<std::vector<float>> heights{ static_cast<uint64>(texInfo.height) };
+	for (unsigned int i = 0; i < texInfo.height; i++)
+	{
+		for (unsigned int j = 0; j < texInfo.width; j++)
+		{
+			// retrieve texel for (i,j) tex coord
+			unsigned char* texel = imageData + (j + texInfo.width * i) * texInfo.nrChannel;
+			// raw height at coordinate
+			unsigned char y = texel[0];
+
+			// vertex
+			heights[i].push_back(((int)y / 256.f) * yScale - yShift); // v.y
+		}
+	}
+
+	stbi_image_free(imageData);
+
+	m_textures.push_back(texInfo);
+
+	return heights;
+}
+
 uint32 TextureComponent::GetTextureID(int textureIndex) {
 	return m_textures[textureIndex].id;
 }

@@ -18,9 +18,19 @@ private:
 
 	std::unique_ptr<class GraphicBuffers> m_vertexBuffer{ };
 
+	glm::uvec2 m_terrainScale{ };
+
+	std::vector<std::vector<float>> m_textureHeight{ };
+	const float m_yScale{ 64.f };
+	const float m_yShift{ 64.f / 2.f };
+
 private:
 	void CreateTerrainMeshMap();
 	void CreateTerrainVertexBuffers();
+
+public:
+	float GetHeight(const glm::vec3& position);
+	void MoveHeightPosition(glm::vec3& position);
 
 public:
 	void Init();

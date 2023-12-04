@@ -31,13 +31,11 @@ public:
 	~WorldScene1();
 
 private:
-	std::unique_ptr<class Terrain> m_ground{ };
 	std::unique_ptr<class LightObject> m_lightObject{ };
 
 	std::unique_ptr<class Cube> m_cone{ };
 	std::vector<std::unique_ptr<class Cube>> m_sphere{ };
 
-	std::unique_ptr<class SkyBox> m_background{ };
 
 	std::vector<std::unique_ptr<class ParticleSystem>> m_particleSystem{ };
 
