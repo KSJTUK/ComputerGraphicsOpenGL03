@@ -2,7 +2,7 @@
 #include "Util/callbacks.h"
 #include "Util/Engine.h"
 
-// 그리기 콜백함수
+// 그리기 콜백함수//
 void renderFunc()
 {
 	// rendering function
