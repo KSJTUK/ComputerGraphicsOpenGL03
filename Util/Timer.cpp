@@ -16,6 +16,14 @@ float Timer::GetTimeScale() const {
     return m_timeScale;
 }
 
+float Timer::GetTimeElapsed() const {
+    return m_timeElapsed;
+}
+
+float Timer::GetDeltaTimeMS() const {
+    return m_deltaTime / 1000.f;
+}
+
 float Timer::GetFrame() const {
     return m_fps;
 }

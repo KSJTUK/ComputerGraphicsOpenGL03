@@ -96,9 +96,6 @@
     <ClCompile Include="Object\LightObject.cpp">
       <Filter>소스 파일\Object</Filter>
     </ClCompile>
-    <ClCompile Include="Physics.cpp">
-      <Filter>소스 파일</Filter>
-    </ClCompile>
     <ClCompile Include="Util\stb_image.cpp">
       <Filter>소스 파일\Util</Filter>
     </ClCompile>
@@ -163,9 +160,6 @@
     </ClInclude>
     <ClInclude Include="Object\LightObject.h">
       <Filter>헤더 파일\Object</Filter>
-    </ClInclude>
-    <ClInclude Include="Physics.h">
-      <Filter>헤더 파일</Filter>
     </ClInclude>
     <ClInclude Include="Util\stb_image.h">
       <Filter>헤더 파일\Util</Filter>

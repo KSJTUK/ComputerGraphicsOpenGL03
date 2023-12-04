@@ -26,6 +26,8 @@ public:
 	void SetTimeScale(float timeScale);
 	float GetDeltaTime() const;
 	float GetTimeScale() const;
+	float GetTimeElapsed() const;
+	float GetDeltaTimeMS() const;
 	float GetFrame() const;
 
 public:
