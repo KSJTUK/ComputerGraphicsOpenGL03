@@ -31,6 +31,7 @@ private:
 public:
 	float GetHeight(const glm::vec3& position, float offset);
 	void MoveHeightPosition(glm::vec3& position, float offset);
+	void SetMeterials();
 
 public:
 	void Init();

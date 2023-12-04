@@ -160,6 +160,12 @@ void Terrain::MoveHeightPosition(glm::vec3& position, float offset) {
 	position.y = m_textureHeight[zPos][xPos] + offset;
 }
 
+void Terrain::SetMeterials() {
+	TERRAINSHADER->SetUniformInt("meterial.heightMapTexture", 1);
+	TERRAINSHADER->SetUniformVec3("meterial.specular", glm::vec3{ 0.1f });
+	TERRAINSHADER->SetUniformFloat("meterial.shininess", 16.f);
+}
+
 void Terrain::Init() {
 	
 }
@@ -169,7 +175,7 @@ void Terrain::Update(float deltaTime) {
 }
 
 void Terrain::Render() {
-	TERRAINSHADER->SetUniformInt("heightMapTexture", 1);
+	SetMeterials();
 
 	TERRAINSHADER->UseProgram();
 

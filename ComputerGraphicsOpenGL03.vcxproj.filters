@@ -52,6 +52,9 @@
     <Filter Include="리소스 파일\TerrainShader">
       <UniqueIdentifier>{28421690-97c6-41c2-b69a-358c0b61da41}</UniqueIdentifier>
     </Filter>
+    <Filter Include="리소스 파일\SkyBoxShader">
+      <UniqueIdentifier>{ccc297c5-0de6-466f-89bd-35e2e8a8fdce}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="pch.cpp">
@@ -214,7 +217,11 @@
     <None Include="Shader\terrain_tessel_evaluation_shader.glsl">
       <Filter>리소스 파일\TerrainShader</Filter>
     </None>
-    <None Include="Shader\skybox_fragment_shader.glsl" />
-    <None Include="Shader\skybox_vertex_shader.glsl" />
+    <None Include="Shader\skybox_fragment_shader.glsl">
+      <Filter>리소스 파일\SkyBoxShader</Filter>
+    </None>
+    <None Include="Shader\skybox_vertex_shader.glsl">
+      <Filter>리소스 파일\SkyBoxShader</Filter>
+    </None>
   </ItemGroup>
 </Project>
