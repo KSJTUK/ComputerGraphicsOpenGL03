@@ -20,6 +20,11 @@ protected:
 	std::string m_tesselationEvaluationFileContents{ };
 	std::string m_geometryShaderFileContents{ };
 
+	std::unordered_map<std::string, int32> m_uniformLocations{ };
+
+private:
+	int32 GetUniformLocation(const std::string& valName);
+
 public:
 	// 쉐이더 파일 내용을 불러오는 함수
 	void LoadVertexShaderFile(const char* filePath);
