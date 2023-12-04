@@ -6,6 +6,7 @@ layout (location = 2) in vec3 in_Normal; //--- 정점 노멀 변수: attribute positio
 
 out vec2 vs_out_tex;
 out vec3 vs_out_normal;
+out vec3 vs_out_fragPosition;
 
 uniform mat4 viewMat;
 
@@ -14,4 +15,5 @@ void main(void)
 	gl_Position = viewMat * vec4(in_Position, 1.0f);
 	vs_out_tex = in_Texture;
 	vs_out_normal = in_Normal;
+	vs_out_fragPosition = in_Position;
 }

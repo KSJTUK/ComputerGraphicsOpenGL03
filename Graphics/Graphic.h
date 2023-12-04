@@ -24,13 +24,15 @@ private:
 	float m_deltaTime{ };
 
 	// test--------------------------------------------
+	std::unique_ptr<class LightObject> m_light{ };
+
 	std::unique_ptr<class SkyBox> m_background{ };
 	std::unique_ptr<class Terrain> m_ground{ };
 
-	class LightObject* m_lightObj{ };
-
 	std::vector<class WorldScene*> m_scenes{ };
 	int m_sceneIndex{ };
+
+	bool m_cameraMoveOnTerrain{ true };
 	// ------------------------------------------------
 
 public:

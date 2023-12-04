@@ -11,6 +11,7 @@
 #include "WorldScene.h"
 #include "Terrain.h"
 #include "SkyBox.h"
+#include "Object/LightObject.h"
 // ------------------------------------------------
 
 GameWorld::GameWorld() { }
@@ -46,13 +47,12 @@ void GameWorld::Input(unsigned char key, bool down) {
 void GameWorld::SpecialInput(int key, bool down) {
 	if (down) {
 		if (key == GLUT_KEY_F1) {
-			OBJECTSHADER->UseProgram();
-			OBJECTSHADER->UnUseProgram();
+			m_cameraMoveOnTerrain = !m_cameraMoveOnTerrain;
 		}
 
 		if (key == GLUT_KEY_F2) {
-			OBJECTSHADER->UseProgram();
-			OBJECTSHADER->UnUseProgram();
+			m_camera->TurnOnOffSpotLight();
+			m_light->TurnOnOffSpotLight();
 		}
 
 		if (key == GLUT_KEY_F3) {
@@ -104,6 +104,9 @@ void GameWorld::CreateShaderPrograms() {
 }
 
 void GameWorld::CreateDefaultObjects() {
+	m_light = std::make_unique<LightObject>("sphere", glm::vec3{ 1.f }, glm::vec3{ 0.f, 3.f, 0.f });
+	m_light->SetScale(glm::vec3{ 0.2f });
+
 	// 朝五虞 持失
 	m_camera = std::make_unique<Camera>();
 	m_camera->Init();
@@ -131,6 +134,11 @@ void GameWorld::SetViewMatAllShader(const glm::mat4& viewMat) {
 void GameWorld::WorldRendering() {
 	m_camera->Render();
 	SetViewMatAllShader(m_camera->GetViewMat());
+
+
+	m_light->SetLightOption();
+	m_light->SetLightOptionInTerrain();
+	m_light->Render();
 
 	m_background->Render();
 	m_ground->Render();
@@ -165,11 +173,15 @@ void GameWorld::Init() {
 
 void GameWorld::Update(float deltaTime) {
 	m_deltaTime = deltaTime;
+	m_light->Update(deltaTime);
+
 	m_camera->Update(m_deltaTime);
 
-	glm::vec3 heightPosition = m_camera->GetCameraPosition();
-	m_ground->MoveHeightPosition(heightPosition, 2.f);
-	m_camera->CameraPositionSet(heightPosition);
+	if (m_cameraMoveOnTerrain) {
+		glm::vec3 heightPosition = m_camera->GetCameraPosition();
+		m_ground->MoveHeightPosition(heightPosition, 2.f);
+		m_camera->CameraPositionSet(heightPosition);
+	}
 
 	// test--------------------------------------------
 	m_scenes[m_sceneIndex]->Update(deltaTime);

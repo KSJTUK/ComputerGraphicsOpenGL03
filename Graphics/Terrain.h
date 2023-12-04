@@ -21,6 +21,7 @@ private:
 	glm::uvec2 m_terrainScale{ };
 
 	std::vector<std::vector<float>> m_textureHeight{ };
+
 	const float m_yScale{ 64.f };
 	const float m_yShift{ 64.f / 2.f };
 

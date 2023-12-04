@@ -3,8 +3,8 @@
 
 struct LightOption {
 	glm::vec3 position{ };
-	glm::vec3 ambient{ 0.5f }; // 주변광 정도
-	glm::vec3 diffuse{ 0.5f }; // 난반사 정도
+	glm::vec3 ambient{ 0.1f }; // 주변광 정도
+	glm::vec3 diffuse{ 0.3f }; // 난반사 정도
 	glm::vec3 specular{ 1.f }; // 정반사 정도
 };
 
@@ -45,6 +45,11 @@ public:
 	void StopOnOff();
 
 	void SetLightOption();
+	void SetLightOptionInTerrain();
+
+	void TurnOnOffSpotLight();
+
+	void SetTransform();
 
 	void SetLightColor(const glm::vec3& color) { m_lightColor = color; }
 	glm::vec3 GetLightColor() const { return m_lightColor; }

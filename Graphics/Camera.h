@@ -55,6 +55,8 @@ public:
 
 	void CameraPositionRotateX(const float& angle, const glm::vec3& center);
 
+	void TurnOnOffSpotLight();
+
 public:
 	// 외부 키입력을 카메라가 자체적으로 처리하게 함
 	void Input(unsigned char key, bool down);

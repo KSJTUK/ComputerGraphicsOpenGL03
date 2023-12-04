@@ -12,11 +12,6 @@ WorldScene1::WorldScene1() { }
 WorldScene1::~WorldScene1() { }
 
 void WorldScene1::Init() {
-	OBJECTSHADER->UseProgram();
-	m_cone = std::make_unique<Cube>("cone");
-	m_cone->SetObjectColor(glm::vec3{ 0.f, 1.f, 1.f });
-	m_cone->SetScale(glm::vec3{ 3.f });
-
 	m_sphere.push_back(std::make_unique<Cube>("sphere"));
 	m_sphere.back()->SetScale(glm::vec3{ 0.3f });
 	m_sphere.back()->SetPosition(glm::vec3{ 6.f, 0.f, 0.f });
@@ -35,22 +30,12 @@ void WorldScene1::Init() {
 	m_sphere.back()->SetOrbitAxis(glm::vec3{ 1.f, 0.f, 0.f });
 	m_sphere.back()->SetObjectColor(glm::vec3{ 0.f, 0.f, 1.f });
 
-	OBJECTSHADER->UnUseProgram();
-
 	for (auto& s : m_sphere) {
 		s->StartOrbit();
 	}
 
-	LIGHTOBJECTSHADER->UseProgram();
-	m_lightObject = std::make_unique<LightObject>("sphere", glm::vec3{ 1.f });
-	m_lightObject->SetScale(glm::vec3{ 0.1f });
-	m_lightObject->SetPosition(glm::vec3{ 10.f, 2.f, 0.f });
-	LIGHTOBJECTSHADER->UnUseProgram();
-
-	PARTICLESHADER->UseProgram();
 	auto particleGenerateArea = std::make_pair(glm::vec3{ -100.f, 100.f, -100.f }, glm::vec3{ 100.f, 100.f, 100.f });
 	m_particleSystem.push_back(std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.3f));
-	PARTICLESHADER->UnUseProgram();
 }
 
 void WorldScene1::Input(unsigned char key, bool down) {
@@ -75,38 +60,6 @@ void WorldScene1::Input(unsigned char key, bool down) {
 			sphere->StartOrbit();
 		}
 	}
-
-	if (key == 'u') {
-		m_lightObject->StartOnOff();
-	}
-
-	if (key == 'i') {
-		m_lightObject->StopOnOff();
-	}
-
-	if (key == 't') {
-		m_lightObject->SetLightColor(glm::linearRand(glm::vec3{ }, glm::vec3{ 1.f }));
-	}
-
-	if (key == '/') {
-		m_lightObject->StartOrbit();
-	}
-
-	if (key == ',') {
-		m_lightObject->IncOrbitRadius();
-	}
-
-	if (key == '.') {
-		m_lightObject->DecOrbitRadius();
-	}
-
-	if (key == ';') {
-		m_lightObject->IncAngleSpeed();
-	}
-
-	if (key == '\'') {
-		m_lightObject->DecAngleSpeed();
-	}
 }
 
 void WorldScene1::Update(float deltaTime) {
@@ -117,9 +70,6 @@ void WorldScene1::Update(float deltaTime) {
 	for (auto& s : m_sphere) {
 		s->Update(deltaTime);
 	}
-
-	m_lightObject->Update(deltaTime);
-	m_cone->Update(deltaTime);
 }
 
 void WorldScene1::Render() {
@@ -127,11 +77,7 @@ void WorldScene1::Render() {
 		ps->Render();
 	}
 
-	m_lightObject->SetLightOption();
-
 	for (auto& s : m_sphere) {
 		s->Render();
 	}
-
-	m_lightObject->Render();
 }

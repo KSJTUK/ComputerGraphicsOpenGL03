@@ -31,9 +31,6 @@ public:
 	~WorldScene1();
 
 private:
-	std::unique_ptr<class LightObject> m_lightObject{ };
-
-	std::unique_ptr<class Cube> m_cone{ };
 	std::vector<std::unique_ptr<class Cube>> m_sphere{ };
 
 

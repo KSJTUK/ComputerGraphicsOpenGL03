@@ -6,10 +6,12 @@ layout (vertices=4) out;
 // 정점 셰이더로 부터 텍스쳐, 노멀 데이터 받아오기
 in vec2 vs_out_tex[];
 in vec3 vs_out_normal[];
+in vec3 vs_out_fragPosition[];
 
 // 테셀레이션 평가 TES 쉐이더로 데이터 이전
 out vec2 tcs_out_tex[];
 out vec3 tcs_out_normal[];
+out vec3 tcs_out_fragPosition[];
 
 // 최소 테셀레이션 레벨과 최대 테셀레이션 레벨을 정의
 const int minTesselLevel = 2;
@@ -28,6 +30,7 @@ void main()
     gl_out[gl_InvocationID].gl_Position = gl_in[gl_InvocationID].gl_Position;
     tcs_out_tex[gl_InvocationID] = vs_out_tex[gl_InvocationID];
     tcs_out_normal[gl_InvocationID] = vs_out_normal[gl_InvocationID];
+    tcs_out_fragPosition[gl_InvocationID] = vs_out_fragPosition[gl_InvocationID];
 
     if (gl_InvocationID == 0) {
         // 컨트롤 포인트들을 받아오기

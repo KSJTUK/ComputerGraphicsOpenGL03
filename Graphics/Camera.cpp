@@ -33,6 +33,10 @@ void Camera::CameraPositionRotateX(const float& angle, const glm::vec3& center) 
 	//ObjectMove::OrbitMove(m_EYE, angle, ObjectMove::axisY, center);
 }
 
+void Camera::TurnOnOffSpotLight() {
+	m_spotLightingOn = !m_spotLightingOn;
+}
+
 void Camera::Input(unsigned char key, bool down) {
 	switch (key) {
 	case 'm':
@@ -124,6 +128,7 @@ void Camera::Update(float deltaTime) {
 
 	// for all lighting
 	OBJECTSHADER->SetUniformVec3("viewPosition", m_EYE);
+	TERRAINSHADER->SetUniformVec3("viewPosition", m_EYE);
 
 	if (m_spotLightingOn) {
 		//// for flash lighting values
@@ -132,6 +137,12 @@ void Camera::Update(float deltaTime) {
 
 		OBJECTSHADER->SetUniformFloat("spotLight.cutOff", std::cosf(glm::radians(7.5f)));
 		OBJECTSHADER->SetUniformFloat("spotLight.outerCutOff", std::cosf(glm::radians(17.5f)));
+
+		TERRAINSHADER->SetUniformVec3("spotLight.position", m_EYE);
+		TERRAINSHADER->SetUniformVec3("spotLight.direction", m_AT);
+
+		TERRAINSHADER->SetUniformFloat("spotLight.cutOff", std::cosf(glm::radians(7.5f)));
+		TERRAINSHADER->SetUniformFloat("spotLight.outerCutOff", std::cosf(glm::radians(17.5f)));
 	}
 }
 

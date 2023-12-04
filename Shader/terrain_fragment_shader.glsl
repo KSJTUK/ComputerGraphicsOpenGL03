@@ -2,6 +2,9 @@
 
 in float height;
 in vec2 tes_out_tex;
+in vec3 tes_out_normal;
+in vec3 tes_out_fragPosition;
+
 out vec4 fragColor;
 
 struct DirectionLight {
@@ -48,13 +51,103 @@ struct Meterials {
 	float shininess;
 };
 
-uniform Meterials meterial;
+uniform Meterials meterials;
+
+uniform vec3 viewPosition;
+
+uniform DirectionLight dirLight;
+uniform PointLight pointLight;
+uniform FlashLight spotLight;
+
+vec3 calcDirectionLighting(DirectionLight light, vec3 normal, vec3 viewPos, vec3 fragPos)
+{
+	vec3 textureDiffuse = vec3(texture(meterials.heightMapTexture, tes_out_tex));
+	vec3 ambient = light.ambient * textureDiffuse;
+
+	// Æþ¸ðµ¨ÀÇ µðÇ»Áî Ç×
+	vec3 vNorm = normalize(normal);
+	vec3 lightDirection = normalize(-light.direction);
+
+	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
+	vec3 diffuse = light.diffuse * (diffuseN * textureDiffuse);
+
+	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
+	vec3 viewDirection = normalize(viewPos - fragPos);
+	vec3 reflectDirection = reflect(-lightDirection, vNorm);
+	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0f), meterials.shininess);
+	vec3 specular = spec * (light.specular * meterials.specular);
+
+	return (ambient + diffuse + specular);
+}
+
+vec3 calcPointLighting(PointLight light, vec3 normal, vec3 viewPos, vec3 fragPos)
+{
+	vec3 ambient = light.ambient * vec3(texture(meterials.heightMapTexture, tes_out_tex));
+
+	// Æþ¸ðµ¨ÀÇ µðÇ»Áî Ç×
+	vec3 vNorm = normalize(normal);
+	vec3 lightDirection = normalize(light.position - fragPos);
+
+	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
+	vec3 diffuse = light.diffuse * (diffuseN * vec3(texture(meterials.heightMapTexture, tes_out_tex)));
+
+	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
+	vec3 viewDirection = normalize(viewPos - fragPos);
+	vec3 reflectDirection = reflect(-lightDirection, vNorm);
+	float spec = pow(max(dot(viewDirection, reflectDirection), 0.0f), meterials.shininess);
+	vec3 specular = spec * (light.specular * meterials.specular);
+
+	float dist = length(light.position - fragPos);
+	float attenuationUnder = light.constant + light.linear * dist + light.quadratic * dist * dist;
+	float attenuation = 1.0f / attenuationUnder;
+
+	ambient *= attenuation;
+	diffuse *= attenuation;
+	specular *= attenuation;
+
+	return (ambient + diffuse + specular);
+}
+
+vec3 calcFlashLighting(FlashLight light, vec3 normal, vec3 viewPos,  vec3 fragPos)
+{
+	vec3 lightDirection = normalize(light.position - fragPos);
+	float theta = dot(lightDirection, normalize(-light.direction));
+	float epsilon = light.cutOff - light.outerCutOff;
+	float intensity = clamp((theta - light.outerCutOff) / epsilon, 0.0f, 1.0f);
+
+	vec3 resultColor = vec3(0.0f);
+	vec3 ambient = light.ambient * vec3(texture(meterials.heightMapTexture, tes_out_tex));
+
+	// Æþ¸ðµ¨ÀÇ µðÇ»Áî Ç×
+	vec3 vNorm = normalize(normal);
+
+	float diffuseN = max(dot(vNorm, lightDirection), 0.0f);
+	vec3 diffuse = light.diffuse * (diffuseN * vec3(texture(meterials.heightMapTexture, tes_out_tex)));
+
+	// Æþ¸ðµ¨ÀÇ ½ºÆäÅ§·¯ Ç×
+	vec3 viewDirection = normalize(viewPos - fragPos);
+	vec3 reflectDirection = reflect(-lightDirection, vNorm);
+	float spec =  pow(max(dot(viewDirection, reflectDirection), 0.0f), meterials.shininess);
+	vec3 specular = spec * (light.specular * meterials.specular);
+
+	float dist = length(light.position - fragPos);
+	float attenuationUnder = light.constant + light.linear * dist + light.quadratic * (dist * dist);
+	float attenuation = 1.0f / attenuationUnder;
+
+	// ambient *= attenuation; // remove ambient * attenuation
+	diffuse *= intensity;
+	specular *= intensity; 
+
+	return ambient + diffuse + specular;
+}
 
 void main(void)
 {
-	meterial.specular;
-	meterial.shininess;
-	vec3 texColor = vec3(texture(meterial.heightMapTexture, tes_out_tex));
+	vec3 resultColor = calcDirectionLighting(dirLight, tes_out_normal, viewPosition, tes_out_fragPosition);
 
-	fragColor = vec4(texColor, 1.0f);
+	resultColor += calcPointLighting(pointLight, tes_out_normal, viewPosition, tes_out_fragPosition);
+
+	resultColor += calcFlashLighting(spotLight, tes_out_normal, viewPosition, tes_out_fragPosition);
+
+	fragColor = vec4(resultColor, 1.0f);
 }
