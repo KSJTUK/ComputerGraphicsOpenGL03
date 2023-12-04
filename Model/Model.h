@@ -31,9 +31,6 @@ private:
 	void CalcMinMaxVertexElem();
 	void MakeBoundingBox();
 
-	Vertex GetMid(const Vertex& a, const Vertex& b);
-	void CreateSierpinski(const int& level, int recursionDepth=0);
-
 private:
 	void ReadFace(std::stringstream& contents, std::vector<unsigned int>* indiciesVec);
 	void ReadVertex(std::stringstream& contents, std::vector<glm::vec3>& positions);
@@ -50,7 +47,7 @@ public:
 
 	std::pair<glm::vec3, glm::vec3> GetBoundingBox() const { return m_boundingBox; }
 
-	void MakeSierpinskiTriangle(const int& level);
+	void BindingTexture(int textureIndex);
 
 public:
 	void Init();

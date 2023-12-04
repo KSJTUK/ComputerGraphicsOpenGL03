@@ -76,9 +76,6 @@ private:
 	void RemoveLifeEndParticles();
 	void SetParticleVertexs();
 
-
-	void SetPerspectiveMatrix(const glm::mat4& perspectiveMatrix);
-
 public:
 	void IncGenerateTime();
 	void DecGenerateTime();

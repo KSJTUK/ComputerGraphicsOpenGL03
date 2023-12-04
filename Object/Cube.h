@@ -30,6 +30,9 @@ public:
 	void StartRotate() { m_rotate = true; }
 	void StopRotate() { m_rotate = false; }
 
+	void SetTransform();
+	void BindingTexture();
+
 	void Update(float deltaTime) override;
 	void Render();
 };

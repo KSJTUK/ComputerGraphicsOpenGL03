@@ -44,48 +44,6 @@ void Model::MakeBoundingBox() {
 	m_boundingBox = { m_maxCoord, m_minCoord };
 }
 
-Vertex Model::GetMid(const Vertex& a, const Vertex& b) {
-	Vertex mid = {
-		(a.position + b.position) / 2.f,
-		a.texture,
-		a.normal
-	};
-	return mid;
-}
-
-void Model::CreateSierpinski(const int& level, int recursionDepth) {
-	if (level == ++recursionDepth) {
-		return;
-	}
-
-	std::vector<Vertex> tempVertex{ };
-
-	int triangleSize = 3;
-	size_t loopSize = m_verticies.size();
-	for (int i = 0; i < loopSize; i += triangleSize) {
-		Vertex mid1 = GetMid(m_verticies[i], m_verticies[i + 1]);
-		Vertex mid2 = GetMid(m_verticies[i + 1], m_verticies[i + 2]);
-		Vertex mid3 = GetMid(m_verticies[i + 2], m_verticies[i]);
-
-		tempVertex.push_back(m_verticies[i]); // triangle 1
-		tempVertex.push_back(mid1);
-		tempVertex.push_back(mid3);
-
-		tempVertex.push_back(mid1);          // triangle 2
-		tempVertex.push_back(m_verticies[i + 1]);
-		tempVertex.push_back(mid2);
-
-		tempVertex.push_back(mid3);           // triangle 3
-		tempVertex.push_back(mid2);
-		tempVertex.push_back(m_verticies[i + 2]);
-	}
-
-	m_verticies.swap(tempVertex);
-	//std::copy(tempVertex.begin(), tempVertex.end(), m_verticies.begin());
-	
-	Model::CreateSierpinski(level, recursionDepth);
-}
-
 void Model::ReadFace(std::stringstream& contents, std::vector<unsigned int>* indiciesVec) {
 	std::string delTag{ };
 	std::string face[3]{ };        // f a/b/c -> a == 정점 인덱스, b == 텍스처 인덱스, c == 노멀 인덱스
@@ -203,12 +161,8 @@ bool Model::ExistTexture() const {
 	return bool{ m_textureComponent };
 }
 
-void Model::MakeSierpinskiTriangle(const int& level) {
-	CreateSierpinski(level);
-	m_graphicsBuffer.release();
-	m_graphicsBuffer = std::make_unique<GraphicBuffers>();
-	m_graphicsBuffer->Init();
-	m_graphicsBuffer->SetVerticies(m_verticies);
+void Model::BindingTexture(int textureIndex) {
+	m_textureComponent->BindingTexture(textureIndex);
 }
 
 void Model::Init() {
@@ -222,13 +176,5 @@ void Model::Update() {
 }
 
 void Model::Render() {
-	if (m_textureComponent) {
-		m_textureComponent->BindingTexture(0);
-		OBJECTSHADER->SetUniformBool("notextureID", false);
-	}
-	else {
-		OBJECTSHADER->SetUniformBool("notextureID", true);
-	}
-
 	m_graphicsBuffer->Render();
 }

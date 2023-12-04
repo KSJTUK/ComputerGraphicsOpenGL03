@@ -29,8 +29,8 @@ private:
 	void CreateTerrainVertexBuffers();
 
 public:
-	float GetHeight(const glm::vec3& position);
-	void MoveHeightPosition(glm::vec3& position);
+	float GetHeight(const glm::vec3& position, float offset);
+	void MoveHeightPosition(glm::vec3& position, float offset);
 
 public:
 	void Init();

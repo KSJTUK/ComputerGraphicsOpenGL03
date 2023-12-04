@@ -6,9 +6,11 @@
 
 Terrain::Terrain(const glm::uvec2& mapSize) : m_terrainMapSize{ mapSize } {
 	// 먼저 하이트맵의 텍스쳐를 불러옴
+	TERRAINSHADER->UseProgram();
+
 	m_textureComponent = std::make_unique<TextureComponent>();
 	m_textureHeight = m_textureComponent->LoadHeightMap(".\\textures\\height1.png", m_yScale, m_yShift, false);
-	auto info = m_textureComponent->GetTextureInfo(0);
+	auto info = m_textureComponent->GetTextureInfo(HEIGHT_MAP);
 	m_terrainScale = { info.width, info.height };
 	m_textureComponent->LoadTexture(".\\textures\\terrain1.png", false);
 
@@ -19,6 +21,8 @@ Terrain::Terrain(const glm::uvec2& mapSize) : m_terrainMapSize{ mapSize } {
 	m_vertexBuffer->SetVerticies(m_verticies);
 
 	Init();
+
+	TERRAINSHADER->UnUseProgram();
 }
 
 Terrain::~Terrain() { }
@@ -124,7 +128,7 @@ void Terrain::CreateTerrainVertexBuffers() {
 	TERRAINSHADER->UnUseProgram();
 }
 
-float Terrain::GetHeight(const glm::vec3& position) {
+float Terrain::GetHeight(const glm::vec3& position, float offset) {
 	int32 xPos = static_cast<int32>(position.x) + m_terrainScale.x / 2;
 	int32 zPos = static_cast<int32>(position.z) + m_terrainScale.y / 2;
 
@@ -136,10 +140,10 @@ float Terrain::GetHeight(const glm::vec3& position) {
 		return 0.f;
 	}
 
-	return m_textureHeight[zPos][xPos];
+	return m_textureHeight[zPos][xPos] + offset;
 }
 
-void Terrain::MoveHeightPosition(glm::vec3& position) {
+void Terrain::MoveHeightPosition(glm::vec3& position, float offset) {
 	int32 xPos = static_cast<int32>(position.x) + m_terrainScale.x / 2;
 	int32 zPos = static_cast<int32>(position.z) + m_terrainScale.y / 2;
 
@@ -153,7 +157,7 @@ void Terrain::MoveHeightPosition(glm::vec3& position) {
 		return;
 	}
 
-	position.y = m_textureHeight[zPos][xPos];
+	position.y = m_textureHeight[zPos][xPos] + offset;
 }
 
 void Terrain::Init() {
@@ -165,16 +169,15 @@ void Terrain::Update(float deltaTime) {
 }
 
 void Terrain::Render() {
-	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_2D, m_textureID);
-	//TERRAINSHADER->SetUniformInt("heightMap", 0);
-	//glBindVertexArray(m_terrainVAO);
-	//glDrawArrays(GL_PATCHES, 0, uint32(m_verticies.size()));
-	//glBindVertexArray(0);
+	TERRAINSHADER->SetUniformInt("heightMapTexture", 1);
+
+	TERRAINSHADER->UseProgram();
+
 	m_textureComponent->BindingTexture(HEIGHT_MAP);
 	m_textureComponent->BindingTexture(TERRAIN_TEX);
 	m_vertexBuffer->SetDrawMode(GL_PATCHES);
-	TERRAINSHADER->SetUniformInt("heightMapTexture", 1);
-	m_vertexBuffer->SetPatchParameters(4);
+	m_vertexBuffer->SetPatchParameters(QUAD_PATCH);
 	m_vertexBuffer->Render();
+
+	TERRAINSHADER->UnUseProgram();
 }

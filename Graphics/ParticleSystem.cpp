@@ -131,12 +131,6 @@ void ParticleSystem::SetParticleVertexs() {
 	glBindVertexArray(0);
 }
 
-void ParticleSystem::SetPerspectiveMatrix(const glm::mat4& perspectiveMatrix) {
-	PARTICLESHADER->UseProgram();
-	PARTICLESHADER->SetUniformMat4("perspectiveMat", perspectiveMatrix);
-	PARTICLESHADER->UnUseProgram();
-}
-
 void ParticleSystem::DecGenerateTime() {
 	if (abs(m_newParticleCreateTime) < 0.00001f) {
 		m_newParticleCreateTime = 0.001f;
@@ -149,6 +143,8 @@ void ParticleSystem::IncGenerateTime() {
 }
 
 void ParticleSystem::Update(float deltaTime) {
+	PARTICLESHADER->UseProgram();
+
 	m_deltaTime = deltaTime;
 
 	if (m_timeElapsed > m_newParticleCreateTime) {
@@ -166,6 +162,8 @@ void ParticleSystem::Update(float deltaTime) {
 		SetParticleVertexs();
 	}
 	m_timeElapsed += deltaTime;
+
+	PARTICLESHADER->UnUseProgram();
 }
 
 void ParticleSystem::Render() {

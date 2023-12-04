@@ -29,7 +29,6 @@ protected:
 
 public:
 	void SetMeterials();
-	void SetSimpleMeterials();
 	bool ExistTexture() const;
 	void SetObjectColor(const glm::vec3& color);
 	std::string GetModelTag() const { return m_modelTag; }
@@ -39,7 +38,7 @@ public:
 
 	void SetPosition(const glm::vec3& position) { m_position = position; }
 	void SetRotate(const glm::vec3& rotateAngle) { m_rotateAngle = rotateAngle; }
-	void SEtScale(const glm::vec3& scaleFactor) { m_scaleFactor = scaleFactor; };
+	void SetScale(const glm::vec3& scaleFactor) { m_scaleFactor = scaleFactor; };
 
 	void Delete() { m_isDeleted = true; }
 
@@ -48,12 +47,8 @@ public:
 	glm::mat4 GetTransformMat() const { return m_transform; }
 	glm::vec3 GetPosition() const { return m_position; }
 
-	void CreateSierpinskiTriangle(const int& level);
-
-	void RenderSimple();
-
 public:
 	virtual void Update(float deltaTime) = 0;
-	virtual void Render();
+	virtual void Render() = 0;
 
 };

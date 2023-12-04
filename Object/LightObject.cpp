@@ -102,8 +102,6 @@ void LightObject::Update(float deltaTime) {
 }
 
 void LightObject::Render() {
-	LIGHTOBJECTSHADER->SetUniformVec3("objectColor", m_lightColor);
-
 	glm::mat4 unit{ 1.f };
 	glm::vec3 ypr{ glm::radians(m_rotateAngle) };
 
@@ -113,11 +111,16 @@ void LightObject::Render() {
 
 	m_transform = translateMat * rotateMat * scaleMat;
 
+	LIGHTOBJECTSHADER->SetUniformVec3("objectColor", m_lightColor);
 	LIGHTOBJECTSHADER->SetUniformMat4("initTransform", m_initTransform);
 	LIGHTOBJECTSHADER->SetUniformMat4("modelTransform", m_transform);
 	LIGHTOBJECTSHADER->SetUniformMat4("parentTransform", m_parentTransform);
 
+	LIGHTOBJECTSHADER->UseProgram();
+
 	m_model->SetDrawMode(GL_TRIANGLES);
 
 	m_model->Render();
+
+	LIGHTOBJECTSHADER->UnUseProgram();
 }

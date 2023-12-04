@@ -30,28 +30,3 @@ bool Object::ExistTexture() const {
 void Object::SetObjectColor(const glm::vec3& color) {
 	m_objectColor = color;
 }
-
-void Object::CreateSierpinskiTriangle(const int& level) {
-	m_model->MakeSierpinskiTriangle(level);
-}
-
-void Object::Render() {
-	glm::mat4 unit{ 1.f };
-
-	glm::vec3 ypr{ glm::radians(m_rotateAngle) };
-
-	glm::mat4 scaleMat = glm::scale(unit, m_scaleFactor);
-	glm::mat4 rotateMat = glm::yawPitchRoll(ypr.y, ypr.x, ypr.z);
-	glm::mat4 translateMat = glm::translate(unit, m_position);
-
-	m_transform = translateMat * rotateMat * scaleMat;
-
-	SetMeterials();
-
-	OBJECTSHADER->SetUniformMat4("modelInitTransform", m_initTransform);
-	OBJECTSHADER->SetUniformMat4("modelTransform", m_transform);
-	OBJECTSHADER->SetUniformMat4("modelsParentTransform", m_parentTransform);
-
-	m_model->SetDrawMode(GL_TRIANGLES);
-	m_model->Render();
-}

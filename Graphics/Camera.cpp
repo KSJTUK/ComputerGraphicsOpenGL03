@@ -121,7 +121,6 @@ void Camera::Update(float deltaTime) {
 	m_cameraAxisZ = glm::normalize(-m_AT);
 	m_cameraAxisX = glm::normalize(glm::cross(m_UP, m_cameraAxisZ));
 	m_cameraAxisY = glm::normalize(glm::cross(m_cameraAxisZ, m_cameraAxisX));
-	OBJECTSHADER->UseProgram();
 
 	// for all lighting
 	OBJECTSHADER->SetUniformVec3("viewPosition", m_EYE);
@@ -134,8 +133,6 @@ void Camera::Update(float deltaTime) {
 		OBJECTSHADER->SetUniformFloat("spotLight.cutOff", std::cosf(glm::radians(7.5f)));
 		OBJECTSHADER->SetUniformFloat("spotLight.outerCutOff", std::cosf(glm::radians(17.5f)));
 	}
-
-	OBJECTSHADER->UnUseProgram();
 }
 
 void Camera::Render() {

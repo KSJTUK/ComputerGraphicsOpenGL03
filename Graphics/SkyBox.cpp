@@ -5,7 +5,9 @@
 #include "Util/TextureComponent.h"
 
 SkyBox::SkyBox() {
-    std::vector<glm::vec3> temp{
+	BACKGROUNDSHADER->UseProgram();
+
+	std::vector<glm::vec3> temp{
 		glm::vec3{ -1.0f,  1.0f, -1.0f },
 		glm::vec3{ -1.0f, -1.0f, -1.0f },
 		glm::vec3{  1.0f, -1.0f, -1.0f },
@@ -66,20 +68,27 @@ SkyBox::SkyBox() {
 
 	//glDeleteBuffers(1, &m_VBO);
 	glBindVertexArray(0);
+
+	BACKGROUNDSHADER->UnUseProgram();
 }
 
 SkyBox::~SkyBox() { }
 
 void SkyBox::Render() {
+	BACKGROUNDSHADER->SetUniformInt("cubeMapTexture", 0);
+
+	BACKGROUNDSHADER->UseProgram();
+
 	glDepthFunc(GL_LEQUAL);
 
 	glBindVertexArray(m_VAO);
 	m_textures->BindCubeMap(0);
-	BACKGROUNDSHADER->SetUniformInt("cubeMapTexture", 0);
 
 	glDrawArrays(GL_TRIANGLES, 0, uint32(m_verticies.size()));
 	m_textures->UnBindCubeMap();
-	glBindVertexArray(0);
 
+	glBindVertexArray(0);
 	glDepthFunc(GL_LESS);
+
+	BACKGROUNDSHADER->UnUseProgram();
 }

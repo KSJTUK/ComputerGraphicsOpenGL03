@@ -75,6 +75,11 @@ struct WindowInfo {
 	char* windowTitle;
 };
 
+enum PatchParameter {
+	TRIANGLE_PATCH = 3,
+	QUAD_PATCH = 4
+};
+
 extern std::unique_ptr<class Engine> engine;
 
 namespace constants {

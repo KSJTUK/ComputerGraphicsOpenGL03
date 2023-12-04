@@ -27,12 +27,7 @@ private:
 	std::unique_ptr<class SkyBox> m_background{ };
 	std::unique_ptr<class Terrain> m_ground{ };
 
-	class Cube* m_cube{ };
-	std::vector<class Cube*> m_cubes{ };
 	class LightObject* m_lightObj{ };
-
-	const int m_objectTesselLevel{ 6 };
-	const int m_objectTesselOff{ 1 };
 
 	std::vector<class WorldScene*> m_scenes{ };
 	int m_sceneIndex{ };
@@ -52,6 +47,17 @@ public:
 	void SpecialInput(int key, bool down);
 	void MouseMotionInput(int x, int y, int prevX, int prevY);
 	void MousePassiveMotionInput(int x, int y, int prevX, int prevY);
+
+	void SetGLOptions();
+	void InitModelList();
+	void CreateShaderPrograms();
+
+	void CreateDefaultObjects();
+
+	void SetPerspectiveAllShader();
+	void SetViewMatAllShader(const glm::mat4& viewMat);
+
+	void WorldRendering();
 
 public:
 	void Init();
