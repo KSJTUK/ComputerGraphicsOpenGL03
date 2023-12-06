@@ -19,6 +19,8 @@ private:
 
 	glm::vec3 m_orbitAxis{ 0.f, 1.f, 0.f };
 
+	bool m_blending{ false };
+
 public:
 	void SetOrbitAxis(const glm::vec3& axis);
 
@@ -33,11 +35,18 @@ public:
 	void SetTransform();
 	void BindingTexture();
 
+	void AlphaBlending();
+	float GetTerrainOffset() { return m_terrainOffset; }
+
 	void Update(float deltaTime) override;
-	void Render();
+	void Render() override;
 };
 
-class BlendingCube {
+class BlendingCube : public Cube {
+public:
+	BlendingCube();
+	~BlendingCube();
+
 
 };
 

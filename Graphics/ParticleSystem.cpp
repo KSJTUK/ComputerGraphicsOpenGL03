@@ -1,6 +1,7 @@
 #include "pch.h"
 #include "ParticleSystem.h"
 #include "Graphics/Shader.h"
+#include "Graphics/Terrain.h"
 
 ParticleSystem::ParticleSystem() {
 	PARTICLESHADER->UseProgram();
@@ -129,6 +130,16 @@ void ParticleSystem::SetParticleVertexs() {
 	glEnableVertexAttribArray(2);
 
 	glBindVertexArray(0);
+}
+
+void ParticleSystem::TerrainCollision(Terrain& terrain) {
+	for (auto& particle : m_particles) {
+		float terrainH = terrain.GetHeight(particle.position, 0.f);
+		if (terrainH > particle.position.y) {
+			particle.position.y = terrainH;
+			particle.speed = glm::vec3{ 0.f };
+		}
+	}
 }
 
 void ParticleSystem::DecGenerateTime() {

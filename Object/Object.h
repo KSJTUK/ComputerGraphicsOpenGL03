@@ -4,7 +4,7 @@ class Object {
 public:
 	Object();
 	Object(const std::string& modelTag);
-	Object(const std::string& modelTag, const glm::vec3& objectColor);
+	Object(const std::string& modelTag, const glm::vec4& objectColor);
 	virtual ~Object();
 
 protected:
@@ -19,7 +19,7 @@ protected:
 	glm::vec3 m_rotateAngle{ };
 	glm::vec3 m_scaleFactor{ 1.f };
 
-	glm::vec3 m_objectColor{ 1.f };
+	glm::vec4 m_objectColor{ 1.f };
 
 	glm::vec3 m_direction{ 0.f, 0.f, 1.f };
 
@@ -27,10 +27,12 @@ protected:
 
 	bool m_isDeleted{ false };
 
+	float m_terrainOffset{ };
+
 public:
 	void SetMeterials();
 	bool ExistTexture() const;
-	void SetObjectColor(const glm::vec3& color);
+	void SetObjectColor(const glm::vec4& color);
 	std::string GetModelTag() const { return m_modelTag; }
 
 public:
@@ -38,9 +40,11 @@ public:
 
 	void SetPosition(const glm::vec3& position) { m_position = position; }
 	void SetRotate(const glm::vec3& rotateAngle) { m_rotateAngle = rotateAngle; }
-	void SetScale(const glm::vec3& scaleFactor) { m_scaleFactor = scaleFactor; };
+	void SetScale(const glm::vec3& scaleFactor);
 
 	void Delete() { m_isDeleted = true; }
+
+	void TerrainCollision(class Terrain& terrain);
 
 public:
 	bool IsDeleted() const { return m_isDeleted; }

@@ -18,12 +18,12 @@ class LightObject : public Object {
 public:
 	LightObject();
 	LightObject(const std::string& modelTag);
-	LightObject(const std::string& modelTag, const glm::vec3& lightColor);
-	LightObject(const std::string& modelTag, const glm::vec3& lightCOlor, const glm::vec3& objectPosition);
+	LightObject(const std::string& modelTag, const glm::vec4& lightColor);
+	LightObject(const std::string& modelTag, const glm::vec4& lightCOlor, const glm::vec3& objectPosition);
 	~LightObject();
 
 private:
-	glm::vec3 m_lightColor{ 1.f };
+	glm::vec4 m_lightColor{ 1.f };
 	LightOption m_lightOption{ };
 	SpotLightOption m_spotLightOption{ };
 
@@ -58,8 +58,8 @@ public:
 
 	void SetTransform();
 
-	void SetLightColor(const glm::vec3& color) { m_lightColor = color; }
-	glm::vec3 GetLightColor() const { return m_lightColor; }
+	void SetLightColor(const glm::vec4& color) { m_lightColor = color; }
+	glm::vec4 GetLightColor() const { return m_lightColor; }
 
 public:
 	void Update(float deltaTime);

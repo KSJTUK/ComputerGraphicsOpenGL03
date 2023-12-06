@@ -103,7 +103,7 @@ void GameWorld::CreateShaderPrograms() {
 }
 
 void GameWorld::CreateDefaultObjects() {
-	m_light = std::make_unique<LightObject>("sphere", glm::vec3{ 1.f }, glm::vec3{ 0.f, 3.f, 0.f });
+	m_light = std::make_unique<LightObject>("sphere", glm::vec4{ 1.f }, glm::vec3{ 0.f, 3.f, 0.f });
 	m_light->SetScale(glm::vec3{ 0.2f });
 
 	// 朝五虞 持失
@@ -117,6 +117,15 @@ void GameWorld::CreateDefaultObjects() {
 	m_particleSystem = std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.3f);
 
 	m_textureCube = std::make_unique<TexturedCube>();
+
+	m_belendedCubes.resize(5);
+	for (auto& cube : m_belendedCubes) {
+		cube = std::make_unique<Cube>("cube");
+		cube->SetPosition(glm::linearRand(glm::vec3{ -100.f, 0.f, -100.f }, glm::vec3{ 100.f, 0.f, 100.f }));
+		cube->SetObjectColor(glm::vec4{ 1.f, 0.f, 1.f, 0.5f });
+		cube->SetScale(glm::vec3{ 1.f, 5.f, 1.f });
+		cube->AlphaBlending();
+	}
 }
 
 void GameWorld::SetPerspectiveAllShader() {
@@ -150,6 +159,10 @@ void GameWorld::WorldRendering() {
 
 	m_textureCube->Render();
 
+	for (auto& cube : m_belendedCubes) {
+		cube->Render();
+	}
+
 	glViewport(0, 0, m_windowInfo->width, m_windowInfo->height);
 }
 
@@ -180,6 +193,12 @@ void GameWorld::Update(float deltaTime) {
 		glm::vec3 heightPosition = m_camera->GetCameraPosition();
 		m_ground->MoveHeightPosition(heightPosition, 10.f);
 		m_camera->CameraPositionSet(heightPosition);
+	}
+
+	m_particleSystem->TerrainCollision(*(m_ground.get()));
+
+	for (auto& cube : m_belendedCubes) {
+		cube->TerrainCollision(*(m_ground.get()));
 	}
 }
 

@@ -35,6 +35,7 @@ private:
 	std::unordered_map<std::string, std::pair<class Object*, class Object*>> m_collisionPairs{ };
 	std::list<class Object*> m_objects{ };
 
+	std::vector<std::unique_ptr<class Cube>> m_belendedCubes{ };
 
 	bool m_cameraMoveOnTerrain{ true };
 	// ------------------------------------------------

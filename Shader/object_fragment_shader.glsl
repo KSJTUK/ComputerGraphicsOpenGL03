@@ -60,7 +60,7 @@ struct Meterials {
 	float shininess;
 };
 
-uniform vec3 objectColor;
+uniform vec4 objectColor;
 uniform vec3 viewPosition;
 uniform Meterials meterials;
 
@@ -195,5 +195,5 @@ void main(void)
 
 	resultColor += calcFlashLighting(spotLight, vNormal, viewPosition, fragPosition);
 
-	FragColor = vec4 (resultColor * objectColor, 1.0f);
+	FragColor = vec4(resultColor, 1.0f) * objectColor;
 }

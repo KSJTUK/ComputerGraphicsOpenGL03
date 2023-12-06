@@ -11,7 +11,7 @@ Cube::Cube() : Object{ "earth" } {
 }
 
 Cube::Cube(const std::string& modelTag) : Object{ modelTag } {
-
+	m_terrainOffset = 0.75f;
 }
 
 Cube::Cube(const std::string& modelTag, const glm::mat4& initTransform) : Object{ modelTag } {
@@ -54,6 +54,10 @@ void Cube::BindingTexture() {
 	}
 }
 
+void Cube::AlphaBlending() {
+	m_blending = true;
+}
+
 void Cube::Update(float deltaTime) {
 	static float angle = 0.f;
 	static float rotateAngle = 0.f;
@@ -77,8 +81,19 @@ void Cube::Render() {
 
 	OBJECTSHADER->UseProgram();
 
+	if (m_blending) {
+		glDisable(GL_CULL_FACE);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	}
+
 	m_model->SetDrawMode(GL_TRIANGLES);
 	m_model->Render();
+
+	if (m_blending) {
+		glDisable(GL_BLEND);
+		glEnable(GL_CULL_FACE);
+	}
 
 	OBJECTSHADER->UnUseProgram();
 }
@@ -169,13 +184,13 @@ void TexturedCube::Update(float deltaTime) {
 }
 
 void TexturedCube::Render() {
-	OBJECTSHADER->SetUniformVec3("objectColor", glm::vec3{ 1.f });
+	OBJECTSHADER->SetUniformVec4("objectColor", glm::vec4{ 1.f });
 	OBJECTSHADER->SetUniformVec3("meterials.specular", glm::vec3{ 1.f });
 	OBJECTSHADER->SetUniformFloat("meterials.shininess", 32.f);
 
 	OBJECTSHADER->SetUniformMat4("modelsParentTransform", glm::mat4{ 1.f });
 	OBJECTSHADER->SetUniformMat4("modelInitTransform", glm::mat4{ 1.f });
-	OBJECTSHADER->SetUniformMat4("modelTransform", glm::translate(glm::mat4{ 1.f }, glm::vec3{ 0.f, 5.f, -1.f }));
+	OBJECTSHADER->SetUniformMat4("modelTransform", glm::translate(glm::mat4{ 1.f }, glm::vec3{ 0.f, 10.f, -5.f }));
 	OBJECTSHADER->SetUniformInt("meterials.diffuse", 0);
 	OBJECTSHADER->SetUniformBool("notextureID", false);
 

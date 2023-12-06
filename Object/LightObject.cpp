@@ -5,19 +5,19 @@
 #include "Graphics/Shader.h"
 
 LightObject::LightObject() {
-	m_lightColor = glm::vec3{ 1.f };
+	m_lightColor = glm::vec4{ 1.f };
 	m_objectColor = m_lightColor;
 }
 
 LightObject::LightObject(const std::string& modelTag) : Object{ modelTag } {
-	m_lightColor = glm::vec3{ 1.f };
+	m_lightColor = glm::vec4{ 1.f };
 	m_objectColor = m_lightColor;
 }
 
-LightObject::LightObject(const std::string& modelTag, const glm::vec3& lightColor) : Object{ modelTag, lightColor }, m_lightColor{ lightColor } {
+LightObject::LightObject(const std::string& modelTag, const glm::vec4& lightColor) : Object{ modelTag, lightColor }, m_lightColor{ lightColor } {
 }
 
-LightObject::LightObject(const std::string& modelTag, const glm::vec3& lightColor, const glm::vec3& objectPosition) : Object { modelTag, lightColor }, m_lightColor{ lightColor } {
+LightObject::LightObject(const std::string& modelTag, const glm::vec4& lightColor, const glm::vec3& objectPosition) : Object { modelTag, lightColor }, m_lightColor{ lightColor } {
 	m_position = objectPosition;
 }
 
@@ -32,8 +32,8 @@ void LightObject::StopOnOff() {
 }
 
 void LightObject::SetLightOption() {
-	glm::vec3 ambientColor{ m_lightColor * m_lightOption.ambient };
-	glm::vec3 diffuseColor{ m_lightColor * m_lightOption.diffuse };
+	glm::vec3 ambientColor{ glm::vec3{ m_lightColor } * m_lightOption.ambient };
+	glm::vec3 diffuseColor{ glm::vec3{ m_lightColor } *m_lightOption.diffuse };
 	m_lightOption.specular = m_lightColor;
 
 	// phong, point lighting
@@ -58,8 +58,8 @@ void LightObject::SetLightOption() {
 }
 
 void LightObject::SetLightOptionInTerrain() {
-	glm::vec3 diffuseColor{ m_lightColor * m_lightOption.diffuse };
-	glm::vec3 ambientColor{ m_lightColor * m_lightOption.ambient };
+	glm::vec3 diffuseColor{ glm::vec3{ m_lightColor } * m_lightOption.diffuse };
+	glm::vec3 ambientColor{ glm::vec3{ m_lightColor } * m_lightOption.ambient };
 	m_lightOption.specular = m_lightColor;
 
 	// phong, point lighting
@@ -86,8 +86,8 @@ void LightObject::SetLightOptionInTerrain() {
 void LightObject::TurnOnOffSpotLight() {
 	m_sportLightingOn = !m_sportLightingOn;
 	if (m_sportLightingOn) {
-		glm::vec3 diffuseColor{ m_lightColor * m_spotLightOption.diffuse };
-		glm::vec3 ambientColor{ diffuseColor * m_spotLightOption.ambient };
+		glm::vec3 diffuseColor{ glm::vec3{ m_lightColor } * m_spotLightOption.diffuse };
+		glm::vec3 ambientColor{ glm::vec3{ m_lightColor } * m_spotLightOption.ambient };
 		m_lightOption.specular = m_lightColor;
 
 		OBJECTSHADER->SetUniformVec3("spotLight.ambient", ambientColor);
@@ -150,16 +150,16 @@ void LightObject::Update(float deltaTime) {
 		float maxColorRGB{ std::max({ m_lightColor.x, m_lightColor.y, m_lightColor.z }) };
 		float minColorRGB{ std::min({ m_lightColor.x, m_lightColor.y, m_lightColor.z }) };
 
-		m_lightColor += glm::vec3{ std::sinf(glm::radians(lightChangedAngle)) };
+		m_lightColor += glm::vec4{ glm::vec3{ std::sinf(glm::radians(lightChangedAngle)) }, 0.f };
 
 		lightChangedAngle += 0.1f * lightDir * deltaTime;
 
 		if (maxColorRGB >= 1.f) {
-			m_lightColor -= glm::vec3{ maxColorRGB - 1.f };
+			m_lightColor -= glm::vec4{ glm::vec3{ maxColorRGB - 1.f }, 0.f };
 			lightDir = -1.f;
 		}
 		else if (maxColorRGB <= 0.f) {
-			m_lightColor += glm::vec3{ -maxColorRGB };
+			m_lightColor += glm::vec4{ glm::vec3{ -maxColorRGB }, 0.f };
 			lightDir = 1.f;
 		}
 	}
