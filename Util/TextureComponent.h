@@ -15,6 +15,7 @@ public:
 	void LoadTexture(const std::string& textureFilePath, bool flipImageOnLoad);
 
 	void BindingTexture(int textureIndex);
+	void BindingTextures();
 	void UnBindingTextures();
 
 	uint32 GetTextureID(int textureIndex);

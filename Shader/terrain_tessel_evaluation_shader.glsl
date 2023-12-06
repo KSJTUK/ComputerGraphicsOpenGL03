@@ -1,6 +1,7 @@
 #version 460 core
 
 layout (quads, fractional_odd_spacing, ccw) in;
+//layout (quads, equal_spacing, ccw) in;
 
 in vec2 tcs_out_tex[];
 in vec3 tcs_out_normal[];

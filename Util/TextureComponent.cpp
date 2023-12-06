@@ -49,6 +49,13 @@ void TextureComponent::BindingTexture(int textureIndex) {
 	glBindTexture(GL_TEXTURE_2D, m_textures[textureIndex].id);
 }
 
+void TextureComponent::BindingTextures() {
+	for (int i = 0; i < m_textures.size(); ++i) {
+		glActiveTexture(GL_TEXTURE0 + i);
+		glBindTexture(GL_TEXTURE_2D, m_textures[i].id);
+	}
+}
+
 void TextureComponent::UnBindingTextures() {
 	glBindTexture(GL_TEXTURE_2D, 0);
 }

@@ -128,16 +128,25 @@ void Terrain::CreateTerrainVertexBuffers() {
 	TERRAINSHADER->UnUseProgram();
 }
 
+void Terrain::CalcNormals() {
+	uint64 loopSize = m_verticies.size();
+	for (uint32 x = 1; x < m_terrainMapSize.x - 1; ++x) {
+		for (uint32 z = 1; z < m_terrainMapSize.y - 1; ++z) {
+			
+		}
+	}
+}
+
 float Terrain::GetHeight(const glm::vec3& position, float offset) {
 	int32 xPos = static_cast<int32>(position.x) + m_terrainScale.x / 2;
 	int32 zPos = static_cast<int32>(position.z) + m_terrainScale.y / 2;
 
 	if (xPos < 0 or xPos > m_textureHeight[0].size()) {
-		return 0.f;
+		return -_FMAX;
 	}
 
 	if (zPos < 0 or zPos > m_textureHeight.size()) {
-		return 0.f;
+		return -_FMAX;
 	}
 
 	return m_textureHeight[zPos][xPos] + offset;
@@ -162,7 +171,7 @@ void Terrain::MoveHeightPosition(glm::vec3& position, float offset) {
 
 void Terrain::SetMeterials() {
 	TERRAINSHADER->SetUniformInt("meterials.heightMapTexture", 1);
-	TERRAINSHADER->SetUniformVec3("meterials.specular", glm::vec3{ 0.1f });
+	TERRAINSHADER->SetUniformVec3("meterials.specular", glm::vec3{ 1.f });
 	TERRAINSHADER->SetUniformFloat("meterials.shininess", 16.f);
 }
 

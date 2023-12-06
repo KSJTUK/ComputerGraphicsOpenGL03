@@ -28,6 +28,7 @@ private:
 private:
 	void CreateTerrainMeshMap();
 	void CreateTerrainVertexBuffers();
+	void CalcNormals();
 
 public:
 	float GetHeight(const glm::vec3& position, float offset);

@@ -32,20 +32,20 @@ void LightObject::StopOnOff() {
 }
 
 void LightObject::SetLightOption() {
+	glm::vec3 ambientColor{ m_lightColor * m_lightOption.ambient };
 	glm::vec3 diffuseColor{ m_lightColor * m_lightOption.diffuse };
-	glm::vec3 ambientColor{ diffuseColor * m_lightOption.ambient };
 	m_lightOption.specular = m_lightColor;
 
 	// phong, point lighting
 	OBJECTSHADER->SetUniformVec3("pointLight.position", m_lightOption.position);
 
-	// Direction Lighting
-	if (m_directionLightingOn) {
-		OBJECTSHADER->SetUniformVec3("dirLight.direction", glm::vec3{ 0.f, -1.f, 0.f });
-		OBJECTSHADER->SetUniformVec3("dirLight.ambient", ambientColor);
-		OBJECTSHADER->SetUniformVec3("dirLight.diffuse", diffuseColor);
-		OBJECTSHADER->SetUniformVec3("dirLight.specular", glm::vec3{ 0.f });
-	}
+	//// Direction Lighting
+	//if (m_directionLightingOn) {
+	//	OBJECTSHADER->SetUniformVec3("dirLight.direction", glm::vec3{ -0.2f, -1.f, -0.3f });
+	//	OBJECTSHADER->SetUniformVec3("dirLight.ambient", glm::vec3{ 0.05f });
+	//	OBJECTSHADER->SetUniformVec3("dirLight.diffuse", glm::vec3{ 0.1f });
+	//	OBJECTSHADER->SetUniformVec3("dirLight.specular", glm::vec3{ 0.7f });
+	//}
 
 	 //point, flash lightting
 	OBJECTSHADER->SetUniformVec3("pointLight.ambient", ambientColor);
@@ -53,23 +53,13 @@ void LightObject::SetLightOption() {
 	OBJECTSHADER->SetUniformVec3("pointLight.specular", m_lightOption.specular);
 
 	OBJECTSHADER->SetUniformFloat("pointLight.constant", 1.0f);
-	OBJECTSHADER->SetUniformFloat("pointLight.linear", 0.027f);
-	OBJECTSHADER->SetUniformFloat("pointLight.quadratic", 0.0028f);
-
-	if (m_sportLightingOn) {
-		OBJECTSHADER->SetUniformVec3("spotLight.ambient", ambientColor);
-		OBJECTSHADER->SetUniformVec3("spotLight.diffuse", diffuseColor);
-		OBJECTSHADER->SetUniformVec3("spotLight.specular", m_lightOption.specular);
-
-		OBJECTSHADER->SetUniformFloat("spotLight.constant", 1.0f);
-		OBJECTSHADER->SetUniformFloat("spotLight.linear", 0.027f);
-		OBJECTSHADER->SetUniformFloat("spotLight.quadratic", 0.0028f);
-	}
+	OBJECTSHADER->SetUniformFloat("pointLight.linear", 0.0014);
+	OBJECTSHADER->SetUniformFloat("pointLight.quadratic", 0.00007f);
 }
 
 void LightObject::SetLightOptionInTerrain() {
 	glm::vec3 diffuseColor{ m_lightColor * m_lightOption.diffuse };
-	glm::vec3 ambientColor{ diffuseColor * m_lightOption.ambient };
+	glm::vec3 ambientColor{ m_lightColor * m_lightOption.ambient };
 	m_lightOption.specular = m_lightColor;
 
 	// phong, point lighting
@@ -89,32 +79,32 @@ void LightObject::SetLightOptionInTerrain() {
 	TERRAINSHADER->SetUniformVec3("pointLight.specular", m_lightOption.specular);
 
 	TERRAINSHADER->SetUniformFloat("pointLight.constant", 1.0f);
-	TERRAINSHADER->SetUniformFloat("pointLight.linear", 0.027f);
-	TERRAINSHADER->SetUniformFloat("pointLight.quadratic", 0.0028f);
+	TERRAINSHADER->SetUniformFloat("pointLight.linear", 0.0014f);
+	TERRAINSHADER->SetUniformFloat("pointLight.quadratic", 0.00007f);
 }
 
 void LightObject::TurnOnOffSpotLight() {
 	m_sportLightingOn = !m_sportLightingOn;
 	if (m_sportLightingOn) {
-		glm::vec3 diffuseColor{ m_lightColor * m_lightOption.diffuse };
-		glm::vec3 ambientColor{ diffuseColor * m_lightOption.ambient };
+		glm::vec3 diffuseColor{ m_lightColor * m_spotLightOption.diffuse };
+		glm::vec3 ambientColor{ diffuseColor * m_spotLightOption.ambient };
 		m_lightOption.specular = m_lightColor;
 
 		OBJECTSHADER->SetUniformVec3("spotLight.ambient", ambientColor);
 		OBJECTSHADER->SetUniformVec3("spotLight.diffuse", diffuseColor);
-		OBJECTSHADER->SetUniformVec3("spotLight.specular", m_lightOption.specular);
+		OBJECTSHADER->SetUniformVec3("spotLight.specular", m_spotLightOption.specular);
 
 		OBJECTSHADER->SetUniformFloat("spotLight.constant", 1.0f);
-		OBJECTSHADER->SetUniformFloat("spotLight.linear", 0.027f);
-		OBJECTSHADER->SetUniformFloat("spotLight.quadratic", 0.0028f);
+		OBJECTSHADER->SetUniformFloat("spotLight.linear", 0.0014f);
+		OBJECTSHADER->SetUniformFloat("spotLight.quadratic", 0.00007f);
 
 		TERRAINSHADER->SetUniformVec3("spotLight.ambient", ambientColor);
 		TERRAINSHADER->SetUniformVec3("spotLight.diffuse", diffuseColor);
-		TERRAINSHADER->SetUniformVec3("spotLight.specular", m_lightOption.specular);
+		TERRAINSHADER->SetUniformVec3("spotLight.specular", m_spotLightOption.specular);
 
 		TERRAINSHADER->SetUniformFloat("spotLight.constant", 1.0f);
-		TERRAINSHADER->SetUniformFloat("spotLight.linear", 0.027f);
-		TERRAINSHADER->SetUniformFloat("spotLight.quadratic", 0.0028f);
+		TERRAINSHADER->SetUniformFloat("spotLight.linear", 0.0014f);
+		TERRAINSHADER->SetUniformFloat("spotLight.quadratic", 0.00007f);
 	}
 	else {
 		OBJECTSHADER->SetUniformVec3("spotLight.ambient", glm::vec3{ 0.f });

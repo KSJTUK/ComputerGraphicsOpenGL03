@@ -65,5 +65,28 @@ public:
 	void Init();
 	void Update(float deltaTime);
 	void Render();
+//
+//public:
+//	template <class ObjType>
+//	bool TerrainCollision(ObjType& obj) {
+//		glm::vec3 objPosition = obj.GetPosition();
+//		float groundHeight = m_ground->GetHeight(objPosition);
+//		if (groundHeight < -_FMAX + 1.f) {
+//			return false;
+//		}
+//
+//		if (objPosition.y > groundHeight) {
+//			return false;
+//		}
+//
+//		return true;
+//	}
+//
+//	template <class ObjType>
+//	void HandleTerrainCollision(ObjType& obj) {
+//		if (TerrainCollision(obj)) {
+//			obj.HandleTerrainCollision();
+//		}
+//	}
 };
 

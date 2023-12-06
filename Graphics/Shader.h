@@ -33,6 +33,8 @@ public:
 	void LoadTesselationEvaluationShaderFile(const char* filePath);
 	void LoadGeometryShader(const char* filePath);
 
+	void ClearFile();
+
 	// 쉐이더 작성 함수들
 	virtual void CompileShaders() = 0;
 	virtual void AttachAndLinkShaders() = 0;

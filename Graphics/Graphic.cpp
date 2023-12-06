@@ -179,7 +179,7 @@ void GameWorld::Update(float deltaTime) {
 
 	if (m_cameraMoveOnTerrain) {
 		glm::vec3 heightPosition = m_camera->GetCameraPosition();
-		m_ground->MoveHeightPosition(heightPosition, 2.f);
+		m_ground->MoveHeightPosition(heightPosition, 10.f);
 		m_camera->CameraPositionSet(heightPosition);
 	}
 
@@ -189,7 +189,7 @@ void GameWorld::Update(float deltaTime) {
 }
 
 void GameWorld::Render() {
-	glClearColor(1.f, 1.f, 1.f , 1.f);
+	glClearColor(0.f, 0.f, 0.f , 1.f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 	WorldRendering();

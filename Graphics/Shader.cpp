@@ -107,6 +107,14 @@ void Shader::LoadGeometryShader(const char* filePath) {
 	geometryFile.close();
 }
 
+void Shader::ClearFile() {
+	m_vertexShaderFileContents.clear();
+	m_tesselationControlFileContents.clear();
+	m_tesselationEvaluationFileContents.clear();
+	m_geometryShaderFileContents.clear();
+	m_fragmentShaderFileContents.clear();
+}
+
 void Shader::UseProgram() {
 	glUseProgram(m_shaderProgram);
 }
@@ -274,6 +282,7 @@ void ObjectShader::CreateShaderProgram() {
 	//LoadGeometryShader(".\\Shader\\geometry_shader.glsl");
 	CompileShaders();
 	AttachAndLinkShaders();
+	ClearFile();
 }
 
 // Light Object Shader
@@ -342,6 +351,7 @@ void LightObjectShader::CreateShaderProgram() {
 	LoadFragmentShaderFile(".\\Shader\\light_object_fshader.glsl");
 	CompileShaders();
 	AttachAndLinkShaders();
+	ClearFile();
 }
 
 
@@ -384,7 +394,7 @@ void ParticleShader::CompileShaders() {
 
 	contentsPath = m_geometryShaderFileContents.c_str();
 	glShaderSource(m_geometryShader, 1, &contentsPath, NULL);
-
+	
 	// 쉐이더 컴파일
 	glCompileShader(m_vertexShader);
 	glCompileShader(m_fragmentShader);
@@ -422,6 +432,7 @@ void ParticleShader::CreateShaderProgram() {
 	LoadGeometryShader(".\\Shader\\geometry_shader.glsl");
 	CompileShaders();
 	AttachAndLinkShaders();
+	ClearFile();
 }
 
 // terrain shader
@@ -510,6 +521,7 @@ void TerrainShader::CreateShaderProgram() {
 	LoadTesselationEvaluationShaderFile(".\\Shader\\terrain_tessel_evaluation_shader.glsl");
 	CompileShaders();
 	AttachAndLinkShaders();
+	ClearFile();
 }
 
 // terrain shader
@@ -582,4 +594,5 @@ void BackGroundShader::CreateShaderProgram() {
 	LoadFragmentShaderFile(".\\Shader\\skybox_fragment_shader.glsl");
 	CompileShaders();
 	AttachAndLinkShaders();
+	ClearFile();
 }
