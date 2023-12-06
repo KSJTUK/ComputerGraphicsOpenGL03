@@ -23,6 +23,8 @@ protected:
 
 	glm::vec3 m_direction{ 0.f, 0.f, 1.f };
 
+	std::pair<glm::vec3, glm::vec3> m_bb{ };
+
 	Meterial m_meterial{ };
 
 	bool m_isDeleted{ false };
@@ -41,6 +43,8 @@ public:
 	void SetPosition(const glm::vec3& position) { m_position = position; }
 	void SetRotate(const glm::vec3& rotateAngle) { m_rotateAngle = rotateAngle; }
 	void SetScale(const glm::vec3& scaleFactor);
+
+	std::pair<glm::vec3, glm::vec3> GetBoundingBox() const;
 
 	void Delete() { m_isDeleted = true; }
 

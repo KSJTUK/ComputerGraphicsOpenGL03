@@ -37,6 +37,10 @@ void Camera::TurnOnOffSpotLight() {
 	m_spotLightingOn = !m_spotLightingOn;
 }
 
+void Camera::OnOffOrbit() {
+	m_orbitY = !m_orbitY;
+}
+
 void Camera::Input(unsigned char key, bool down) {
 	switch (key) {
 	case 'm':
@@ -114,6 +118,14 @@ void Camera::ViewPointMove(float moveAngle, const glm::vec3& axis) {
 	m_AT = glm::normalize(glm::rotate(m_AT, glm::radians(moveAngle), axis));
 }
 
+void Camera::Orbit() {
+	m_EYE = glm::rotate(m_EYE, glm::radians(0.1f), glm::vec3{ 0.f, 1.f, 0.f });
+}
+
+void Camera::Rotate() {
+	m_AT = glm::rotate(m_AT, glm::radians(0.1f), glm::vec3{ 0.f, 1.f, 0.f });
+}
+
 void Camera::Init() {
 
 }
@@ -143,6 +155,11 @@ void Camera::Update(float deltaTime) {
 
 		TERRAINSHADER->SetUniformFloat("spotLight.cutOff", std::cosf(glm::radians(7.5f)));
 		TERRAINSHADER->SetUniformFloat("spotLight.outerCutOff", std::cosf(glm::radians(17.5f)));
+	}
+
+	if (m_orbitY) {
+		Orbit();
+		Rotate();
 	}
 }
 

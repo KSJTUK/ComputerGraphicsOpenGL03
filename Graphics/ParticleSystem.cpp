@@ -2,6 +2,9 @@
 #include "ParticleSystem.h"
 #include "Graphics/Shader.h"
 #include "Graphics/Terrain.h"
+#include <Object/Cube.h>
+
+#include <optional>
 
 ParticleSystem::ParticleSystem() {
 	PARTICLESHADER->UseProgram();
@@ -132,6 +135,9 @@ void ParticleSystem::SetParticleVertexs() {
 	glBindVertexArray(0);
 }
 
+void ParticleSystem::ObjectCollision(Object& object) {
+}
+
 void ParticleSystem::TerrainCollision(Terrain& terrain) {
 	for (auto& particle : m_particles) {
 		float terrainH = terrain.GetHeight(particle.position, 0.f);
@@ -179,8 +185,12 @@ void ParticleSystem::Update(float deltaTime) {
 
 void ParticleSystem::Render() {
 	PARTICLESHADER->UseProgram();
+	glDisable(GL_CULL_FACE);
+
 	glBindVertexArray(m_particleVAO);
 	glDrawArrays(m_particleDrawMode, 0, uint32(m_particles.size()));
 	glBindVertexArray(0);
+
+	glEnable(GL_CULL_FACE);
 	PARTICLESHADER->UnUseProgram();
 }

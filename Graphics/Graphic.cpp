@@ -61,6 +61,18 @@ void GameWorld::SpecialInput(int key, bool down) {
 		if (key == GLUT_KEY_F4) {
 			glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
 		}
+
+		if (key == GLUT_KEY_F6) {
+			m_light->StartOnOff();
+		}
+
+		if (key == GLUT_KEY_F7) {
+			m_light->StopOnOff();
+		}
+
+		if (key == GLUT_KEY_F8) {
+			m_camera->OnOffOrbit();
+		}
 	}
 }
 
@@ -114,7 +126,7 @@ void GameWorld::CreateDefaultObjects() {
 	m_ground = std::make_unique<Terrain>(glm::uvec2{ 20, 20 });
 
 	auto particleGenerateArea = std::make_pair(glm::vec3{ -100.f, 100.f, -100.f }, glm::vec3{ 100.f, 100.f, 100.f });
-	m_particleSystem = std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.3f);
+	m_particleSystem = std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.05f);
 
 	m_textureCube = std::make_unique<TexturedCube>();
 
@@ -122,8 +134,8 @@ void GameWorld::CreateDefaultObjects() {
 	for (auto& cube : m_belendedCubes) {
 		cube = std::make_unique<Cube>("cube");
 		cube->SetPosition(glm::linearRand(glm::vec3{ -100.f, 0.f, -100.f }, glm::vec3{ 100.f, 0.f, 100.f }));
-		cube->SetObjectColor(glm::vec4{ 1.f, 0.f, 1.f, 0.5f });
-		cube->SetScale(glm::vec3{ 1.f, 5.f, 1.f });
+		cube->SetObjectColor(glm::linearRand(glm::vec4{ 0.f, 0.f, 0.f, 0.5f }, glm::vec4{ 1.f, 1.f, 1.f, 0.5f }));
+		cube->SetScale(glm::vec3{ 5.f, 10.f, 5.f });
 		cube->AlphaBlending();
 	}
 }

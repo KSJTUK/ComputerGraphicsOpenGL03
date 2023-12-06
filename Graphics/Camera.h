@@ -32,7 +32,7 @@ private:
 	float m_cameraAngleY{ };
 
 	int m_rotateY{ 0 };
-	int m_orbitY{ 0 };
+	bool m_orbitY{ false };
 
 	bool m_spotLightingOn{ false };
 
@@ -56,6 +56,7 @@ public:
 	void CameraPositionRotateX(const float& angle, const glm::vec3& center);
 
 	void TurnOnOffSpotLight();
+	void OnOffOrbit();
 
 public:
 	// 외부 키입력을 카메라가 자체적으로 처리하게 함
@@ -66,6 +67,10 @@ public:
 
 	void Move(const glm::vec3& moveVec);
 	void ViewPointMove(float moveAngle, const glm::vec3& axis);
+
+	void Orbit();
+
+	void Rotate();
 
 public:
 	void Init();

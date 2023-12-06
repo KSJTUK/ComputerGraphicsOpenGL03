@@ -76,8 +76,8 @@ private:
 	void RemoveLifeEndParticles();
 	void SetParticleVertexs();
 
-
 public:
+	void ObjectCollision(class Object& object);
 	void TerrainCollision(class Terrain& terrain);
 
 	void IncGenerateTime();
