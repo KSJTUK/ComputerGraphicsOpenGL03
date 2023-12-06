@@ -24,13 +24,17 @@ private:
 	float m_deltaTime{ };
 
 	// test--------------------------------------------
-	std::unique_ptr<class LightObject> m_light{ };
-
 	std::unique_ptr<class SkyBox> m_background{ };
 	std::unique_ptr<class Terrain> m_ground{ };
 
-	std::vector<class WorldScene*> m_scenes{ };
-	int m_sceneIndex{ };
+	std::unique_ptr<class LightObject> m_light{ };
+	std::unique_ptr<class ParticleSystem> m_particleSystem{ };
+
+	std::unique_ptr<class TexturedCube> m_textureCube{ };
+
+	std::unordered_map<std::string, std::pair<class Object*, class Object*>> m_collisionPairs{ };
+	std::list<class Object*> m_objects{ };
+
 
 	bool m_cameraMoveOnTerrain{ true };
 	// ------------------------------------------------
@@ -65,28 +69,5 @@ public:
 	void Init();
 	void Update(float deltaTime);
 	void Render();
-//
-//public:
-//	template <class ObjType>
-//	bool TerrainCollision(ObjType& obj) {
-//		glm::vec3 objPosition = obj.GetPosition();
-//		float groundHeight = m_ground->GetHeight(objPosition);
-//		if (groundHeight < -_FMAX + 1.f) {
-//			return false;
-//		}
-//
-//		if (objPosition.y > groundHeight) {
-//			return false;
-//		}
-//
-//		return true;
-//	}
-//
-//	template <class ObjType>
-//	void HandleTerrainCollision(ObjType& obj) {
-//		if (TerrainCollision(obj)) {
-//			obj.HandleTerrainCollision();
-//		}
-//	}
 };
 

@@ -3,8 +3,8 @@
 
 struct LightOption {
 	glm::vec3 position{ };
-	glm::vec3 ambient{ 0.1f }; // 주변광 정도
-	glm::vec3 diffuse{ 1.0f }; // 난반사 정도
+	glm::vec3 ambient{ 0.5f }; // 주변광 정도
+	glm::vec3 diffuse{ 0.5f }; // 난반사 정도
 	glm::vec3 specular{ 1.f }; // 정반사 정도
 };
 
@@ -27,7 +27,7 @@ private:
 	LightOption m_lightOption{ };
 	SpotLightOption m_spotLightOption{ };
 
-	bool m_directionLightingOn{ true };
+	bool m_directionLightingOn{ false };
 	bool m_sportLightingOn{ false };
 
 	float m_radius{ 3.f };

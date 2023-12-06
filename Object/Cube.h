@@ -36,3 +36,22 @@ public:
 	void Update(float deltaTime) override;
 	void Render();
 };
+
+class BlendingCube {
+
+};
+
+class TexturedCube {
+public:
+	TexturedCube();
+	~TexturedCube();
+
+private:
+	std::vector<std::vector<Vertex>> m_vertexData{ };
+	std::vector<std::unique_ptr<class TextureComponent>> m_textures{ };
+	std::vector<std::unique_ptr<class GraphicBuffers>> m_graphicBuffers{ };
+
+public:
+	void Update(float deltaTime);
+	void Render();
+};

@@ -38,7 +38,6 @@
     <ClCompile Include="Util\stb_image.cpp" />
     <ClCompile Include="Util\TextureComponent.cpp" />
     <ClCompile Include="Util\Timer.cpp" />
-    <ClCompile Include="WorldScene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Graphics\Camera.h" />
@@ -59,7 +58,6 @@
     <ClInclude Include="Util\stb_image.h" />
     <ClInclude Include="Util\TextureComponent.h" />
     <ClInclude Include="Util\Timer.h" />
-    <ClInclude Include="WorldScene.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Shader\object_fragment_shader.glsl" />

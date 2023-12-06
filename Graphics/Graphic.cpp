@@ -8,10 +8,10 @@
 #include "Object/Cube.h"
 #include "Object/LightObject.h"
 #include "Util/TextureComponent.h"
-#include "WorldScene.h"
-#include "Terrain.h"
-#include "SkyBox.h"
+#include "Graphics/Terrain.h"
+#include "Graphics/SkyBox.h"
 #include "Object/LightObject.h"
+#include "Graphics/ParticleSystem.h"
 // ------------------------------------------------
 
 GameWorld::GameWorld() { }
@@ -41,7 +41,6 @@ void GameWorld::CalcPerspectiveMat() {
 
 void GameWorld::Input(unsigned char key, bool down) {
 	m_camera->Input(key, down);
-	m_scenes[m_sceneIndex]->Input(key, down);
 }
 
 void GameWorld::SpecialInput(int key, bool down) {
@@ -113,6 +112,11 @@ void GameWorld::CreateDefaultObjects() {
 
 	m_background = std::make_unique<SkyBox>();
 	m_ground = std::make_unique<Terrain>(glm::uvec2{ 20, 20 });
+
+	auto particleGenerateArea = std::make_pair(glm::vec3{ -100.f, 100.f, -100.f }, glm::vec3{ 100.f, 100.f, 100.f });
+	m_particleSystem = std::make_unique<ParticleSystem>(particleGenerateArea, 30.f, 500, 0.3f);
+
+	m_textureCube = std::make_unique<TexturedCube>();
 }
 
 void GameWorld::SetPerspectiveAllShader() {
@@ -135,14 +139,16 @@ void GameWorld::WorldRendering() {
 	m_camera->Render();
 	SetViewMatAllShader(m_camera->GetViewMat());
 
-
 	m_light->SetLightOption();
 	m_light->SetLightOptionInTerrain();
 	m_light->Render();
 
 	m_background->Render();
 	m_ground->Render();
-	m_scenes[m_sceneIndex]->Render();
+
+	m_particleSystem->Render();
+
+	m_textureCube->Render();
 
 	glViewport(0, 0, m_windowInfo->width, m_windowInfo->height);
 }
@@ -156,15 +162,6 @@ void GameWorld::Init() {
 
 	CreateDefaultObjects();
 
-	// test--------------------------------------------
-	m_scenes.push_back(new WorldScene1{ });
-	// ------------------------------------------------
-
-	for (auto& scene : m_scenes) {
-		scene->Init();
-	}
-
-
 	// 투영 변환 행렬 계산 및 전송
 	CalcPerspectiveMat();
 
@@ -177,15 +174,13 @@ void GameWorld::Update(float deltaTime) {
 
 	m_camera->Update(m_deltaTime);
 
+	m_particleSystem->Update(m_deltaTime);
+
 	if (m_cameraMoveOnTerrain) {
 		glm::vec3 heightPosition = m_camera->GetCameraPosition();
 		m_ground->MoveHeightPosition(heightPosition, 10.f);
 		m_camera->CameraPositionSet(heightPosition);
 	}
-
-	// test--------------------------------------------
-	m_scenes[m_sceneIndex]->Update(deltaTime);
-	// ------------------------------------------------
 }
 
 void GameWorld::Render() {
