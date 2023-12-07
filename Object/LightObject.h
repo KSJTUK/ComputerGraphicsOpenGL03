@@ -27,7 +27,7 @@ private:
 	LightOption m_lightOption{ };
 	SpotLightOption m_spotLightOption{ };
 
-	bool m_directionLightingOn{ true };
+	bool m_directionLightingOn{ false };
 	bool m_sportLightingOn{ false };
 
 	float m_radius{ 3.f };

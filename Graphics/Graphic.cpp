@@ -115,6 +115,69 @@ void GameWorld::CreateDefaultObjects() {
 	m_ground = std::make_unique<Terrain>(glm::uvec2{ 20, 20 });
 }
 
+void GameWorld::AddCollisionPair(const std::string& groub, Object* obj1, Object* obj2) {
+	auto iter = m_collisionPairs.find(groub);
+	if (iter == m_collisionPairs.end()) {
+		m_collisionPairs.insert(std::make_pair(groub, std::pair<std::list<Object*>, std::list<Object*>>{ }));
+		iter = m_collisionPairs.find(groub);
+	}
+
+	auto listPair = iter->second;
+	if (obj1) {
+		std::list<Object*>::const_iterator listIter = listPair.first.begin();
+		std::list<Object*>::const_iterator listEnd = listPair.first.end();
+		bool exist{ false };
+		for (; listIter != listEnd; ++listIter) {
+			if ((*listIter) == obj1) {
+				exist = true;
+				return;
+			}
+		}
+		
+		if (!exist) {
+			listPair.first.push_back(obj1);
+		}
+	}
+
+	if (obj2) {
+		std::list<Object*>::const_iterator listIter = listPair.second.begin();
+		std::list<Object*>::const_iterator listEnd = listPair.second.end();
+		bool exist{ false };
+		for (; listIter != listEnd; ++listIter) {
+			if ((*listIter) == obj2) {
+				exist = true;
+				return;
+			}
+		}
+
+		if (!exist) {
+			listPair.second.push_back(obj2);
+		}
+	}
+}
+
+void GameWorld::Collision() {
+	for (auto& iter : m_collisionPairs) {
+		const std::string& groub = iter.first;
+		auto& list1 = iter.second.first;
+		auto& list2 = iter.second.second;
+
+		auto iter1 = list1.begin();
+		auto listEnd1 = list1.end();
+		for (; iter1 != listEnd1; ++iter1) {
+			auto iter2 = list2.begin();
+			auto listEnd2 = list2.end();
+
+			for (; iter2 != list2.end(); ++iter2) {
+				/*if (IsCollision((*iter1), (*iter2))) {
+					(*iter1)->HandleCollision(groub, (*iter2));
+					(*iter2)->HandleCollision(groub, (*iter1));
+				}*/
+			}
+		}
+	}
+}
+
 void GameWorld::SetPerspectiveAllShader() {
 	BACKGROUNDSHADER->SetUniformMat4("perspectiveMat", m_perspectiveMatrix);
 	TERRAINSHADER->SetUniformMat4("perspectiveMat", m_perspectiveMatrix);
@@ -179,7 +242,7 @@ void GameWorld::Update(float deltaTime) {
 
 	if (m_cameraMoveOnTerrain) {
 		glm::vec3 heightPosition = m_camera->GetCameraPosition();
-		m_ground->MoveHeightPosition(heightPosition, 10.f);
+		m_ground->MoveHeightPosition(heightPosition, 5.f);
 		m_camera->CameraPositionSet(heightPosition);
 	}
 

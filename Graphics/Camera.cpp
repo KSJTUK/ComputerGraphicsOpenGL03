@@ -141,7 +141,7 @@ void Camera::Update(float deltaTime) {
 		TERRAINSHADER->SetUniformVec3("spotLight.position", m_EYE);
 		TERRAINSHADER->SetUniformVec3("spotLight.direction", m_AT);
 
-		TERRAINSHADER->SetUniformFloat("spotLight.cutOff", std::cosf(glm::radians(7.5f)));
+		TERRAINSHADER->SetUniformFloat("spotLight.cutOff", std::cosf(glm::radians(10.0f)));
 		TERRAINSHADER->SetUniformFloat("spotLight.outerCutOff", std::cosf(glm::radians(17.5f)));
 	}
 }

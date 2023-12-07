@@ -16,16 +16,10 @@ out float heightFactor;
 
 uniform sampler2D heightMap;
 uniform mat4 perspectiveMat;
+uniform mat4 viewMat;
 
 vec4 heightNormal = vec4(0.0f, 1.0f, 0.0f, 0.0f);
-
-vec3 calcTessellationedNormal(vec3 cp0, vec3 cp1, vec3 cpNormal0, vec3 cpNormal1)
-{
-    vec3 dirVec = cp0 - cp1;
-    vec3 addNormal = cpNormal0 + cpNormal1;
-    vec3 normal = addNormal - (2 * (dot(addNormal, dirVec) / dot(dirVec, dirVec))) * dirVec;
-    return normal;
-}
+const float patchSize = 20.0f;
 
 vec4 calcPostition(float u, float v, float height)
 { 
@@ -36,14 +30,27 @@ vec4 calcPostition(float u, float v, float height)
     vec4 p11 = gl_in[3].gl_Position;
 
     // 사각형이므로 두 엣지들의 외적값으로 노멀을 계산
-    //vec4 uVec = p01 - p00;
-    //vec4 vVec = p10 - p00;
-    //vec4 normal = normalize( vec4(cross(uVec.xyz, vVec.xyz), 0) );
+//    vec4 uVec = p01 - p00;
+//    vec4 vVec = p10 - p00;
+//    vec4 normal = normalize( vec4(cross(uVec.xyz, vVec.xyz), 0) );
 
 
     vec4 p0 = (p01 - p00) * u + p00;
     vec4 p1 = (p11 - p10) * u + p10;
     return (p1 - p0) * v + p0 + heightNormal * height;
+}
+
+vec3 calcNormal(float u, float v)
+{
+    vec3 norm00 = tcs_out_normal[0];
+    vec3 norm01 = tcs_out_normal[1];
+    vec3 norm10 = tcs_out_normal[2];
+    vec3 norm11 = tcs_out_normal[3];
+
+    vec3 norm0 = (norm01 - norm00) * u + norm00;
+    vec3 norm1 = (norm11 - norm10) * u + norm10;
+
+    return normalize((norm1 - norm0) * v + norm0);
 }
 
 vec3 calcFragPos(float u, float v, float height)
@@ -77,13 +84,15 @@ void main()
 
     // 하이트 맵에서 텍스쳐 색상을 받아옴
     heightFactor = 64.0f;
-    height = texture(heightMap, texCoord).x * heightFactor - heightFactor / 2.0f;
+    vec4 textureFrag = texture(heightMap, texCoord);
+    height = max(max(textureFrag.x, textureFrag.y), textureFrag.z) * heightFactor - heightFactor / 2.0f;
 
     vec4 p = calcPostition(u, v, height);
     tes_out_fragPosition = calcFragPos(u, v, height);
 
-    gl_Position = perspectiveMat * p;
+    gl_Position = perspectiveMat * viewMat * p;
 
     tes_out_tex = texCoord;
+//    tes_out_normal = calcNormal(u, v);
     tes_out_normal = vec3(heightNormal);
 }

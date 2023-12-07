@@ -17,7 +17,7 @@ private:
 	std::shared_ptr<struct WindowInfo> m_windowInfo{ }; // aspect(종횡비) = width / height
 
 	float m_near{ 0.1f };           // 시야 절두체의 가까운 평면과의 거리
-	float m_far{ 10000.f };           // 시야 절두체의 먼 평면과의 거리
+	float m_far{ 1000.f };           // 시야 절두체의 먼 평면과의 거리
 
 	glm::mat4 m_perspectiveMatrix{ 1.f };
 
@@ -28,6 +28,9 @@ private:
 
 	std::unique_ptr<class SkyBox> m_background{ };
 	std::unique_ptr<class Terrain> m_ground{ };
+
+	std::unordered_map<std::string, std::pair<std::list<class Object*>, std::list<class Object*>>> m_collisionPairs{};
+	std::list<class Object*> m_objects{ };
 
 	std::vector<class WorldScene*> m_scenes{ };
 	int m_sceneIndex{ };
@@ -55,6 +58,9 @@ public:
 	void CreateShaderPrograms();
 
 	void CreateDefaultObjects();
+
+	void AddCollisionPair(const std::string& groub, Object* obj1, Object* obj2);
+	void Collision();
 
 	void SetPerspectiveAllShader();
 	void SetViewMatAllShader(const glm::mat4& viewMat);

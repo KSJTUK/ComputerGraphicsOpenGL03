@@ -150,4 +150,5 @@ void main(void)
 	resultColor += calcFlashLighting(spotLight, tes_out_normal, viewPosition, tes_out_fragPosition);
 
 	fragColor = vec4(resultColor, 1.0f);
+//	fragColor = vec4(tes_out_normal, 1.0f);
 }

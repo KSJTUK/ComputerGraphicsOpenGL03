@@ -53,7 +53,7 @@ void LightObject::SetLightOption() {
 	OBJECTSHADER->SetUniformVec3("pointLight.specular", m_lightOption.specular);
 
 	OBJECTSHADER->SetUniformFloat("pointLight.constant", 1.0f);
-	OBJECTSHADER->SetUniformFloat("pointLight.linear", 0.0014);
+	OBJECTSHADER->SetUniformFloat("pointLight.linear", 0.0014f);
 	OBJECTSHADER->SetUniformFloat("pointLight.quadratic", 0.00007f);
 }
 

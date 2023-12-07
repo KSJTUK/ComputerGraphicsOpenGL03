@@ -85,7 +85,12 @@ extern std::unique_ptr<class Engine> engine;
 namespace constants {
 	extern float gravity;
 	extern float epsilon;
-};
+}
+
+namespace file_path {
+	extern const std::string texture;
+	extern const std::string terrain;
+}
 
 #define OBJECTSHADER ObjectShader::GetInstance()
 #define LIGHTOBJECTSHADER LightObjectShader::GetInstance()
