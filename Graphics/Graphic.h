@@ -11,7 +11,7 @@ private:
 
 private:
 	// 카메라 외부파라미터 (투영행렬을 생성할 떄 쓰일 변수들)
-	float m_fovy{ 90.f }; // 수직 시야각
+	float m_fovy{ 120.f }; // 수직 시야각
 
 	// 스크린 화면의 크기를 알아내기 위한 WindowInfo객체 참조
 	std::shared_ptr<struct WindowInfo> m_windowInfo{ }; // aspect(종횡비) = width / height
@@ -28,6 +28,9 @@ private:
 
 	std::unique_ptr<class SkyBox> m_background{ };
 	std::unique_ptr<class Terrain> m_ground{ };
+
+	std::unique_ptr<class Reticle> m_testReticle{ };
+	std::unique_ptr<class UI> m_testUI{ };
 
 	std::unordered_map<std::string, std::pair<std::list<class Object*>, std::list<class Object*>>> m_collisionPairs{};
 	std::list<class Object*> m_objects{ };

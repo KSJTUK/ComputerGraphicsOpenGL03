@@ -97,4 +97,5 @@ namespace file_path {
 #define PARTICLESHADER ParticleShader::GetInstance()
 #define TERRAINSHADER TerrainShader::GetInstance()
 #define BACKGROUNDSHADER BackGroundShader::GetInstance()
+#define UISHADER UIShader::GetInstance()
 #define MODELLIST ModelList::GetInstance()

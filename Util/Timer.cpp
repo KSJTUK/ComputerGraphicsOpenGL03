@@ -21,7 +21,7 @@ float Timer::GetTimeElapsed() const {
 }
 
 float Timer::GetDeltaTimeMS() const {
-    return m_deltaTime / 1000.f;
+    return m_deltaTime * 1000.f;
 }
 
 float Timer::GetFrame() const {

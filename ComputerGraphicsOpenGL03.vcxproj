@@ -33,11 +33,13 @@
     <ClCompile Include="Object\LightObject.cpp" />
     <ClCompile Include="Object\Object.cpp" />
     <ClCompile Include="pch.cpp" />
+    <ClCompile Include="ShadowMap.cpp" />
     <ClCompile Include="Util\callbacks.cpp" />
     <ClCompile Include="Util\Engine.cpp" />
     <ClCompile Include="Util\stb_image.cpp" />
     <ClCompile Include="Util\TextureComponent.cpp" />
     <ClCompile Include="Util\Timer.cpp" />
+    <ClCompile Include="Util\UI.cpp" />
     <ClCompile Include="WorldScene.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -54,11 +56,13 @@
     <ClInclude Include="Object\LightObject.h" />
     <ClInclude Include="Object\Object.h" />
     <ClInclude Include="pch.h" />
+    <ClInclude Include="ShadowMap.h" />
     <ClInclude Include="Util\callbacks.h" />
     <ClInclude Include="Util\Engine.h" />
     <ClInclude Include="Util\stb_image.h" />
     <ClInclude Include="Util\TextureComponent.h" />
     <ClInclude Include="Util\Timer.h" />
+    <ClInclude Include="Util\UI.h" />
     <ClInclude Include="WorldScene.h" />
   </ItemGroup>
   <ItemGroup>
@@ -77,6 +81,10 @@
     <None Include="Shader\object_tessel_control_shader.glsl" />
     <None Include="Shader\object_tessel_evaluation_shader.glsl" />
     <None Include="Shader\object_vertex_shader.glsl" />
+    <None Include="Shader\ui_fragment_shader.glsl" />
+    <None Include="Shader\ui_vertex_shader.glsl" />
+    <None Include="shadow_fragment_shader.glsl" />
+    <None Include="shadow_vertex_shader.glsl" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

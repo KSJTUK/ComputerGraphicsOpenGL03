@@ -12,6 +12,7 @@
 #include "Terrain.h"
 #include "SkyBox.h"
 #include "Object/LightObject.h"
+#include "Util/UI.h"
 // ------------------------------------------------
 
 GameWorld::GameWorld() { }
@@ -24,6 +25,11 @@ bool GameWorld::IsInited() const {
 
 void GameWorld::SetWindowInfo(std::shared_ptr<struct WindowInfo>& winInfo) {
 	m_windowInfo = winInfo;
+
+	if (m_testReticle) {
+		m_testReticle->ResizedWindow();
+		m_testUI->ResizedWindow();
+	}
 	CalcPerspectiveMat();
 }
 
@@ -101,6 +107,7 @@ void GameWorld::CreateShaderPrograms() {
 	PARTICLESHADER->CreateShaderProgram();
 	TERRAINSHADER->CreateShaderProgram();
 	BACKGROUNDSHADER->CreateShaderProgram();
+	UISHADER->CreateShaderProgram();
 }
 
 void GameWorld::CreateDefaultObjects() {
@@ -113,6 +120,10 @@ void GameWorld::CreateDefaultObjects() {
 
 	m_background = std::make_unique<SkyBox>();
 	m_ground = std::make_unique<Terrain>(glm::uvec2{ 20, 20 });
+
+	m_testReticle = std::make_unique<Reticle>();
+	m_testUI = std::make_unique<UI>();
+	m_testUI->SetScreenPosition(glm::vec3{ 100.f, 100.f, 0.f });
 }
 
 void GameWorld::AddCollisionPair(const std::string& groub, Object* obj1, Object* obj2) {
@@ -184,10 +195,12 @@ void GameWorld::SetPerspectiveAllShader() {
 	PARTICLESHADER->SetUniformMat4("perspectiveMat", m_perspectiveMatrix);
 	OBJECTSHADER->SetUniformMat4("perspectiveMat", m_perspectiveMatrix);
 	LIGHTOBJECTSHADER->SetUniformMat4("perspective", m_perspectiveMatrix);
+	UISHADER->SetUniformMat4("perspective", m_perspectiveMatrix);
 }
 
 void GameWorld::SetViewMatAllShader(const glm::mat4& viewMat) {
 	BACKGROUNDSHADER->SetUniformMat4("viewMat", glm::mat4(glm::mat3(viewMat)));
+	UISHADER->SetUniformMat4("view", glm::mat4(glm::mat3(viewMat)));
 	TERRAINSHADER->SetUniformMat4("viewMat", viewMat);
 	PARTICLESHADER->SetUniformMat4("viewMat", viewMat);
 	OBJECTSHADER->SetUniformMat4("viewMat", viewMat);
@@ -206,6 +219,9 @@ void GameWorld::WorldRendering() {
 	m_background->Render();
 	m_ground->Render();
 	m_scenes[m_sceneIndex]->Render();
+
+	m_testReticle->Render();
+	m_testUI->Render();
 
 	glViewport(0, 0, m_windowInfo->width, m_windowInfo->height);
 }

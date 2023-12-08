@@ -160,3 +160,41 @@ public:
 	void AttachAndLinkShaders();
 	void CreateShaderProgram();
 };
+
+class UIShader : public Shader {
+private:
+	UIShader();
+	~UIShader();
+
+private:
+	static UIShader* m_instance;
+
+public:
+	static UIShader* GetInstance();
+	static void Destroy();
+
+public:
+	// 쉐이더 작성 함수들
+	void CompileShaders();
+	void AttachAndLinkShaders();
+	void CreateShaderProgram();
+};
+
+class ShadowShader : public Shader {
+private:
+	ShadowShader();
+	~ShadowShader();
+
+private:
+	static ShadowShader* m_instance;
+
+public:
+	static ShadowShader* GetInstance();
+	static void Destroy();
+
+public:
+	// 쉐이더 작성 함수들
+	void CompileShaders();
+	void AttachAndLinkShaders();
+	void CreateShaderProgram();
+};

@@ -596,3 +596,149 @@ void BackGroundShader::CreateShaderProgram() {
 	AttachAndLinkShaders();
 	ClearFile();
 }
+
+// terrain shader
+// ---------------------------------------------------
+UIShader* UIShader::m_instance = nullptr;
+
+UIShader::UIShader() { }
+
+UIShader::~UIShader() {
+	glDeleteShader(m_vertexShader);
+	glDeleteShader(m_fragmentShader);
+	glDeleteProgram(m_shaderProgram);
+}
+
+UIShader* UIShader::GetInstance() {
+	if (!m_instance) {
+		m_instance = new UIShader{ };
+	}
+	return m_instance;
+}
+
+void UIShader::Destroy() {
+	if (m_instance) {
+		delete m_instance;
+	}
+	m_instance = nullptr;
+}
+
+void UIShader::CompileShaders() {
+	m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+	// 쉐이더 소스코드 불러오기
+	const char* contentsPath = m_vertexShaderFileContents.c_str();
+	glShaderSource(m_vertexShader, 1, &contentsPath, NULL);
+
+	contentsPath = m_fragmentShaderFileContents.c_str();
+	glShaderSource(m_fragmentShader, 1, &contentsPath, NULL);
+
+	// 쉐이더 컴파일
+	glCompileShader(m_vertexShader);
+	glCompileShader(m_fragmentShader);
+
+	// 쉐이더 컴파일 여부 확인
+	CheckAndPrintShaderCompileError(m_vertexShader);
+	CheckAndPrintShaderCompileError(m_fragmentShader);
+}
+
+void UIShader::AttachAndLinkShaders() {
+	glAttachShader(m_shaderProgram, m_vertexShader);
+	glAttachShader(m_shaderProgram, m_fragmentShader);
+
+	// 쉐이더 링크
+	glLinkProgram(m_shaderProgram);
+
+	// 쉐이더들이 제대로 링크 되었는지 확인
+	int result{ };
+	char errLog[BUFSIZ]{ };
+	glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &result);
+	if (!result) {
+		glGetProgramInfoLog(m_shaderProgram, sizeof(errLog), NULL, errLog);
+		std::cerr << std::string{ errLog } << std::endl;
+		throw "Shaders are not Linked";
+	}
+}
+
+void UIShader::CreateShaderProgram() {
+	m_shaderProgram = glCreateProgram();
+	LoadVertexShaderFile(".\\Shader\\ui_vertex_shader.glsl");
+	LoadFragmentShaderFile(".\\Shader\\ui_fragment_shader.glsl");
+	CompileShaders();
+	AttachAndLinkShaders();
+	ClearFile();
+}
+
+// terrain shader
+// ---------------------------------------------------
+ShadowShader* ShadowShader::m_instance = nullptr;
+
+ShadowShader::ShadowShader() { }
+
+ShadowShader::~ShadowShader() {
+	glDeleteShader(m_vertexShader);
+	glDeleteShader(m_fragmentShader);
+	glDeleteProgram(m_shaderProgram);
+}
+
+ShadowShader* ShadowShader::GetInstance() {
+	if (!m_instance) {
+		m_instance = new ShadowShader{ };
+	}
+	return m_instance;
+}
+
+void ShadowShader::Destroy() {
+	if (m_instance) {
+		delete m_instance;
+	}
+	m_instance = nullptr;
+}
+
+void ShadowShader::CompileShaders() {
+	m_vertexShader = glCreateShader(GL_VERTEX_SHADER);
+	m_fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+
+	// 쉐이더 소스코드 불러오기
+	const char* contentsPath = m_vertexShaderFileContents.c_str();
+	glShaderSource(m_vertexShader, 1, &contentsPath, NULL);
+
+	contentsPath = m_fragmentShaderFileContents.c_str();
+	glShaderSource(m_fragmentShader, 1, &contentsPath, NULL);
+
+	// 쉐이더 컴파일
+	glCompileShader(m_vertexShader);
+	glCompileShader(m_fragmentShader);
+
+	// 쉐이더 컴파일 여부 확인
+	CheckAndPrintShaderCompileError(m_vertexShader);
+	CheckAndPrintShaderCompileError(m_fragmentShader);
+}
+
+void ShadowShader::AttachAndLinkShaders() {
+	glAttachShader(m_shaderProgram, m_vertexShader);
+	glAttachShader(m_shaderProgram, m_fragmentShader);
+
+	// 쉐이더 링크
+	glLinkProgram(m_shaderProgram);
+
+	// 쉐이더들이 제대로 링크 되었는지 확인
+	int result{ };
+	char errLog[BUFSIZ]{ };
+	glGetProgramiv(m_shaderProgram, GL_LINK_STATUS, &result);
+	if (!result) {
+		glGetProgramInfoLog(m_shaderProgram, sizeof(errLog), NULL, errLog);
+		std::cerr << std::string{ errLog } << std::endl;
+		throw "Shaders are not Linked";
+	}
+}
+
+void ShadowShader::CreateShaderProgram() {
+	m_shaderProgram = glCreateProgram();
+	LoadVertexShaderFile(".\\Shader\\shadow_vertex_shader.glsl");
+	LoadFragmentShaderFile(".\\Shader\\shadow_fragment_shader.glsl");
+	CompileShaders();
+	AttachAndLinkShaders();
+	ClearFile();
+}
